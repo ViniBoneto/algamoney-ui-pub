@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Estilos globais da app */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #404C51;
+}
+
+label {
+  font-weight: bold;
+}
+
+/* A media query é p/ aplicar as regras abaixos somente em telas >= 1200px, pra limitar o tam dos campos
+  a 1170px em monitores muito grandes */
+@media (min-width: 1200px) {
+  .container {
+    margin: 0 auto;
+    width: 1170px;
+  }
+}

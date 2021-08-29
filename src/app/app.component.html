@@ -1,4 +1,4 @@
-<p-tabView>
+<!-- <p-tabView>
   <p-tabPanel header="Header 1">
      Content 1
   </p-tabPanel>
@@ -8,4 +8,33 @@
   <p-tabPanel header="Header 3">
       Content 3
   </p-tabPanel>
-</p-tabView>
+</p-tabView> -->
+
+<div class="container">
+  <div class="p-grid">
+    <div class="p-col-12">
+      <h1>Lançamentos</h1>
+    </div>
+
+    <!-- C/ p-fluid no comp pai, filhos ocupam 100% larg pai  -->
+    <div class="p-col-12 p-fluid">
+      <label>Descrição</label>
+      <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG -->
+      <input pInputText type="text">
+    </div>
+
+    <div class="p-col-12">
+      <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
+      <label style="display: block;">Vencimento</label>
+      <input pInputText type="text" style="width: 100px;">
+
+      <label>Até</label>
+      <input pInputText type="text" style="width: 100px;">
+    </div>
+
+    <div class="p-col-12">
+      <!-- Adiciona dir pButton ao <button> p/ adicionar estilos e funcs do PrimeNG -->
+      <button pButton type="submit" label="Pesquisar"></button>
+    </div>
+  </div>
+</div>
