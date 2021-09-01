@@ -1,3 +1,7 @@
 input[pInputText] {
   margin-bottom: 10px;
 }
+
+button[pButton] {
+  margin-bottom: 20px;
+}

@@ -19,3 +19,29 @@ label {
     width: 1170px;
   }
 }
+
+/* Adiciona bordas entre as cels da tab de dados (menos à última) */
+.p-datatable .p-datatable-tbody > tr > td {
+  border-right: 1px dotted #bcbfc1;
+}
+
+.p-datatable .p-datatable-tbody > tr > td:last-of-type {
+  border-right: none;
+}
+
+/* Formata colunas de tipo data e valor (R$) na tab de dados */
+.col-data-header {
+  width: 120px;
+}
+
+.col-valor-header {
+  width: 120px;
+}
+
+.col-data-content {
+  text-align: center !important;
+}
+
+.col-valor-content {
+  text-align: right !important;
+}
