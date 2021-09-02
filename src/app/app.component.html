@@ -28,7 +28,7 @@
       <label style="display: block;">Vencimento</label>
       <input pInputText type="text" style="width: 100px;">
 
-      <label>Até</label>
+      &nbsp;<label>Até</label>&nbsp;
       <input pInputText type="text" style="width: 100px;">
     </div>
 
@@ -53,6 +53,9 @@
                 <th class="col-data-header">Vencimento</th>
                 <th class="col-data-header">Pagamento</th>
                 <th class="col-valor-header">Valor</th>
+                <!-- Apenas teste p/ mostrar header c/ um btn em vez de um lbl -->
+                <!-- <th class="col-valor-header"><button pButton label="Teste"></button></th> -->
+                <th class="col-acoes-header"></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-lancamento>
@@ -61,10 +64,32 @@
                 <td>{{ lancamento.descricao }}</td>
                 <td class="col-data-content">{{ lancamento.dataVencimento }}</td>
                 <td class="col-data-content">{{ lancamento.dataPagamento }}</td>
-                <td class="col-valor-content">{{ lancamento.valor }}</td>
+                <td class="col-valor-content">
+                  <!-- Dir ngStyle recebe um obj JS c/ params equivalentes às props CSS a serem aplicadas
+                      inline no elem. Despesas são vermelhas e receitas azuis -->
+                  <!-- <span [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue' }">{{ lancamento.valor }}</span> -->
+
+                  <!-- Opcionalmente, no caso de alteração de poucas props (no caso, há apenas 1), pode-se atribuir a expr JS
+                    diretamente à prop CSS, como feito abaixo -->
+                  <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor }}</span>
+                </td>
+                <!-- Adicona coluna c/ btns de edição (ícone caneta) e exclusão (ícone lixeira). Btn de edição será uma âncora (<a>)
+                  e btn de exclusão será um <button>. Isso faz sentido, pois o btn de edição será uma navegação p/ uma outra página
+                  (de edição lançamento), enquanto o btn de exclusão será apenas um disparador de ação (de exclusão). Ambos terão
+                  a dir pButton p/ aplicar estilos e funcionalidades do Angular -->
+                <td class="col-acoes-content">
+                  <a pButton icon="pi pi-pencil"></a>
+                  <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
+                  <button pButton icon="pi pi-trash"></button>
+                </td>
             </tr>
         </ng-template>
       </p-table>
     </div>
+  </div>
+
+  <div class="p-col-12">
+    <!-- Dir pButton tb pode ser adicionada a uma âncora (<a>) -->
+    <a pButton label="Novo lançamento"></a>
   </div>
 </div>
