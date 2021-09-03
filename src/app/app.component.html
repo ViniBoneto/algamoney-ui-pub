@@ -19,17 +19,18 @@
     <!-- C/ p-fluid no comp pai, filhos ocupam 100% larg pai  -->
     <div class="p-col-12 p-fluid">
       <label>Descrição</label>
-      <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG -->
-      <input pInputText type="text">
+      <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG.
+        Dir do PrimeNG pTooltip exibe uma msg de ajuda (tooltip text) relacionada ao elem -->
+      <input pInputText type="text" pTooltip="Filtro por descrição lançamento">
     </div>
 
     <div class="p-col-12">
       <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
       <label style="display: block;">Vencimento</label>
-      <input pInputText type="text" style="width: 100px;">
+      <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento">
 
       &nbsp;<label>Até</label>&nbsp;
-      <input pInputText type="text" style="width: 100px;">
+      <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento">
     </div>
 
     <div class="p-col-12">
@@ -44,8 +45,10 @@
         <li *ngFor="let l of lancamentos">{{ l.pessoa }}</li>
       </ul> -->
 
-      <!-- A dir *ngFor, explícita no exemp acima (comentado), está implícita na tabela do Prime NG. -->
-      <p-table [value]="lancamentos">
+      <!-- A dir *ngFor, explícita no exemp acima (comentado), está implícita na tabela do Prime NG.
+        Para ativar a paginação básica, basta ativar a prop "paginator" e especificar o núm de lins p/
+        pág c/ a prop "rows" -->
+      <p-table [value]="lancamentos" [paginator]="true" [rows]="3">
         <ng-template pTemplate="header">
             <tr>
                 <th>Pessoa</th>
@@ -78,9 +81,9 @@
                   (de edição lançamento), enquanto o btn de exclusão será apenas um disparador de ação (de exclusão). Ambos terão
                   a dir pButton p/ aplicar estilos e funcionalidades do Angular -->
                 <td class="col-acoes-content">
-                  <a pButton icon="pi pi-pencil"></a>
+                  <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
                   <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
-                  <button pButton icon="pi pi-trash"></button>
+                  <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
                 </td>
             </tr>
         </ng-template>
