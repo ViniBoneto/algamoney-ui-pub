@@ -45,21 +45,30 @@ label {
   text-align: center;
 }
 
-/* Formata colunas de tipo data, valor (R$) e ações (ícones) na tab de dados */
-.col-data-header,
-.col-valor-header,
-.col-acoes-header {
-  width: 120px;
-}
+/*
+  Precisamos ajustar nossas regras CSS para tabelas para que elas não sejam aplicadas em dispositivos
+    de menor resolução, pois não precisamos, por exemplo, centralizar informações da tabela, pois todas
+    elas serão exibidas com alinhamento à esquerda. Para ajustar o CSS faremos uso de media query com
+    "min-width: 40em", que é o valor de resolução que o PrimeNG utiliza para alterar o layout da tabela
+    para dispositivos de menor resolução.
+*/
+@media (min-width: 40em) {
+  /* Formata colunas de tipo data, valor (R$) e ações (ícones) na tab de dados */
+  .col-data-header,
+  .col-valor-header,
+  .col-acoes-header {
+    width: 120px;
+  }
 
-.col-data-content {
-  text-align: center !important;
-}
+  .col-data-content {
+    text-align: center !important;
+  }
 
-.col-valor-content {
-  text-align: right !important;
-}
+  .col-valor-content {
+    text-align: right !important;
+  }
 
-.col-acoes-content {
-  text-align: center !important;
+  .col-acoes-content {
+    text-align: center !important;
+  }
 }
