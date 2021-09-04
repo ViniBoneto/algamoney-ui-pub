@@ -1,0 +1,10 @@
+.navbar {
+  /* padding: 10px 0; */
+  /* Um pequeno ajuste no CSS é necessário para centralizar nosso ícone de menu na navbar */
+  padding: 20px 0 10px;
+  background-color: #1E94D2;
+}
+
+.navbar-toggle {
+  color: white;
+}
