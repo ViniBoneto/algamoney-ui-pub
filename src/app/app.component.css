@@ -1,8 +1,0 @@
-input[pInputText] {
-  margin-bottom: 10px;
-}
-
-button[pButton]:not(.p-button-icon-only),
-a[pButton]:not(.p-button-icon-only) {
-  margin-bottom: 20px;
-}
