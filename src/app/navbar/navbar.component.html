@@ -9,11 +9,21 @@
 
           <a href="javascript:;"> quer dizer que ao clicar ñ sera executado nada, efetuado ação nenhuma.
             Ou seja, ao clicar, executar o javascript "nada". -->
-          <a href="javascript:;" class="navbar-toggle"> <i class="pi pi-bars"></i> </a>
+          <a href="javascript:;" class="navbar-toggle" (click)="exibeMenu = !exibeMenu">
+            <i class="pi pi-bars"></i>
+          </a>
         <!-- Teste -->
       </div>
     </div>
 
   </div>
+
+  <!-- 10.12. Adicionando menu intercambiável -->
+  <ul class="navbar-menu" [hidden]="!exibeMenu">
+    <li class="navbar-usuario">José da Silva</li>
+    <li class="navbar-menuitem"><a href="javascript:;">Lançamentos</a></li>
+    <li class="navbar-menuitem"><a href="javascript:;">Pessoas</a></li>
+    <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li>
+  </ul>
 
 </nav>

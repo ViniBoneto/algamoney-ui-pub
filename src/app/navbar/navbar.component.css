@@ -8,3 +8,44 @@
 .navbar-toggle {
   color: white;
 }
+
+.navbar-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 210px;
+  margin: 0;
+  padding: 0;
+  z-index: 9998;
+
+  background-color: #3A3633;
+
+  list-style: none;
+}
+
+.navbar-usuario {
+  padding: 15px;
+  border-bottom: 1px solid #525151;
+  margin-bottom: 15px;
+
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+}
+
+.navbar-menuitem {
+  /* color: gray; */
+  padding: 15px;
+}
+
+.navbar-menuitem > a {
+  text-decoration: none;
+  /* color: inherit; */
+  color: #C0BBB7;
+}
+
+/* .navbar-menuitem:hover { */
+.navbar-menuitem > a:hover {
+  color: white;
+}
