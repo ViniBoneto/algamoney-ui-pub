@@ -72,3 +72,13 @@ label {
     text-align: center !important;
   }
 }
+
+.p-datatable-tbody	td a:not(.p-button-icon-only) {
+  text-decoration: none;
+
+  color: inherit;
+}
+
+.p-datatable-tbody	td a:hover {
+  text-decoration: underline;
+}
