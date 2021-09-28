@@ -64,13 +64,18 @@
                   <span class="p-column-title">Descrição</span>
                   {{ lancamento.descricao }}
                 </td>
+                <!-- 11.8. Desafio: usando pipes: alterar campos de data de str p/ Date, usando DatePipe no template p/ conseguir
+                  deixá-la no msm formato que estava na str (dd/MM/yyyy). Também usar CurrencyPipe no template p/ conseguir
+                  deixar campo val formatado em Real (R$). -->
                 <td class="col-data-content">
                   <span class="p-column-title">Vencimento</span>
-                  {{ lancamento.dataVencimento }}
+                  <!-- {{ lancamento.dataVencimento }} -->
+                  {{ lancamento.dataVencimento | date:"dd/MM/y" }}
                 </td>
                 <td class="col-data-content">
                   <span class="p-column-title">Pagamento</span>
-                  {{ lancamento.dataPagamento }}
+                  <!-- {{ lancamento.dataPagamento }} -->
+                  {{ lancamento.dataPagamento | date:"dd/MM/y" }}
                 </td>
                 <td class="col-valor-content">
                   <span class="p-column-title">Valor</span>
@@ -80,7 +85,8 @@
 
                   <!-- Opcionalmente, no caso de alteração de poucas props (no caso, há apenas 1), pode-se atribuir a expr JS
                     diretamente à prop CSS, como feito abaixo -->
-                  <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor }}</span>
+                  <!-- <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor }}</span> -->
+                  <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor | currency:"BRL" }}</span>
                 </td>
                 <!-- Adicona coluna c/ btns de edição (ícone caneta) e exclusão (ícone lixeira). Btn de edição será uma âncora (<a>)
                   e btn de exclusão será um <button>. Isso faz sentido, pois o btn de edição será uma navegação p/ uma outra página
