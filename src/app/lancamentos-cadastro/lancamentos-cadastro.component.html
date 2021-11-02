@@ -1,0 +1,64 @@
+<!-- 13.1. Criando o protótipo do formulário de cadastro de lançamentos:
+  Clss css do grid mudaram de nome do Primeflex V. 2.0 p/ o Primeflex V. 3.0: cls do grid, em vez de .p-grid,
+  agora é só .grid. Analogamente, cls da col, em vez de .p-col ou .p-col-*, agora é só .col ou .col-*. Clss
+  representando cols responsivas, em vez de .p-sm-* ou .p-lg-*, por exemp, agora é .sm:col-* ou .lg:col-*.
+
+  Em disp c/ telas menores (até 768px) os comps ficam empilhados, sendo que campos datas venc e pag/receb
+  ocupam 1ª lin e apenas metade da tela cada. Em telas a partir deste tam, a tela terá a seguinte disposição:
+    1ª lin: campos datas venc e pag/receb ocupam 50% tela (25% e 25%);
+    2ª lin: campos desc e val ocupam 100% tela (75% e 25%);
+    3ª lin: campos categ e pessoa ocupam 100% tela (50% e 50%);
+    4ª lin: campo obs ocupam 100% tela;
+    5ª lin: Btns.
+-->
+
+<div class="container">
+  <form>
+    <div class="grid">
+      <div class="col-12">
+        <h1>Novo Lançamento</h1>
+      </div>
+
+      <div class="col-6 md:col-3 p-fluid">
+        <label>Vencimento</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-6 md:col-3 p-fluid">
+        <label>Recebimento</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-9 p-fluid">
+        <label>Descrição</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-3 p-fluid">
+        <label>Valor</label>
+        <input type="text" pInputText placeholder="0,00" style="text-align: end;">
+      </div>
+
+      <div class="col-12 md:col-6 p-fluid">
+        <label>Categoria</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-6 p-fluid">
+        <label>Pessoa</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 p-fluid">
+        <label>Observação</label>
+        <textarea rows="3" pInputTextarea></textarea>
+      </div>
+
+      <div class="col-12">
+        <button pButton type="submit" label="Salvar"></button>
+        <button pButton type="button" label="Novo" class="p-button-info"></button>
+        <a href="javascript:;">Voltar para a pesquisa</a>
+      </div>
+    </div>
+  </form>
+</div>

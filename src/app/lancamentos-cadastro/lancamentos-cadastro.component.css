@@ -1,0 +1,6 @@
+
+/* 13.1. Criando o protótipo do formulário de cadastro de lançamentos:
+  É necessário adicionar uma regra CSS para configurar a margem direita dos botões e links do PrimeNG: */
+  .p-button {
+    margin-right: .25em
+  }
