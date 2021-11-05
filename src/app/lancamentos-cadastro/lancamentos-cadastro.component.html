@@ -21,12 +21,37 @@
 
       <div class="col-6 md:col-3 p-fluid">
         <label>Vencimento</label>
-        <input type="text" pInputText>
+        <!-- 13.2. Adicionando seletor de data (componente Calendar):
+         Substitui os campos do tipo data (venc e pag/receb) de um input[type="text"] p/ um comp PNG Calendar.
+
+         C/ a prop inline=true, o caldendário em vez de surgir como um popup fica fixo e sempre visível.
+
+         As datas são, p/ padrão, no formato dos EUA (mm/dd/yy), mas o formato pode ser customizado através
+         da prop dateFormat.
+
+         C/ a prop readonlyInput=true, o campo input[type="text"] que exibe a data fica desabilitado (ñ editável),
+         c/ isso podendo a data ser alterada somente clicando-se no calendário (p/ padrão, pode-se entrar c/ a data
+         a editando diretamente no campo txt).
+
+         Se a prop showIcon=true, aparecerá um ícone de calendário, no canto do campo input do comp de calendário. -->
+        <!-- <input type="text" pInputText> -->
+
+        <!-- <p-calendar></p-calendar> -->
+
+        <!-- Formato de dt padrão brasileiro -->
+        <p-calendar [readonlyInput]="false" [inline]="false" [showIcon]="false"
+          [dateFormat]="'dd/mm/yy'"></p-calendar>
       </div>
 
       <div class="col-6 md:col-3 p-fluid">
         <label>Recebimento</label>
-        <input type="text" pInputText>
+        <!-- 13.2. Adicionando seletor de data (componente Calendar):
+          Faz alteração semelhante à de dt venc em dt receb/pag. Tanto faz usar o formato abaixo, como
+          se fosse uma prop HTML recebendo uma str, ou no formato acima, como uma prop de comp recebendo uma
+          expr em TS. -->
+        <!-- <input type="text" pInputText> -->
+
+        <p-calendar dateFormat="dd/mm/yy"></p-calendar>
       </div>
 
       <div class="col-12 md:col-9 p-fluid">

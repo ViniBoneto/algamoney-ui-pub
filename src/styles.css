@@ -82,3 +82,11 @@ label {
 .p-datatable-tbody	td a:hover {
   text-decoration: underline;
 }
+
+/* 13.2. Adicionando seletor de data (componente Calendar):
+ Links da app passarão, por padrão, a não mais ter o sublinhado e a ter a cor def abaixo */
+a {
+  text-decoration: none;
+
+  color: #337AB7;
+}
