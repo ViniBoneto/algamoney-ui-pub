@@ -80,13 +80,32 @@
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
-        <label>Categoria</label>
-        <input type="text" pInputText>
+        <!-- 13.4. Adicionando caixa de seleção (componente Dropdown):
+          Comp PNG Dropdown tem um funcionamento mto semelhante ao SelecButton (botão de seleção).
+          A prop placeholder exibe um txt padrão, se nenhuma opt estiver selecionada.
+          Usa-se uma var de template (#categ) p/ armazenar o val da opt selecionada na dropdown. C/
+          isto, pode-se pegar o val dela (categ.value) e exibir no <label>, a título de depuração. -->
+        <!-- <label>Categoria</label> -->
+
+        <label>Categoria {{ categ.value }}</label>
+
+        <!-- <input type="text" pInputText> -->
+
+        <p-dropdown [options]="categorias" placeholder="Selecione" #categ></p-dropdown>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
-        <label>Pessoa</label>
-        <input type="text" pInputText>
+        <!-- 13.4. Adicionando caixa de seleção (componente Dropdown):
+          Repete-se p/ pessoas o msm processo q p/ categorias, acima.
+          Em pessoas tb adicionaremos um filtro, adicionando a prop filter=true. P/ padrão, o filtro é
+          feito pelo campo label, cujos vals cotenham a str passada na caixa de filtro. -->
+        <!-- <label>Pessoa</label> -->
+
+        <label>Pessoa {{ pessoa.value }}</label>
+
+        <!-- <input type="text" pInputText> -->
+
+        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa></p-dropdown>
       </div>
 
       <div class="col-12 p-fluid">
