@@ -19,6 +19,13 @@
         <h1>Novo Lançamento</h1>
       </div>
 
+      <!-- 13.3. Adicionando botão de seleção:
+        Vamos usar o comp PNG SelecButton p/ alternar entre as abas de tp lançamento (receita ou despesa).
+        Associa uma var de template (#tipo) ao comp, para referencia-lo futuramente. -->
+      <div class="col-12">
+        <p-selectButton [options]="tipos" #tipo></p-selectButton>
+      </div>
+
       <div class="col-6 md:col-3 p-fluid">
         <label>Vencimento</label>
         <!-- 13.2. Adicionando seletor de data (componente Calendar):
@@ -44,7 +51,15 @@
       </div>
 
       <div class="col-6 md:col-3 p-fluid">
-        <label>Recebimento</label>
+        <!-- 13.3. Adicionando botão de seleção:
+          Usa a str do campo value, do obj vinculado à aba atualmente selecionada no comp selectButton,
+          p/ alternar dinamicamente o rótulo entre dt receb (receita) e dt pag (despesa) -->
+        <!-- <label>Recebimento</label> -->
+
+        <!-- <label>{{ tipo.value }}</label> -->
+
+        <label>{{ tipo.value === "RECEITA" ? "Recebimento" : "Pagamento" }}</label>
+
         <!-- 13.2. Adicionando seletor de data (componente Calendar):
           Faz alteração semelhante à de dt venc em dt receb/pag. Tanto faz usar o formato abaixo, como
           se fosse uma prop HTML recebendo uma str, ou no formato acima, como uma prop de comp recebendo uma
