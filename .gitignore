@@ -59,6 +59,9 @@ dist/
 # Compiled Python bytecode
 *.py[cod]
 
+# Angular generated folder
+.angular
+
 # Log files
 *.log
 
