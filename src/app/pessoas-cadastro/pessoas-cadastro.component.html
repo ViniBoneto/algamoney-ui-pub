@@ -1,0 +1,57 @@
+<!-- 13.6. Desafio: criando o protótipo do formulário de cadastro de pessoa -->
+
+<div class="container">
+  <form>
+    <div class="grid">
+      <div class="col-12">
+        <h1>Nova Pessoa</h1>
+      </div>
+
+      <div class="col-12 p-fluid">
+        <label>Nome</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-9 p-fluid">
+        <label>Logradouro</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-3 p-fluid">
+        <label>Número</label>
+        <p-inputNumber mode="decimal" [inputStyle]="{'text-align': 'end'}"></p-inputNumber>
+      </div>
+
+      <div class="col-12 md:col-4 p-fluid">
+        <label>Complemento</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-4 p-fluid">
+        <label>Bairro</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-4 p-fluid">
+        <label>CEP</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-6 p-fluid">
+        <label>Cidade</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12 md:col-6 p-fluid">
+        <label>Estado</label>
+        <input type="text" pInputText>
+      </div>
+
+      <div class="col-12">
+        <button pButton type="submit" label="Salvar"></button>
+        <button pButton type="button" label="Novo" class="p-button-info"></button>
+        <a href="javascript:;">Voltar para a pesquisa</a>
+      </div>
+    </div>
+  </form>
+</div>
