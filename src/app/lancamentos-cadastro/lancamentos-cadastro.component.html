@@ -75,8 +75,34 @@
       </div>
 
       <div class="col-12 md:col-3 p-fluid">
+        <!-- 13.5. Adicionando máscara de dinheiro com ng2-mask-money:
+          Como ng2-mask-money ñ foi encontrado e ng2-currency-mask (q parece ser o novo nome deste comp)
+          tem incompatibilidade c/ versões do Angular >= 12, foi instalado o comp ngx-currency ( Cuja doc
+          está aqui: https://www.npmjs.com/package/ngx-currency ).
+
+          Comp ngx-currency fará c/ q o input[type="text"] de val siga uma máscara de moeda (outros chars
+          serão considerados inválidos).
+
+          Por padrão este comp prefixa o val c/ símb de dolar ($) e usa a notação dos EUA: '.' p/ decimal e ','
+          p/ milhar. Alteraremos isso p/ c/ q o val ñ tenha qq prefixo e use a notação do BR: ',' p/ decimal e
+          '.' p/ milhar. -->
         <label>Valor</label>
-        <input type="text" pInputText placeholder="0,00" style="text-align: end;">
+        <!-- <input type="text" pInputText placeholder="0,00" style="text-align: end;"> -->
+
+        <!-- <input type="text" pInputText currencyMask
+          [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"> -->
+
+        <!-- 13.5. Adicionando máscara de dinheiro com ng2-mask-money:
+          P/ alterar o tipo de input do ngx-currency de FINANCIAL (padrão) p/ NATURAL, é preciso fazer uso do
+          enum CurrencyMaskInputMode e criar um obj de config customizável p/ ser atribuído ao mód NgxCurrencyModule,
+          em sua importação pelo mód da app, conforme indicado na pág do ngx-currency.  -->
+        <!-- <input type="text" pInputText placeholder="0,00" currencyMask> -->
+
+        <!-- 13.5. Adicionando máscara de dinheiro com ng2-mask-money:
+          Agora já há o comp InputNumber do PNG, que não havia ainda quando o vídeo da aula foi gravado, p/ isso
+          o uso da dir currencyMask. Após o uso desta, apenas para efeito de demonstração, subistitui-se pelo comp
+          de input numérico InputNumber. -->
+        <p-inputNumber mode="currency" currency="BRL" placeholder="R$ 0,00" [inputStyle]="{'text-align': 'end'}"></p-inputNumber>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
