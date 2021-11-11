@@ -12,6 +12,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputMaskModule } from 'primeng/inputmask';
 
 import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
@@ -52,6 +53,7 @@ export const customCurrencyMaskConfig = {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     // TabViewModule
     InputTextModule,
@@ -60,16 +62,16 @@ export const customCurrencyMaskConfig = {
     TooltipModule,
     InputTextareaModule,
     CalendarModule,
-    BrowserAnimationsModule,
     SelectButtonModule,
     DropdownModule,
-    // NgxCurrencyModule
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     /*  13.5. Adicionando máscara de dinheiro com ng2-mask-money:
       Agora já há o comp InputNumber do PNG, que não havia ainda quando o vídeo da aula foi gravado, p/ isso
       o uso da dir currencyMask. Após o uso desta, apenas para efeito de demonstração, subistitui-se pelo comp
       de input numérico InputNumber. */
-    InputNumberModule
+    InputNumberModule,
+    InputMaskModule,
+    // NgxCurrencyModule
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
