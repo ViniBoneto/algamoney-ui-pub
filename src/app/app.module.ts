@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 // import { TabViewModule } from 'primeng/tabview';
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,6 +14,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
+import { MessageModule } from 'primeng/message';
 
 import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
@@ -55,6 +57,7 @@ export const customCurrencyMaskConfig = {
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FormsModule,
     // TabViewModule
     InputTextModule,
     ButtonModule,
@@ -70,6 +73,7 @@ export const customCurrencyMaskConfig = {
       de input numérico InputNumber. */
     InputNumberModule,
     InputMaskModule,
+    MessageModule,
     // NgxCurrencyModule
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
   ],
