@@ -1,77 +1,31 @@
 <div class="container">
-  <form>
-    <div class="p-grid">
-      <div class="p-col-12">
-        <h1>Lançamentos</h1>
-      </div>
-
-      <!-- C/ p-fluid no comp pai, filhos ocupam 100% larg pai  -->
-      <div class="p-col-12 p-fluid">
-        <label>Descrição</label>
-        <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG.
-          Dir do PrimeNG pTooltip exibe uma msg de ajuda (tooltip text) relacionada ao elem -->
-        <!-- <input pInputText type="text" pTooltip="Filtro por descrição lançamento"> -->
-
-        <!-- 13.8. Validando controles de formulário com PrimeNG:
-          Usando os mecanismos do NG de validação e verificação de estado de forms, aprendidos no mód
-          12 (forms e validação), c/ mecanismos automáticos do próprio PNG (como circundar elems c/ estado
-          inválido de vermelho, por exemp).
-
-          Erros de validação de comps em estado inválido são armazenados no array ngModel.errors, do tipo
-          ValidationErrors. Como esta propriedade errors pode ser nula, o Typescript reporta um problema
-          na compilação do código. É necessário realizar a seguinte alteração nos pontos em que aparece a
-          propriedade errors: desc.errors?. A colocação da ? indica que essa propriedade é opcional, ou seja,
-          quando ela for nula o interpretador para a execução naquele ponto, sem tentar avaliar as propriedades
-          encadeadas (required e minlength neste exemplo ). Caso não seja nulo as propriedades serão avaliadas.
-
-          Na primeira abordagem, usaremos as combinação de clss CSS do PNG .p-message e .p-message-error, q
-          indicam msgs de erros, no nosso comp de msg. A msg será exibida se o <input> estiver alterado ("sujo")
-          e inválido.
-        -->
-        <br> Descripiton.errors = {{ desc.errors | json }}
-
-        <input pInputText type="text" pTooltip="Filtro por descrição lançamento" name="descricao"
-          ngModel #desc="ngModel" required minlength="5">
-
-        <!-- <div *ngIf="desc.dirty && desc.hasError('required')" class="p-message p-message-error">
-          Informe uma descrição válida.
-        </div> -->
-
-        <!-- <div *ngIf="desc.dirty && desc.hasError('minlength')" class="p-message p-message-error"> -->
-          <!-- Campo descrição deve ter no mínimo 5 caracteres. -->
-
-          <!-- Tornando a msg de erro de tam mínimo dinâmica, c/ requiredLength (tam requerido) e
-            actualLength (tam atual). -->
-          <!-- Mínimo de {{ desc.errors?.minlength.requiredLength }} caracteres.
-          Foram digitados {{ desc.errors?.minlength.actualLength }} caracteres.
-        </div> -->
-
-        <!-- 13.8. Validando controles de formulário com PrimeNG:
-          Em vez de se usar as clss de mgss do PNG, como feito acima (comentado), pode-se usar o comp
-          de msg do PNG, contido no mód MessageModule.  -->
-        <p-message *ngIf="desc.hasError('required') && desc.dirty" severity="error"
-          text="Informe uma descrição"></p-message>
-
-        <p-message *ngIf="desc.hasError('minlength') && desc.dirty" severity="error"
-          text="Mínimo de {{ desc.errors?.minlength.requiredLength }} caracteres.
-          Foram digitados {{ desc.errors?.minlength.actualLength }}"></p-message>
-      </div>
-
-      <div class="p-col-12">
-        <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
-        <label style="display: block;">Vencimento</label>
-        <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento">
-
-        &nbsp;<label>Até</label>&nbsp;
-        <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento">
-      </div>
-
-      <div class="p-col-12">
-        <!-- Adiciona dir pButton ao <button> p/ adicionar estilos e funcs do PrimeNG -->
-        <button pButton type="submit" label="Pesquisar"></button>
-      </div>
+  <div class="p-grid">
+    <div class="p-col-12">
+      <h1>Lançamentos</h1>
     </div>
-  </form>
+
+    <!-- C/ p-fluid no comp pai, filhos ocupam 100% larg pai  -->
+    <div class="p-col-12 p-fluid">
+      <label>Descrição</label>
+      <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG.
+        Dir do PrimeNG pTooltip exibe uma msg de ajuda (tooltip text) relacionada ao elem -->
+      <input pInputText type="text" pTooltip="Filtro por descrição lançamento">
+    </div>
+
+    <div class="p-col-12">
+      <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
+      <label style="display: block;">Vencimento</label>
+      <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento">
+
+      &nbsp;<label>Até</label>&nbsp;
+      <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento">
+    </div>
+
+    <div class="p-col-12">
+      <!-- Adiciona dir pButton ao <button> p/ adicionar estilos e funcs do PrimeNG -->
+      <button pButton type="submit" label="Pesquisar"></button>
+    </div>
+  </div>
 
   <div class="p-grid">
     <div class="p-col-12">
