@@ -110,12 +110,26 @@
         <!-- 13.8. Validando controles de formulário com PrimeNG:
           Em vez de se usar as clss de mgss do PNG, como feito acima (comentado), pode-se usar o comp
           de msg do PNG, contido no mód MessageModule.  -->
-        <p-message *ngIf="desc.hasError('required') && desc.dirty" severity="error"
-          text="Informe uma descrição"></p-message>
+        <!-- <p-message *ngIf="desc.hasError('required') && desc.dirty" severity="error"
+          text="Informe uma descrição"></p-message> -->
 
-        <p-message *ngIf="desc.hasError('minlength') && desc.dirty" severity="error"
+        <!-- <p-message *ngIf="desc.hasError('minlength') && desc.dirty" severity="error"
           text="Mínimo de {{ desc.errors?.minlength.requiredLength }} caracteres.
-          Foram digitados {{ desc.errors?.minlength.actualLength }}"></p-message>
+          Foram digitados {{ desc.errors?.minlength.actualLength }}"></p-message> -->
+
+        <!-- 13.9. Criando componente de mensagem de erro de validação:
+          P/ se reduzir tam e repetição de cód, vamos criar um comp separado, gerador de msgs de erro
+          genéricas, p/ exibir as msgs dos cntrls, em substituição aos elems fixos de msg.
+
+          Este comp receberá como params de entrada o cntrl a ser validado, o erro a ser verificado no ctrnl
+          e a msg de erro a ser exibida. Se o erro não existir ou o cntrl ñ estiver no estado estadoCntrl, o
+          comp ñ será exibido. -->
+        <app-mensagens-erro [controle]="desc" erro="required" texto="Informe uma descrição"
+          estadoCntrl="dirty"></app-mensagens-erro>
+
+        <app-mensagens-erro [controle]="desc" erro="minlength"
+          texto="Mínimo de {{ desc.errors?.minlength?.requiredLength }} caracteres. Foram digitados
+          {{ desc.errors?.minlength?.actualLength }}" estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-3 p-fluid">
