@@ -13,7 +13,12 @@
 -->
 
 <div class="container">
-  <form>
+  <!-- <form> -->
+
+  <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+    Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
+    estiverem com estado de validação positivo. -->
+  <form #form="ngForm">
     <div class="grid">
       <div class="col-12">
         <h1>Novo Lançamento</h1>
@@ -46,8 +51,24 @@
         <!-- <p-calendar></p-calendar> -->
 
         <!-- Formato de dt padrão brasileiro -->
+        <!-- <p-calendar [readonlyInput]="false" [inline]="false" [showIcon]="false"
+          [dateFormat]="'dd/mm/yy'"></p-calendar> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repete o procedimento de validação e exibição de erro feito p/ o campo "Descrição", na aula
+          13.9 (Criando componente de mensagem de erro de validação), p/ o campo "Data Vencimento".
+
+          Os componentes do PrimeNG, na versão 12.0.0, não aceitam a validação required apenas com a codificação
+          padrão HTML. É necessário utilizar a propriedade do próprio componente, da seguinte forma: [required]="true".
+          Os campos input, decorados com a diretiva pInputText ainda aceitam a forma padrão do HTML, mas também funcionam
+          com a forma descrita para os componentes do PrimeNG.
+        -->
         <p-calendar [readonlyInput]="false" [inline]="false" [showIcon]="false"
-          [dateFormat]="'dd/mm/yy'"></p-calendar>
+          [dateFormat]="'dd/mm/yy'" name="vencimento" ngModel #dtVenc="ngModel"
+          [required]="true"></p-calendar>
+
+        <app-mensagens-erro [controle]="dtVenc" erro="required" texto="Informe uma data de Vencimento"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-6 md:col-3 p-fluid">
@@ -89,7 +110,7 @@
           indicam msgs de erros, no nosso comp de msg. A msg será exibida se o <input> estiver alterado ("sujo")
           e inválido.
         -->
-        <br> Descripiton.errors = {{ desc.errors | json }}
+        <!-- <br> Descripiton.errors = {{ desc.errors | json }} -->
 
         <input pInputText type="text" name="descricao" ngModel #desc="ngModel"
           required minlength="5">
@@ -160,7 +181,13 @@
           Agora já há o comp InputNumber do PNG, que não havia ainda quando o vídeo da aula foi gravado, p/ isso
           o uso da dir currencyMask. Após o uso desta, apenas para efeito de demonstração, subistitui-se pelo comp
           de input numérico InputNumber. -->
-        <p-inputNumber mode="currency" currency="BRL" placeholder="R$ 0,00" [inputStyle]="{'text-align': 'end'}"></p-inputNumber>
+        <!-- <p-inputNumber mode="currency" currency="BRL" placeholder="R$ 0,00" [inputStyle]="{'text-align': 'end'}"></p-inputNumber> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Valor" o procedimento p/ "Vencimento". Só não há necessidade de colocar msg erro,
+          pois o campo sempre terá um val (nem que seja o 0,00 default). -->
+        <p-inputNumber mode="currency" currency="BRL" placeholder="R$ 0,00" [inputStyle]="{'text-align': 'end'}"
+          name="valor" ngModel [required]="true"></p-inputNumber>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
@@ -171,11 +198,17 @@
           isto, pode-se pegar o val dela (categ.value) e exibir no <label>, a título de depuração. -->
         <!-- <label>Categoria</label> -->
 
-        <label>Categoria {{ categ.value }}</label>
+        <label>Categoria <!-- {{ categ.value }} --></label>
 
         <!-- <input type="text" pInputText> -->
 
-        <p-dropdown [options]="categorias" placeholder="Selecione" #categ></p-dropdown>
+        <!-- <p-dropdown [options]="categorias" placeholder="Selecione" #categ></p-dropdown> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Categoria" o procedimento p/ "Vencimento". Só não há necessidade de colocar msg erro,
+          pois o campo sempre terá um val válido qdo estiver dirty, pela própria dinâmica do dropdown. -->
+        <p-dropdown [options]="categorias" placeholder="Selecione" #categ
+          name="categoria" ngModel [required]="true"></p-dropdown>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
@@ -185,11 +218,17 @@
           feito pelo campo label, cujos vals cotenham a str passada na caixa de filtro. -->
         <!-- <label>Pessoa</label> -->
 
-        <label>Pessoa {{ pessoa.value }}</label>
+        <label>Pessoa <!-- {{ pessoa.value }} --></label>
 
         <!-- <input type="text" pInputText> -->
 
-        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa></p-dropdown>
+        <!-- <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa></p-dropdown> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Pessoa" o procedimento p/ "Vencimento". Só não há necessidade de colocar msg erro,
+          pois o campo sempre terá um val válido qdo estiver dirty, pela própria dinâmica do dropdown. -->
+        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa
+          name="pessoa" ngModel [required]="true"></p-dropdown>
       </div>
 
       <div class="col-12 p-fluid">
@@ -198,7 +237,12 @@
       </div>
 
       <div class="col-12">
-        <button pButton type="submit" label="Salvar"></button>
+        <!-- <button pButton type="submit" label="Salvar"></button> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
+          estiverem com estado de validação positivo. -->
+        <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button>
         <button pButton type="button" label="Novo" class="p-button-info"></button>
         <a href="javascript:;">Voltar para a pesquisa</a>
       </div>

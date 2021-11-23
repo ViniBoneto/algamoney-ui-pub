@@ -1,7 +1,12 @@
 <!-- 13.6. Desafio: criando o protótipo do formulário de cadastro de pessoa -->
 
 <div class="container">
-  <form>
+  <!-- <form> -->
+
+  <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+    Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
+    estiverem com estado de validação positivo. -->
+  <form #form="ngForm">
     <div class="grid">
       <div class="col-12">
         <h1>Nova Pessoa</h1>
@@ -9,12 +14,31 @@
 
       <div class="col-12 p-fluid">
         <label>Nome</label>
-        <input type="text" pInputText>
+        <!-- <input type="text" pInputText> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Nome" os procedimentos p/ os campos validados no cadastro de lançamentos.
+          Validação de pessoa.nome será idêntica a de lançamento.descrição. -->
+        <input type="text" pInputText name="nome" ngModel #nome="ngModel" required minlength="5">
+
+        <app-mensagens-erro [controle]="nome" erro="required" texto="Informe um nome"
+          estadoCntrl="dirty"></app-mensagens-erro>
+
+        <app-mensagens-erro [controle]="nome" erro="minlength"
+          texto="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres."
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-9 p-fluid">
         <label>Logradouro</label>
-        <input type="text" pInputText>
+        <!-- <input type="text" pInputText> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Logradouro" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
+        <input type="text" pInputText name="logradouro" ngModel #logra="ngModel" required>
+
+        <app-mensagens-erro [controle]="logra" erro="required" texto="Informe um logradouro"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-3 p-fluid">
@@ -22,7 +46,14 @@
         <!-- <p-inputNumber mode="decimal" [inputStyle]="{'text-align': 'end'}"></p-inputNumber> -->
 
         <!-- Voltei o alinhamento de txt do inputNumber p/ o padrão (esq). -->
-        <p-inputNumber mode="decimal"></p-inputNumber>
+        <!-- <p-inputNumber mode="decimal"></p-inputNumber> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Número" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
+        <p-inputNumber mode="decimal" name="numero" ngModel #num="ngModel" [required]="true"></p-inputNumber>
+
+        <app-mensagens-erro [controle]="num" erro="required" texto="Informe um número"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-4 p-fluid">
@@ -32,7 +63,14 @@
 
       <div class="col-12 md:col-4 p-fluid">
         <label>Bairro</label>
-        <input type="text" pInputText>
+        <!-- <input type="text" pInputText> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Bairro" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
+        <input type="text" pInputText name="bairro" ngModel #bairro="ngModel" required>
+
+        <app-mensagens-erro [controle]="bairro" erro="required" texto="Informe um bairro"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-4 p-fluid">
@@ -48,21 +86,47 @@
 
           Formato do CEP:
             https://mundoeducacao.uol.com.br/curiosidades/o-que-significam-os-numeros-cep.htm -->
-        <p-inputMask mask="99.999-999"></p-inputMask>
+        <!-- <p-inputMask mask="99.999-999"></p-inputMask> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "CEP" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
+        <p-inputMask mask="99.999-999" name="cep" ngModel #cep="ngModel" [required]="true"></p-inputMask>
+
+        <app-mensagens-erro [controle]="cep" erro="required" texto="Informe um CEP"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
         <label>Cidade</label>
-        <input type="text" pInputText>
+        <!-- <input type="text" pInputText> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Cidade" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
+        <input type="text" pInputText name="cidade" ngModel #cidade="ngModel" required>
+
+        <app-mensagens-erro [controle]="cidade" erro="required" texto="Informe uma cidade"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
         <label>Estado</label>
-        <input type="text" pInputText>
+        <!-- <input type="text" pInputText> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Repetir p/ campo "Estado" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
+        <input type="text" pInputText name="estado" ngModel #estado="ngModel" required>
+
+        <app-mensagens-erro [controle]="estado" erro="required" texto="Informe um estado"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12">
-        <button pButton type="submit" label="Salvar"></button>
+        <!-- <button pButton type="submit" label="Salvar"></button> -->
+
+        <!-- 13.10. Desafio: controles, validações e mensagens de erro:
+          Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
+          estiverem com estado de validação positivo. -->
+        <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button>
         <button pButton type="button" label="Novo" class="p-button-info"></button>
         <a href="javascript:;">Voltar para a pesquisa</a>
       </div>
