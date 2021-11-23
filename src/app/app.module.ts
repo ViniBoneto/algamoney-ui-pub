@@ -26,6 +26,8 @@ import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.co
 import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
 import { PessoasCadastroComponent } from './pessoas-cadastro/pessoas-cadastro.component';
 import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.component';
+import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
+import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 
 /* 13.5. Adicionando máscara de dinheiro com ng2-mask-money:
   P/ alterar o tipo de input do ngx-currency de FINANCIAL (padrão) p/ NATURAL, é preciso fazer uso do
@@ -53,7 +55,9 @@ export const customCurrencyMaskConfig = {
     PessoasPesquisaComponent,
     LancamentosCadastroComponent,
     PessoasCadastroComponent,
-    MensagensErroComponent
+    MensagensErroComponent,
+    PessoasGridComponent,
+    LancamentosGridComponent
   ],
   imports: [
     BrowserModule,

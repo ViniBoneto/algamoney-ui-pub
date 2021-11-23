@@ -1,0 +1,43 @@
+<!-- 13.11. Desafio: criando mais componentes:
+  Transplantando o grid da pág de pesquisa de pessoas p/ um comp separado, afim de simplificar o cód
+  daquela e tornar o cód do grid um comp reusável. -->
+<p-table [value]="pessoas" [paginator]="true" [rows]="3" [responsive]="true">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Nome</th>
+          <th>Cidade</th>
+          <th>Estado</th>
+          <th>Status</th>
+          <th class="col-acoes-header"></th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-pessoa>
+      <tr>
+          <td>
+            <span class="p-column-title">Nome</span>
+            {{ pessoa.nome }}
+          </td>
+          <td>
+            <span class="p-column-title">Cidade</span>
+            {{ pessoa.cidade }}
+          </td>
+          <td>
+            <span class="p-column-title">Estado</span>
+            {{ pessoa.estado }}
+          </td>
+          <td>
+            <span class="p-column-title">Status</span>
+            <!-- {{ pessoa.ativo === 1 ? "Ativo" : "Inativo" }} -->
+            <a href="javascript:;" *ngIf="pessoa.ativo === 1; else elseBlock" pTooltip="Inativar">Ativo</a>
+            <ng-template #elseBlock>
+              <a href="javascript:;" pTooltip="Ativar">Inativo</a>
+            </ng-template>
+          </td>
+          <td class="col-acoes-content">
+            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
+            <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
+            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+          </td>
+      </tr>
+  </ng-template>
+</p-table>

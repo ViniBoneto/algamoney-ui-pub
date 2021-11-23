@@ -41,17 +41,17 @@
         "body", pois ele que será exibido nos dispositivos de menor resolução. O cabeçaho no corpo da tabela
         deve ser adicionado com a classe CSS .p-column-title .
       -->
-      <p-table [value]="lancamentos" [paginator]="true" [rows]="3" [responsive]="true">
+      <!-- <p-table [value]="lancamentos" [paginator]="true" [rows]="3" [responsive]="true">
         <ng-template pTemplate="header">
             <tr>
                 <th>Pessoa</th>
                 <th>Descrição</th>
                 <th class="col-data-header">Vencimento</th>
                 <th class="col-data-header">Pagamento</th>
-                <th class="col-valor-header">Valor</th>
+                <th class="col-valor-header">Valor</th> -->
                 <!-- Apenas teste p/ mostrar header c/ um btn em vez de um lbl -->
                 <!-- <th class="col-valor-header"><button pButton label="Teste"></button></th> -->
-                <th class="col-acoes-header"></th>
+                <!-- <th class="col-acoes-header"></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-lancamento>
@@ -63,22 +63,22 @@
                 <td>
                   <span class="p-column-title">Descrição</span>
                   {{ lancamento.descricao }}
-                </td>
+                </td> -->
                 <!-- 11.8. Desafio: usando pipes: alterar campos de data de str p/ Date, usando DatePipe no template p/ conseguir
                   deixá-la no msm formato que estava na str (dd/MM/yyyy). Também usar CurrencyPipe no template p/ conseguir
                   deixar campo val formatado em Real (R$). -->
-                <td class="col-data-content">
-                  <span class="p-column-title">Vencimento</span>
+                <!-- <td class="col-data-content">
+                  <span class="p-column-title">Vencimento</span> -->
                   <!-- {{ lancamento.dataVencimento }} -->
-                  {{ lancamento.dataVencimento | date:"dd/MM/y" }}
+                  <!-- {{ lancamento.dataVencimento | date:"dd/MM/y" }}
                 </td>
                 <td class="col-data-content">
-                  <span class="p-column-title">Pagamento</span>
+                  <span class="p-column-title">Pagamento</span> -->
                   <!-- {{ lancamento.dataPagamento }} -->
-                  {{ lancamento.dataPagamento | date:"dd/MM/y" }}
+                  <!-- {{ lancamento.dataPagamento | date:"dd/MM/y" }}
                 </td>
                 <td class="col-valor-content">
-                  <span class="p-column-title">Valor</span>
+                  <span class="p-column-title">Valor</span> -->
                   <!-- Dir ngStyle recebe um obj JS c/ params equivalentes às props CSS a serem aplicadas
                       inline no elem. Despesas são vermelhas e receitas azuis -->
                   <!-- <span [ngStyle]="{ color: lancamento.tipo === 'DESPESA' ? 'red' : 'blue' }">{{ lancamento.valor }}</span> -->
@@ -86,20 +86,25 @@
                   <!-- Opcionalmente, no caso de alteração de poucas props (no caso, há apenas 1), pode-se atribuir a expr JS
                     diretamente à prop CSS, como feito abaixo -->
                   <!-- <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor }}</span> -->
-                  <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor | currency:"BRL" }}</span>
-                </td>
+                  <!-- <span [style.color]="lancamento.tipo === 'DESPESA' ? 'red' : 'blue'">{{ lancamento.valor | currency:"BRL" }}</span>
+                </td> -->
                 <!-- Adicona coluna c/ btns de edição (ícone caneta) e exclusão (ícone lixeira). Btn de edição será uma âncora (<a>)
                   e btn de exclusão será um <button>. Isso faz sentido, pois o btn de edição será uma navegação p/ uma outra página
                   (de edição lançamento), enquanto o btn de exclusão será apenas um disparador de ação (de exclusão). Ambos terão
                   a dir pButton p/ aplicar estilos e funcionalidades do Angular -->
-                <td class="col-acoes-content">
-                  <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
-                  <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
-                  <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+                <!-- <td class="col-acoes-content">
+                  <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a> -->
+                  <!-- <span>&nbsp;&nbsp;</span> Espaço entre os ícones -->
+                  <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
                 </td>
             </tr>
         </ng-template>
-      </p-table>
+      </p-table> -->
+
+      <!-- 13.11. Desafio: criando mais componentes:
+        Transplantando o grid da pág de pesquisa de lançamentos p/ um comp separado, afim de simplificar o cód
+        daquela e tornar o cód do grid um comp reusável. -->
+      <app-lancamentos-grid [lancamentos]="lancamentos"></app-lancamentos-grid>
     </div>
   </div>
 
