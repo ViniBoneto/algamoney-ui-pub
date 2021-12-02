@@ -67,8 +67,11 @@
           [dateFormat]="'dd/mm/yy'" name="vencimento" ngModel #dtVenc="ngModel"
           [required]="true"></p-calendar>
 
-        <app-mensagens-erro [controle]="dtVenc" erro="required" texto="Informe uma data de Vencimento"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.6. Criando um Feature Module:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="dtVenc" erro="required" texto="Informe uma data de Vencimento"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-6 md:col-3 p-fluid">
@@ -144,13 +147,17 @@
 
           Este comp receberá como params de entrada o cntrl a ser validado, o erro a ser verificado no ctrnl
           e a msg de erro a ser exibida. Se o erro não existir ou o cntrl ñ estiver no estado estadoCntrl, o
-          comp ñ será exibido. -->
-        <app-mensagens-erro [controle]="desc" erro="required" texto="Informe uma descrição"
+          comp ñ será exibido.
+
+        14.6. Criando um Feature Module:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="desc" erro="required" texto="Informe uma descrição"
           estadoCntrl="dirty"></app-mensagens-erro>
 
         <app-mensagens-erro [controle]="desc" erro="minlength"
           texto="Mínimo de {{ desc.errors?.minlength?.requiredLength }} caracteres. Foram digitados
-          {{ desc.errors?.minlength?.actualLength }}" estadoCntrl="dirty"></app-mensagens-erro>
+          {{ desc.errors?.minlength?.actualLength }}" estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-3 p-fluid">

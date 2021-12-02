@@ -12,28 +12,29 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
+// import { InputNumberModule } from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
 import { MessageModule } from 'primeng/message';
 
-import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
+// import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
 import { AppRoutingModule } from './app-routing.module';
+import { LancamentosModule } from './lancamentos/lancamentos.module';
 import { AppComponent } from './app.component';
-import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
+// import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
-import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
+// import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
 import { PessoasCadastroComponent } from './pessoas-cadastro/pessoas-cadastro.component';
 import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.component';
 import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
-import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
+// import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 
 /* 13.5. Adicionando máscara de dinheiro com ng2-mask-money:
   P/ alterar o tipo de input do ngx-currency de FINANCIAL (padrão) p/ NATURAL, é preciso fazer uso do
   enum CurrencyMaskInputMode e criar um obj de config customizável p/ ser atribuído ao mód NgxCurrencyModule,
   em sua importação pelo mód da app, conforme indicado na pág do ngx-currency. */
-export const customCurrencyMaskConfig = {
+/* export const customCurrencyMaskConfig = {
   prefix: '',
   thousands: '.',
   decimal: ',',
@@ -45,25 +46,30 @@ export const customCurrencyMaskConfig = {
   nullable: false,
   precision: 2,
   suffix: ""
-}
+} */
 
+/* 14.6. Criando um Feature Module:
+  P/ melhor se organizar a app, cria-se mód de lançamentos, move-se os comps de lançamentos daqui p/ lá
+  e se importa o mód de lançamento p/ cá, em vez importar diretamente os comps. Tb se move daqui p/ lá
+  os d+ móds usados apenas pelos comps de lançamento. */
 @NgModule({
   declarations: [
     AppComponent,
-    LancamentosPesquisaComponent,
+    // LancamentosPesquisaComponent,
     NavbarComponent,
     PessoasPesquisaComponent,
-    LancamentosCadastroComponent,
+    // LancamentosCadastroComponent,
     PessoasCadastroComponent,
     MensagensErroComponent,
     PessoasGridComponent,
-    LancamentosGridComponent
+    // LancamentosGridComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
+
     // TabViewModule
     InputTextModule,
     ButtonModule,
@@ -77,11 +83,13 @@ export const customCurrencyMaskConfig = {
       Agora já há o comp InputNumber do PNG, que não havia ainda quando o vídeo da aula foi gravado, p/ isso
       o uso da dir currencyMask. Após o uso desta, apenas para efeito de demonstração, subistitui-se pelo comp
       de input numérico InputNumber. */
-    InputNumberModule,
+    // InputNumberModule,
     InputMaskModule,
     MessageModule,
     // NgxCurrencyModule
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
+    // NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
+
+    LancamentosModule
   ],
   providers: [],
   bootstrap: [AppComponent]
