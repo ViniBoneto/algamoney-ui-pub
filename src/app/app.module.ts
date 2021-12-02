@@ -1,33 +1,34 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+// import { FormsModule } from '@angular/forms';
 
 // import { TabViewModule } from 'primeng/tabview';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { TooltipModule } from 'primeng/tooltip';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CalendarModule } from 'primeng/calendar';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { DropdownModule } from 'primeng/dropdown';
+// import { InputTextModule } from 'primeng/inputtext';
+// import { ButtonModule } from 'primeng/button';
+// import { TableModule } from 'primeng/table';
+// import { TooltipModule } from 'primeng/tooltip';
+// import { InputTextareaModule } from 'primeng/inputtextarea';
+// import { CalendarModule } from 'primeng/calendar';
+// import { SelectButtonModule } from 'primeng/selectbutton';
+// import { DropdownModule } from 'primeng/dropdown';
 // import { InputNumberModule } from 'primeng/inputnumber';
-import { InputMaskModule } from 'primeng/inputmask';
+// import { InputMaskModule } from 'primeng/inputmask';
 import { MessageModule } from 'primeng/message';
 
 // import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
+import { PessoasModule } from './pessoas/pessoas.module';
 import { AppComponent } from './app.component';
 // import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
+// import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
 // import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
-import { PessoasCadastroComponent } from './pessoas-cadastro/pessoas-cadastro.component';
+// import { PessoasCadastroComponent } from './pessoas-cadastro/pessoas-cadastro.component';
 import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.component';
-import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
+// import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
 // import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 
 /* 13.5. Adicionando máscara de dinheiro com ng2-mask-money:
@@ -51,45 +52,49 @@ import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
 /* 14.6. Criando um Feature Module:
   P/ melhor se organizar a app, cria-se mód de lançamentos, move-se os comps de lançamentos daqui p/ lá
   e se importa o mód de lançamento p/ cá, em vez importar diretamente os comps. Tb se move daqui p/ lá
-  os d+ móds usados apenas pelos comps de lançamento. */
+  os d+ móds usados apenas pelos comps de lançamento.
+
+  14.7. Desafio: criando o feature module de pessoas:
+    Repete o que foi feito c/ lançamentos, na aula anteior, c/ pessoas. */
 @NgModule({
   declarations: [
     AppComponent,
     // LancamentosPesquisaComponent,
     NavbarComponent,
-    PessoasPesquisaComponent,
+    // PessoasPesquisaComponent,
     // LancamentosCadastroComponent,
-    PessoasCadastroComponent,
+    // PessoasCadastroComponent,
     MensagensErroComponent,
-    PessoasGridComponent,
+    // PessoasGridComponent,
     // LancamentosGridComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule,
+    // FormsModule,
 
     // TabViewModule
-    InputTextModule,
-    ButtonModule,
-    TableModule,
-    TooltipModule,
-    InputTextareaModule,
-    CalendarModule,
-    SelectButtonModule,
-    DropdownModule,
+    // InputTextModule,
+    // ButtonModule,
+    // TableModule,
+    // TooltipModule,
+    // InputTextareaModule,
+    // CalendarModule,
+    // SelectButtonModule,
+    // DropdownModule,
     /*  13.5. Adicionando máscara de dinheiro com ng2-mask-money:
       Agora já há o comp InputNumber do PNG, que não havia ainda quando o vídeo da aula foi gravado, p/ isso
       o uso da dir currencyMask. Após o uso desta, apenas para efeito de demonstração, subistitui-se pelo comp
       de input numérico InputNumber. */
     // InputNumberModule,
-    InputMaskModule,
+    // InputMaskModule,
     MessageModule,
     // NgxCurrencyModule
     // NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
 
-    LancamentosModule
+    LancamentosModule,
+    PessoasModule
   ],
   providers: [],
   bootstrap: [AppComponent]

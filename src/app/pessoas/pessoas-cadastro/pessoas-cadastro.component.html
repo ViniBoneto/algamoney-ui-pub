@@ -21,12 +21,15 @@
           Validação de pessoa.nome será idêntica a de lançamento.descrição. -->
         <input type="text" pInputText name="nome" ngModel #nome="ngModel" required minlength="5">
 
-        <app-mensagens-erro [controle]="nome" erro="required" texto="Informe um nome"
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente.         -->
+        <!-- <app-mensagens-erro [controle]="nome" erro="required" texto="Informe um nome"
           estadoCntrl="dirty"></app-mensagens-erro>
 
         <app-mensagens-erro [controle]="nome" erro="minlength"
           texto="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres."
-          estadoCntrl="dirty"></app-mensagens-erro>
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-9 p-fluid">
@@ -37,8 +40,11 @@
           Repetir p/ campo "Logradouro" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
         <input type="text" pInputText name="logradouro" ngModel #logra="ngModel" required>
 
-        <app-mensagens-erro [controle]="logra" erro="required" texto="Informe um logradouro"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="logra" erro="required" texto="Informe um logradouro"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-3 p-fluid">
@@ -52,8 +58,11 @@
           Repetir p/ campo "Número" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
         <p-inputNumber mode="decimal" name="numero" ngModel #num="ngModel" [required]="true"></p-inputNumber>
 
-        <app-mensagens-erro [controle]="num" erro="required" texto="Informe um número"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente.         -->
+        <!-- <app-mensagens-erro [controle]="num" erro="required" texto="Informe um número"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-4 p-fluid">
@@ -69,8 +78,11 @@
           Repetir p/ campo "Bairro" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
         <input type="text" pInputText name="bairro" ngModel #bairro="ngModel" required>
 
-        <app-mensagens-erro [controle]="bairro" erro="required" texto="Informe um bairro"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="bairro" erro="required" texto="Informe um bairro"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-4 p-fluid">
@@ -92,8 +104,11 @@
           Repetir p/ campo "CEP" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
         <p-inputMask mask="99.999-999" name="cep" ngModel #cep="ngModel" [required]="true"></p-inputMask>
 
-        <app-mensagens-erro [controle]="cep" erro="required" texto="Informe um CEP"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="cep" erro="required" texto="Informe um CEP"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
@@ -104,8 +119,11 @@
           Repetir p/ campo "Cidade" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
         <input type="text" pInputText name="cidade" ngModel #cidade="ngModel" required>
 
-        <app-mensagens-erro [controle]="cidade" erro="required" texto="Informe uma cidade"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="cidade" erro="required" texto="Informe uma cidade"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
@@ -116,8 +134,11 @@
           Repetir p/ campo "Estado" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
         <input type="text" pInputText name="estado" ngModel #estado="ngModel" required>
 
-        <app-mensagens-erro [controle]="estado" erro="required" texto="Informe um estado"
-          estadoCntrl="dirty"></app-mensagens-erro>
+        <!-- 14.7. Desafio: criando o feature module de pessoas:
+          Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
+          raiz (AppModule) futuramente. -->
+        <!-- <app-mensagens-erro [controle]="estado" erro="required" texto="Informe um estado"
+          estadoCntrl="dirty"></app-mensagens-erro> -->
       </div>
 
       <div class="col-12">
