@@ -9,6 +9,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 
+import { SharedModule } from '../shared/shared.module';
 import { PessoasCadastroComponent } from './pessoas-cadastro/pessoas-cadastro.component';
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
 import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
@@ -16,7 +17,14 @@ import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
 
 /* 14.7. Desafio: criando o feature module de pessoas:
   Cria o mód de pessoas e repete c/ ele exatamente o que foi feito c/ o mód de lançamentos, na aula
-  anterior. */
+  anterior.
+
+14.9. Criando um Shared Module:
+  Shared móds (móds compatilhados), diferentemente de feature móds (móds funcionais), ñ agrupam comps
+  em torno de funcs em comum, mas em torno de funcs q são comuns e compartilhadas por d+ elems na app/proj.
+
+  Nesta app, usaremos um mód compartilhado chamado SharedModule e o incluíremos neste mód, p/ usar o comp
+  de msg de erro (MensagensErroComponent). */
 @NgModule({
   declarations: [
     PessoasCadastroComponent,
@@ -32,7 +40,9 @@ import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
     TableModule,
     TooltipModule,
     InputMaskModule,
-    InputNumberModule
+    InputNumberModule,
+
+    SharedModule
   ],
   exports: [
     PessoasCadastroComponent,

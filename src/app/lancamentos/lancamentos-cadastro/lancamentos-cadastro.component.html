@@ -69,9 +69,13 @@
 
         <!-- 14.6. Criando um Feature Module:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
-          raiz (AppModule) futuramente. -->
-        <!-- <app-mensagens-erro [controle]="dtVenc" erro="required" texto="Informe uma data de Vencimento"
-          estadoCntrl="dirty"></app-mensagens-erro> -->
+          raiz (AppModule) futuramente.
+
+          14.9. Criando um Shared Module:
+            Move-se o comp <app-mensagens-erro> p/ o mód compartilhado SharedModule, q se importa neste
+            mód e se descomenta o comp novamente. -->
+        <app-mensagens-erro [controle]="dtVenc" erro="required" texto="Informe uma data de Vencimento"
+          estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-6 md:col-3 p-fluid">
@@ -151,13 +155,17 @@
 
         14.6. Criando um Feature Module:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
-          raiz (AppModule) futuramente. -->
-        <!-- <app-mensagens-erro [controle]="desc" erro="required" texto="Informe uma descrição"
+          raiz (AppModule) futuramente.
+
+        14.9. Criando um Shared Module:
+          Move-se o comp <app-mensagens-erro> p/ o mód compartilhado SharedModule, q se importa neste
+          mód e se descomenta o comp novamente. -->
+        <app-mensagens-erro [controle]="desc" erro="required" texto="Informe uma descrição"
           estadoCntrl="dirty"></app-mensagens-erro>
 
         <app-mensagens-erro [controle]="desc" erro="minlength"
           texto="Mínimo de {{ desc.errors?.minlength?.requiredLength }} caracteres. Foram digitados
-          {{ desc.errors?.minlength?.actualLength }}" estadoCntrl="dirty"></app-mensagens-erro> -->
+          {{ desc.errors?.minlength?.actualLength }}" estadoCntrl="dirty"></app-mensagens-erro>
       </div>
 
       <div class="col-12 md:col-3 p-fluid">

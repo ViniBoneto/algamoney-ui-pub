@@ -15,6 +15,7 @@ import { MessageModule } from 'primeng/message';
 
 import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
 
+import { SharedModule } from '../shared/shared.module';
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
@@ -48,7 +49,14 @@ export const customCurrencyMaskConfig = {
 
   O mód de lançamento deverá declarar lancamentos-cadastro, lancamentos-pesquisa e lancamentos-grid e exportar
   lancamentos-cadastro, lancamentos-pesquisa. Ñ há necessidade de se exportar lancamentos-grid, pois ele é usado
-  apenas p/ lancamentos-pesquisa. */
+  apenas p/ lancamentos-pesquisa.
+
+  14.9. Criando um Shared Module:
+    Shared móds (móds compatilhados), diferentemente de feature móds (móds funcionais), ñ agrupam comps
+    em torno de funcs em comum, mas em torno de funcs q são comuns e compartilhadas por d+ elems na app/proj.
+
+    Nesta app, usaremos um mód compartilhado chamado SharedModule e o incluíremos neste mód, p/ usar o comp
+    de msg de erro (MensagensErroComponent). */
 @NgModule({
   declarations: [
     LancamentosPesquisaComponent,
@@ -75,7 +83,9 @@ export const customCurrencyMaskConfig = {
     MessageModule,
 
     // NgxCurrencyModule
-    NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+
+    SharedModule
   ],
   exports: [
     LancamentosPesquisaComponent,
