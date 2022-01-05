@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +17,7 @@ import { MessageModule } from 'primeng/message';
 import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
 
 import { SharedModule } from '../shared/shared.module';
+import { LancamentoService } from './lancamento.service';
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
@@ -66,6 +68,9 @@ export const customCurrencyMaskConfig = {
   imports: [
     CommonModule,
     FormsModule,
+    // 17.2. Criando o serviço de consulta de lançamentos:
+    //   Importando o mód http p/ poder se usar os comps HttpClient e HttpHeaders.
+    HttpClientModule,
 
     InputTextModule,
     ButtonModule,
@@ -90,6 +95,15 @@ export const customCurrencyMaskConfig = {
   exports: [
     LancamentosPesquisaComponent,
     LancamentosCadastroComponent
+  ],
+  providers:[
+/* 17.2. Criando o serviço de consulta de lançamentos:
+      Lista o serv criado p/ acesso e gerência de lançamentos entre os injetáveis providos pelo mód de
+      lançamentos.
+
+    Obs: Na aula, este serv foi provido pelo próprio mód raiz da app (AppModule), mas achei melhor colocá-lo
+      aqui. */
+    LancamentoService
   ]
 })
 export class LancamentosModule { }
