@@ -4,27 +4,40 @@
       <h1>Lançamentos</h1>
     </div>
 
-    <!-- C/ p-fluid no comp pai, filhos ocupam 100% larg pai  -->
-    <div class="p-col-12 p-fluid">
-      <label>Descrição</label>
-      <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG.
-        Dir do PrimeNG pTooltip exibe uma msg de ajuda (tooltip text) relacionada ao elem -->
-      <input pInputText type="text" pTooltip="Filtro por descrição lançamento">
-    </div>
+    <!-- 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
+      Envolve os campos do form de filtro num elem <form> e liga o evento de submissão de dados do
+      ngForm (ngSubmit) ao método pesquisar() do comp, p/ q filtros de lançamento funcionem. Vide mód
+      12 do curso (Formulários e validação) p/ mais infos sobre ngForms. -->
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+      <!-- C/ p-fluid no comp pai, filhos ocupam 100% larg pai  -->
+      <div class="p-col-12 p-fluid">
+        <label>Descrição</label>
+        <!-- Adiciona dir pInputText ao input[type="text"] p/ adicionar estilos e funcs do PrimeNG.
+          Dir do PrimeNG pTooltip exibe uma msg de ajuda (tooltip text) relacionada ao elem -->
+        <!-- <input pInputText type="text" pTooltip="Filtro por descrição lançamento"> -->
 
-    <div class="p-col-12">
-      <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
-      <label style="display: block;">Vencimento</label>
-      <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento">
+        <!-- 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
+          Liga o campo de descr lançamento à prop do comp através de 2 way databind. Tb é necessário q tds
+          os campos do form de filtro sejam envoltos num elem <form> e tenham a prop nome, p/ serem mapeados
+          no ngForm. Vide mód 12 do curso (Formulários e validação). -->
+        <input pInputText type="text" pTooltip="Filtro por descrição lançamento"
+          name="descricao" [(ngModel)]="descricao">
+      </div>
 
-      &nbsp;<label>Até</label>&nbsp;
-      <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento">
-    </div>
+      <div class="p-col-12">
+        <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
+        <label style="display: block;">Vencimento</label>
+        <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento">
 
-    <div class="p-col-12">
-      <!-- Adiciona dir pButton ao <button> p/ adicionar estilos e funcs do PrimeNG -->
-      <button pButton type="submit" label="Pesquisar"></button>
-    </div>
+        &nbsp;<label>Até</label>&nbsp;
+        <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento">
+      </div>
+
+      <div class="p-col-12">
+        <!-- Adiciona dir pButton ao <button> p/ adicionar estilos e funcs do PrimeNG -->
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+    </form>
   </div>
 
   <div class="p-grid">

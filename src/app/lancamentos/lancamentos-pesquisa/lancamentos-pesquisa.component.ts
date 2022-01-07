@@ -34,6 +34,10 @@ export class LancamentosPesquisaComponent implements OnInit {
     // { tipo: "RECEITA", descricao: "Prêmio semestral", dataVencimento: new Date(2017, 0, 10)/* "10/01/2017" */, dataPagamento: null, valor: 10500.00, pessoa: "Major Tommas" }
   ];
 
+  // 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
+  //  Adiciona uma prop de descr de lançamento q será ligada p/ 2 way databind ao campo equivalente do tmpl html.
+  descricao!: string;
+
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
     Este serv será usado p/ acessar os lançamentos no backend. */
@@ -49,7 +53,15 @@ export class LancamentosPesquisaComponent implements OnInit {
   // 17.2. Criando o serviço de consulta de lançamentos:
   //   Cria um método de consulta de lançamentos q invoca o método de consulta do serv de lançamentos.
   pesquisar() {
-    this.lancaServ.pesquisar().then(
+    // this.lancaServ.pesquisar().then(
+
+/*  17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
+      Passa um param ao método de pesquisa, contendo os possíveis filtros à consulta de lançamentos. Primeiramente,
+      só descr lançamento será adicionada, d+ filtros (dts vencs) serão adicionados posteriormente.
+
+    O param de descr lançamento é uma prop de instância do comp, q será ligada p/ 2 way databind ao campo equivalente
+      do tmpl html. */
+    this.lancaServ.pesquisar({ descricao: this.descricao}).then(
 /*    Recebe o array de lançamentos da Promise resolvida e o atribui à prop do comp, p/ q sejam exibidos
        no comp de grid do PNG.
 
