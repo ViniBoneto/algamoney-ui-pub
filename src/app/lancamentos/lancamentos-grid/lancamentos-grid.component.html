@@ -59,4 +59,16 @@
           </td>
       </tr>
   </ng-template>
+<!-- 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
+    Na aula é demonstrada a utilização do parametro emptyMessage para customizar a mensagem que aparece em nossa tabela quando
+    não houver dados para exibir. Esta propriedade não existe no componente Table, porém a forma para customizarmos é bem simples
+    e parecida: -->
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <!-- Observe que foi definido o valor 6 para o colspan, isso porque existem 6 colunas na nossa tabela de lançamentos. -->
+      <td colspan="6">
+        Nenhum lançamento encontrado.
+      </td>
+    </tr>
+  </ng-template>
 </p-table>

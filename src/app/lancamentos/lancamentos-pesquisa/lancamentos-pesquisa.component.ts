@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { LancamentoService } from './../lancamento.service';
+import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
@@ -36,7 +36,11 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   // 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
   //  Adiciona uma prop de descr de lançamento q será ligada p/ 2 way databind ao campo equivalente do tmpl html.
-  descricao!: string;
+  descricao?: string;
+  // 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
+  //   Adiciona vars p/ dts de venc max e min q, a exemplo da descr, tb será ligada a campos equivalentes do html.
+  dataVencimentoIni?: Date;
+  dataVencimentoFim?: Date;
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
@@ -61,7 +65,19 @@ export class LancamentosPesquisaComponent implements OnInit {
 
     O param de descr lançamento é uma prop de instância do comp, q será ligada p/ 2 way databind ao campo equivalente
       do tmpl html. */
-    this.lancaServ.pesquisar({ descricao: this.descricao}).then(
+    // this.lancaServ.pesquisar({ descricao: this.descricao}).then(
+
+/*  17.4. Adicionando filtro por datas na pesquisa de lançamentos:
+      Vamos substituir o obj literal, passado anteriormente como param, p/ uma var do tp LancamentoFiltro,
+      definida anteriormente. Isto p/ simplificação e limpeza do cód, pois, c/ a adição dos campos de dts,
+      o obj literal fica mais complexo. */
+    const filtro: LancamentoFiltro = {
+      descricao: this.descricao,
+      dataVencimentoIni: this.dataVencimentoIni,
+      dataVencimentoFim: this.dataVencimentoFim
+    };
+
+    this.lancaServ.pesquisar(filtro).then(
 /*    Recebe o array de lançamentos da Promise resolvida e o atribui à prop do comp, p/ q sejam exibidos
        no comp de grid do PNG.
 

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MessageModule } from 'primeng/message';
 
+import { DataService } from './data.service';
 import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.component';
 
 
@@ -21,6 +22,12 @@ import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.componen
 
     MessageModule
   ],
-  exports: [MensagensErroComponent]
+  exports: [MensagensErroComponent],
+  providers: [
+/* 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
+      Criando um serv p/ tratamento de dts, q inclui funcs p/ conversão e formatação, e incluindo-o entre
+      os servs injetáveis providos pelo mód compartilhado. */
+    DataService
+  ]
 })
 export class SharedModule { }

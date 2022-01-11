@@ -27,10 +27,25 @@
       <div class="p-col-12">
         <!-- Mudando display do lbl de "inline" pra "block" há quebra de linha e d+ elems vão pra baixo -->
         <label style="display: block;">Vencimento</label>
-        <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento">
+        <!-- <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data mínima vencimento lançamento"> -->
+
+        <!-- 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
+          Liga os campos de dts venc max e min lançamento às props do comp através de 2 way databind (similar ao feito
+          com campo descr). Coloca comps calendários do PNG no lugar dos campos de txt simples.
+
+          Ajusta o estilo apenas da caixa de txt do calendário, via prop [inputStyle], p/ ter a msm larg q a caixa de
+            txt anterior tinha (100px). Tb ajusta o estilo geral o calendaŕio p/ dar 10px de margem inf, através da prop
+            [style]. -->
+        <p-calendar [(ngModel)]="dataVencimentoIni" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
+          name="dataVencimentoIni" [style]="{ 'margin-bottom': '10px' }" pTooltip="Filtro por data mínima vencimento lançamento">
+        </p-calendar>
 
         &nbsp;<label>Até</label>&nbsp;
-        <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento">
+        <!-- <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento"> -->
+
+        <p-calendar [(ngModel)]="dataVencimentoFim" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
+          name="dataVencimentoFim" [style]="{ 'margin-bottom': '10px' }" pTooltip="Filtro por data máxima vencimento lançamento">
+        </p-calendar>
       </div>
 
       <div class="p-col-12">
