@@ -1,7 +1,12 @@
 <!-- 13.11. Desafio: criando mais componentes:
   Transplantando o grid da pág de pesquisa de lançamentos p/ um comp separado, afim de simplificar o cód
   daquela e tornar o cód do grid um comp reusável. -->
-<p-table [value]="lancamentos" [paginator]="true" [rows]="3" [responsive]="true">
+<!-- <p-table [value]="lancamentos" [paginator]="true" [rows]="3" [responsive]="true"> -->
+
+<!-- 17.5. Implementando a paginação no serviço de lançamentos:
+  Mudando o nº de lins p/ pág, do mecanismo próprio de paginanação do <p-table>, de 3 p/ 5, p/ casar c/ o
+  nº de lins p/ pág do mecanismo de paginanação do backend, afim de deixar o exemp + didático. -->
+<p-table [value]="lancamentos" [paginator]="true" [rows]="5" [responsive]="true">
   <ng-template pTemplate="header">
       <tr>
           <th>Pessoa</th>

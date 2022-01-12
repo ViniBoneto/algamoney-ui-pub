@@ -7,7 +7,15 @@ import { DataService } from './../shared/data.service';
   Tb cria uma interface do tp LancamentoFiltro, trocando o param filtro de any p/ este tp. Isto serve p/
   "formalizar o contratro" do método e fazer c/ q, caso o usuário fornceça um obj q ñ tenha a prop descr
   (e posteriormente as dts venc tb) como param, seja gerado um erro de compilação, sinalizando ao dev. */
-export interface LancamentoFiltro {
+// export interface LancamentoFiltro {
+
+/* 17.5. Implementando a paginação no serviço de lançamentos:
+  Adiciona campos pagina e itensPagina ao obj de filtro. Estes campos controlarão o mecanismo de paginação
+  de lançamentos no servidor, informando o nº da pág a ser trazida e nº de itens p/ pág de consulta.
+
+P/ podermos iniciar os campos paginação c/ vals pré definidos (0 e 5) mudaremos o tipo do obj filtro de
+  interface p/ classe (props de interface ñ podem ter vals iniciados). */
+export class LancamentoFiltro {
   descricao?: string;
 /* 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
     Vamos adicionar à interface filtro lançamento os campos dataVencimentoDe e dataVencimentoAte, p/ podermos
@@ -15,6 +23,9 @@ export interface LancamentoFiltro {
     descrição. */
   dataVencimentoIni?: Date;
   dataVencimentoFim?: Date;
+  // 17.5. Implementando a paginação no serviço de lançamentos:
+  pagina: number = 0;
+  itensPagina: number = 5;
 }
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
@@ -67,7 +78,7 @@ export class LancamentoService {
 /* Como a gestão de recs no backend envolve acesso pré-authorizado aos métodos dos servs, usando a anotação
      Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
      do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDE4NjQyMDMsInVzZXJfbmFtZSI6ImFkbWluQGFsZ2Ftb25leS5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI0NmEwNTJhMy1hZDA4LTQ5NmYtYjIwOC0yMDZiNmJiYzYwMzEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.2ALBEGb1LRd42leqxJi1v751Tk7bCNXiVCtch16iucY");
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDE5NTA4ODUsInVzZXJfbmFtZSI6ImFkbWluQGFsZ2Ftb25leS5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmNTA2ZWZkOC0yOTk3LTQxMjgtYWM5MC1jNTM1MGZhMDIyYmMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.7bcflHYmgIHNZplFwfcgWncp8aPXGk3NZMZZTm6cAnI");
 
 /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
       Cria um obj de params http, p/ adiconar os params de filtro de busca (caso constem). Adiciona os params
@@ -104,6 +115,15 @@ export class LancamentoService {
       params = params.set("dataVencimentoAte", dtFiltro);
     }
 
+/*  17.5. Implementando a paginação no serviço de lançamentos:
+      Mapeia os campos de paginação do filtro p/ os params de req entendidos pelo mecanismo de paginação
+      no servidor (page e size).
+
+    Obs: Como vimos na aula anterior, HttpParams é um componente imutável então precisamos reatribuir seu
+      valor quando usarmos o método set. */
+    params = params.set("page", filtro.pagina);
+    params = params.set("size", filtro.itensPagina);
+
     // return this.http.get(`${this.lancamentosURL}?resumo`, { headers } /* Equivale a { headers: headers } */)
     return this.http.get(`${this.lancamentosURL}?resumo`, { headers, params } /* Equivale a { headers: headers, params: params } */)
       .toPromise().then(
@@ -114,7 +134,28 @@ export class LancamentoService {
         // (resp: any) => console.log(resp["content"])
 
         // Retorna o array de lançamentos como conteúdo da Promise resolvida
-        (resp: any) => resp["content"]
+        // (resp: any) => {
+        //   console.log(`Resposta HTTP\n: ${JSON.stringify(resp)}`);
+        //   return resp["content"];
+        // }
+
+/*      17.5. Implementando a paginação no serviço de lançamentos:
+          Agora ñ iremos mais retornar apenas a prop content, do obj de resp, q contém o array de lançamentos.
+          Vamos precisar tb da prop totalElements, q contém o nº total de lançamentos, p/ o data table do PNG
+          poder calcular o nº de págs a exibir e sincronizar sua paginação local c/ a paginação do backend. Então,
+          agora retornaremos um obj contendo tanto o array de lançamentos qto o total de lançamentos. */
+          (resp: any) => {
+            const lancamentos = resp["content"];
+
+            const objRet = {
+              // Array de lançamentos
+              lancamentos, /* Equivale a "lancamentos: lancamentos," */
+              // Total de lançamentos
+              total: resp["totalElements"]
+            };
+
+            return objRet;
+          }
     );
   }
 }

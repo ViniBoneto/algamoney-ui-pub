@@ -36,11 +36,20 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   // 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
   //  Adiciona uma prop de descr de lançamento q será ligada p/ 2 way databind ao campo equivalente do tmpl html.
-  descricao?: string;
+  // descricao?: string;
+
   // 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
   //   Adiciona vars p/ dts de venc max e min q, a exemplo da descr, tb será ligada a campos equivalentes do html.
-  dataVencimentoIni?: Date;
-  dataVencimentoFim?: Date;
+  // dataVencimentoIni?: Date;
+  // dataVencimentoFim?: Date;
+
+/*  17.5. Implementando a paginação no serviço de lançamentos:
+      P/ simplificar o cód e lidar c/ as novas props de paginação pré-inicializadas adicionadas, substitui as props
+      de instância individuais de filtro p/ uma prop de instância do tipo LancamentoFiltro (agora uma cls).
+
+    Ao invés de continuarem mapeados às props individuais de filtro, campos equivalentes do html serão mapeados às
+    props internas da prop do tipo LancamentoFiltro. */
+  filtro: LancamentoFiltro = new LancamentoFiltro();
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
@@ -71,20 +80,31 @@ export class LancamentosPesquisaComponent implements OnInit {
       Vamos substituir o obj literal, passado anteriormente como param, p/ uma var do tp LancamentoFiltro,
       definida anteriormente. Isto p/ simplificação e limpeza do cód, pois, c/ a adição dos campos de dts,
       o obj literal fica mais complexo. */
-    const filtro: LancamentoFiltro = {
-      descricao: this.descricao,
-      dataVencimentoIni: this.dataVencimentoIni,
-      dataVencimentoFim: this.dataVencimentoFim
-    };
+    // const filtro: LancamentoFiltro = {
+    //   descricao: this.descricao,
+    //   dataVencimentoIni: this.dataVencimentoIni,
+    //   dataVencimentoFim: this.dataVencimentoFim
+    // };
 
-    this.lancaServ.pesquisar(filtro).then(
+    // this.lancaServ.pesquisar(filtro).then(
+
+/*  17.5. Implementando a paginação no serviço de lançamentos:
+      P/ simplificar o cód e lidar c/ as novas props de paginação pré-inicializadas adicionadas, substitui
+      o obj literal de filtro, comentado acima, p/ uma prop de instância do tipo LancamentoFiltro (agora
+      uma cls), já instanciada. */
+    this.lancaServ.pesquisar(this.filtro).then(
 /*    Recebe o array de lançamentos da Promise resolvida e o atribui à prop do comp, p/ q sejam exibidos
        no comp de grid do PNG.
 
       Obs: P/ enquanto a paginação ñ está sendo feita no servidor (Spring). Tds os lançamentos são trazidos do
         servidor e a paginação de lançamentos é feita no cliente (NG), pelo comp de grid do PNG. Isto será mudado
         futuramente. */
-        (dadosLancamentos) => this.lancamentos = dadosLancamentos
+        // (dadosLancamentos) => this.lancamentos = dadosLancamentos
+
+/*      17.5. Implementando a paginação no serviço de lançamentos:
+          Agora ñ iremos mais retornar apenas o array de lançamentos. Retornaremos um obj contendo tanto o
+          array de lançamentos (prop resp.lancamentos) qto o total de lançamentos (prop resp.total). */
+        (resp) => this.lancamentos = resp.lancamentos
     );
   }
 }

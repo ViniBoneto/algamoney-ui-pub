@@ -20,8 +20,14 @@
           Liga o campo de descr lançamento à prop do comp através de 2 way databind. Tb é necessário q tds
           os campos do form de filtro sejam envoltos num elem <form> e tenham a prop nome, p/ serem mapeados
           no ngForm. Vide mód 12 do curso (Formulários e validação). -->
+        <!-- <input pInputText type="text" pTooltip="Filtro por descrição lançamento"
+          name="descricao" [(ngModel)]="descricao"> -->
+
+        <!-- 17.5. Implementando a paginação no serviço de lançamentos:
+          Ao invés de continuarem mapeados às props individuais de filtro, campos equivalentes do html serão
+          mapeados às props internas da prop do tipo LancamentoFiltro. -->
         <input pInputText type="text" pTooltip="Filtro por descrição lançamento"
-          name="descricao" [(ngModel)]="descricao">
+          name="descricao" [(ngModel)]="filtro.descricao">
       </div>
 
       <div class="p-col-12">
@@ -36,14 +42,25 @@
           Ajusta o estilo apenas da caixa de txt do calendário, via prop [inputStyle], p/ ter a msm larg q a caixa de
             txt anterior tinha (100px). Tb ajusta o estilo geral o calendaŕio p/ dar 10px de margem inf, através da prop
             [style]. -->
-        <p-calendar [(ngModel)]="dataVencimentoIni" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
+        <!-- <p-calendar [(ngModel)]="dataVencimentoIni" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
+          name="dataVencimentoIni" [style]="{ 'margin-bottom': '10px' }" pTooltip="Filtro por data mínima vencimento lançamento">
+        </p-calendar> -->
+
+        <!-- 17.5. Implementando a paginação no serviço de lançamentos:
+          Ao invés de continuarem mapeados às props individuais de filtro, campos equivalentes do html serão
+          mapeados às props internas da prop do tipo LancamentoFiltro. -->
+        <p-calendar [(ngModel)]="filtro.dataVencimentoIni" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
           name="dataVencimentoIni" [style]="{ 'margin-bottom': '10px' }" pTooltip="Filtro por data mínima vencimento lançamento">
         </p-calendar>
 
         &nbsp;<label>Até</label>&nbsp;
         <!-- <input pInputText type="text" style="width: 100px;" pTooltip="Filtro por data máxima vencimento lançamento"> -->
 
-        <p-calendar [(ngModel)]="dataVencimentoFim" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
+        <!-- <p-calendar [(ngModel)]="dataVencimentoFim" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
+          name="dataVencimentoFim" [style]="{ 'margin-bottom': '10px' }" pTooltip="Filtro por data máxima vencimento lançamento">
+        </p-calendar> -->
+
+        <p-calendar [(ngModel)]="filtro.dataVencimentoFim" dateFormat="dd/mm/yy" [inputStyle]="{ width: '100px' }"
           name="dataVencimentoFim" [style]="{ 'margin-bottom': '10px' }" pTooltip="Filtro por data máxima vencimento lançamento">
         </p-calendar>
       </div>
