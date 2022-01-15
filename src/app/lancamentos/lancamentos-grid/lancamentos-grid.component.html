@@ -6,7 +6,27 @@
 <!-- 17.5. Implementando a paginação no serviço de lançamentos:
   Mudando o nº de lins p/ pág, do mecanismo próprio de paginanação do <p-table>, de 3 p/ 5, p/ casar c/ o
   nº de lins p/ pág do mecanismo de paginanação do backend, afim de deixar o exemp + didático. -->
-<p-table [value]="lancamentos" [paginator]="true" [rows]="5" [responsive]="true">
+<!-- <p-table [value]="lancamentos" [paginator]="true" [rows]="5" [responsive]="true"> -->
+
+<!-- 17.6. Configurando a paginação lazy do PrimeNG:
+  Põe a tab de dados do PNG em modo lazy, p/ c/ isso, fazer cada pág ser carregada p/ vez, a medida em
+  q for selecionada, a partir do servidor. S/ este atrib, tds os elems são carragados de uma só vez,
+  sendo mantidos no cliente. Neste caso, a paginação da tab é feita apenas no cliente.
+
+Associa atrib c/ total de regs da consulta, [totalRecords], à prop de entrada totRegs, p/ ser usada, em
+  conjunto com nº de lins p/ pág (atrib [rows]), no cálculo de qtas págs serão necessárias p/ exibir tds
+  os registros.
+
+Liga o atrib de nº de itens p/ pág ([rows]) à prop de entrada itensPag. C/ isto, este atrib passará a ser
+  configurável e dinamizado.
+
+Cria-se tb o método handler aoMudarPag(), q será atrelado ao evt de mudança de pág da tab de dados, (onLazyLoad),
+  e receberá um param do tp LazyLoadEvent, c/ infos sobre a nova pág a ser carregada.
+
+Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, onde este foi reacoplado ao
+  comp de pesquisa de lançamento p/ simplificação, preferi manter os comps separados. -->
+<p-table [value]="lancamentos" [paginator]="true" [lazy]="true" [rows]="itensPag"
+  [responsive]="true" [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)">
   <ng-template pTemplate="header">
       <tr>
           <th>Pessoa</th>

@@ -51,6 +51,11 @@ export class LancamentosPesquisaComponent implements OnInit {
     props internas da prop do tipo LancamentoFiltro. */
   filtro: LancamentoFiltro = new LancamentoFiltro();
 
+/* 17.6. Configurando a paginação lazy do PrimeNG:
+  Acrescendo prop c/ total de regs da consulta, p/ ser usada no cálculo da pág a ser carregada, c/ paginação dinâmica
+  da tab de dados do PNG. */
+  totRegs: number = 0;
+
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
     Este serv será usado p/ acessar os lançamentos no backend. */
@@ -60,12 +65,25 @@ export class LancamentosPesquisaComponent implements OnInit {
     Invoca o método de consulta de lançamentos logo após o comp ser instanciado e suas props de dados inicializadas,
     para q o array de lançamentos seja preenchido. */
   ngOnInit(): void {
-    this.pesquisar();
+/* 17.6. Configurando a paginação lazy do PrimeNG:
+      Ñ há + necessidade de se invocar o método this.pesquisar() aqui p/ carregar os lançamentos, pois c/ a tab de dados
+      do PNG em modo lazy (atrib [lazy]=true), o método de carregamento p/ primeira pág (método handler atribuído ao evt
+      onLazyLoad, c/ nº pág 0) será automaticamente invocado qdo o comp for carregado (as d+ págs serão carregadas conforme
+      a paginação no comp for efetuada). */
+    // this.pesquisar();
   }
 
   // 17.2. Criando o serviço de consulta de lançamentos:
   //   Cria um método de consulta de lançamentos q invoca o método de consulta do serv de lançamentos.
-  pesquisar() {
+  // pesquisar() {
+
+/* 17.6. Configurando a paginação lazy do PrimeNG:
+    A partir de agora, o método pesquisar() passará a receber um param c/ o nº da pág a ser carregada. Caso nenhum seja
+    fornecido, o assumido p/ padrão será 0. O nº da pág será acrescido aos params do obj filtro, a ser passado ao método
+    LancamentoService.pesquisar(). */
+  pesquisar(pagina: number = 0) {
+    this.filtro.pagina = pagina;
+
     // this.lancaServ.pesquisar().then(
 
 /*  17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
@@ -104,7 +122,15 @@ export class LancamentosPesquisaComponent implements OnInit {
 /*      17.5. Implementando a paginação no serviço de lançamentos:
           Agora ñ iremos mais retornar apenas o array de lançamentos. Retornaremos um obj contendo tanto o
           array de lançamentos (prop resp.lancamentos) qto o total de lançamentos (prop resp.total). */
-        (resp) => this.lancamentos = resp.lancamentos
+        // (resp) => this.lancamentos = resp.lancamentos
+
+/*      17.6. Configurando a paginação lazy do PrimeNG:
+          Acrescendo prop c/ total de regs da consulta, p/ ser usada no cálculo da pág a ser carregada, c/ paginação
+          dinâmica da tab de dados do PNG. */
+        (resp) => {
+          this.lancamentos = resp.lancamentos;
+          this.totRegs = resp.total;
+        }
     );
   }
 }

@@ -149,7 +149,19 @@
       <!-- 13.11. Desafio: criando mais componentes:
         Transplantando o grid da pág de pesquisa de lançamentos p/ um comp separado, afim de simplificar o cód
         daquela e tornar o cód do grid um comp reusável. -->
-      <app-lancamentos-grid [lancamentos]="lancamentos"></app-lancamentos-grid>
+      <!-- <app-lancamentos-grid [lancamentos]="lancamentos"></app-lancamentos-grid> -->
+
+      <!-- 17.6. Configurando a paginação lazy do PrimeNG:
+        Insere props de entrada totRegs e itensPag no comp de grid de lançamentos, respectivamente c/ total de
+        regs da consulta e itens p/ pág de consulta, a serem associadas às props totRegs e filtro.itensPagina,
+        deste comp.
+
+      Tb foi criado o evt de saída mudancaPagEvt, no grid de lançamentos, p/ avisar q uma nova pág foi selecionada
+         no grid e uma nova pesquisa deve ser feita, no servidor, p/ trazer os regs relativos a esta pág. O arg passado
+         p/ este evt de saída é o nº (ind) da pág a ser carregada. Esta será repassada ao método pesquisar(), p/ q seja
+         feita a consulta p/ carregar os dados da pág selecionada. -->
+      <app-lancamentos-grid [lancamentos]="lancamentos" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)"></app-lancamentos-grid>
     </div>
   </div>
 

@@ -25,7 +25,11 @@ export class LancamentoFiltro {
   dataVencimentoFim?: Date;
   // 17.5. Implementando a paginação no serviço de lançamentos:
   pagina: number = 0;
-  itensPagina: number = 5;
+  // itensPagina: number = 5;
+
+  // 17.6. Configurando a paginação lazy do PrimeNG:
+  //   Podemos mudar o nº de regs p/ pág de 5 p/ 3, p/ exemp.
+  itensPagina: number = 3;
 }
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
@@ -78,7 +82,7 @@ export class LancamentoService {
 /* Como a gestão de recs no backend envolve acesso pré-authorizado aos métodos dos servs, usando a anotação
      Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
      do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDE5NTA4ODUsInVzZXJfbmFtZSI6ImFkbWluQGFsZ2Ftb25leS5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmNTA2ZWZkOC0yOTk3LTQxMjgtYWM5MC1jNTM1MGZhMDIyYmMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.7bcflHYmgIHNZplFwfcgWncp8aPXGk3NZMZZTm6cAnI");
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyMDgxMTUsInVzZXJfbmFtZSI6ImFkbWluQGFsZ2Ftb25leS5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI2Yjc3NjMzMS1jYjQxLTQzMzUtYTZlYy03MWEwMDc5ZjgzMDEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.glmLOx5PUHG7KEHizfR1xT8sXfuArllUmYfyLN_dh8E");
 
 /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
       Cria um obj de params http, p/ adiconar os params de filtro de busca (caso constem). Adiciona os params
