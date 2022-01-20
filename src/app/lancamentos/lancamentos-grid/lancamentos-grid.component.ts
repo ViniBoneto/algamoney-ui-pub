@@ -39,6 +39,6 @@ export class LancamentosGridComponent {
       regsPag = (evt.rows ? evt.rows : 1),
       pag = primReg / regsPag;
 
-    this.mudancaPagEvt.emit(pag)
+    this.mudancaPagEvt.emit(pag);
   }
 }

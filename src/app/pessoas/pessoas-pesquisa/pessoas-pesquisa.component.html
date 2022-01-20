@@ -4,14 +4,25 @@
       <h1>Pessoas</h1>
     </div>
 
-    <div class="p-col-12 p-fluid">
-      <label>Nome</label>
-      <input pInputText type="text" pTooltip="Filtro por nome pessoa" tooltipPosition="top">
-    </div>
+    <!-- 17.7. Desafio: criando a consulta e listagem de pessoas:
+      Repetindo p/ o comp de pesquisa de pessoas o msm q foi feito p/ o de pesquisa de lançamentos (aulas 17.2-17.6).
+      Neste caso, como feito lá, estou envolvendo os cntrls de pesquisa de pessoa, acima do grid, num elem <form>,
+      p/ poder chamar o método pesquisar() no evto de submissão deste. -->
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+      <div class="p-col-12 p-fluid">
+        <label>Nome</label>
+        <!-- <input pInputText type="text" pTooltip="Filtro por nome pessoa" tooltipPosition="top"> -->
 
-    <div class="p-col-12">
-      <button pButton type="submit" label="Pesquisar"></button>
-    </div>
+        <!-- 17.7. Desafio: criando a consulta e listagem de pessoas:
+          Repetindo p/ o comp de pesquisa de pessoas o msm q foi feito p/ o de pesquisa de lançamentos (aulas 17.2-17.6). -->
+        <input pInputText type="text" pTooltip="Filtro por nome pessoa" tooltipPosition="top"
+          name="nome" [(ngModel)]="filtro.nome">
+      </div>
+
+      <div class="p-col-12">
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+    </form>
   </div>
 
   <div class="p-grid">
@@ -60,7 +71,12 @@
       <!-- 13.11. Desafio: criando mais componentes:
         Transplantando o grid da pág de pesquisa de pessoas p/ um comp separado, afim de simplificar o cód
         daquela e tornar o cód do grid um comp reusável. -->
-      <app-pessoas-grid [pessoas]="pessoas"></app-pessoas-grid>
+      <!-- <app-pessoas-grid [pessoas]="pessoas"></app-pessoas-grid> -->
+
+      <!-- 17.7. Desafio: criando a consulta e listagem de pessoas:
+        Repetindo p/ o comp de pesquisa de pessoas o msm q foi feito p/ o de pesquisa de lançamentos (aulas 17.2-17.6). -->
+      <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)"></app-pessoas-grid>
     </div>
   </div>
 
