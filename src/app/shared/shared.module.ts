@@ -31,3 +31,36 @@ import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.componen
   ]
 })
 export class SharedModule { }
+
+/* 17.8. Excluindo lançamentos e o decorador @ViewChild:
+  Criando um método aux, no mód shared, que, dado um obj, retorna uma str representando suas props enumeráveis
+  diretas. Muito útil p/ se fazer dbg. */
+export function objParaStr(obj: Object | undefined | null): string {
+  // return obj.toString();
+  let objStr: string = "{\n",
+    propVal;
+
+  if(obj === undefined)
+    return "undefined";
+
+  if(obj === null)
+    return "null";
+
+  for(let prop of Object.keys(obj)) {
+    try {
+      propVal = eval(`obj[${prop}]`);
+    }
+    catch(err) {
+      if(err instanceof ReferenceError)
+        propVal = undefined;
+      else
+        throw err;
+    }
+
+    objStr += `\t'${prop}': '` + (propVal !== undefined ? propVal : "undefined") + "';\n";
+  }
+
+  objStr += "}";
+
+  return objStr;
+}

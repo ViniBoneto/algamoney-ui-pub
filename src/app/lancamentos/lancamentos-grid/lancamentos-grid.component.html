@@ -25,8 +25,14 @@ Cria-se tb o método handler aoMudarPag(), q será atrelado ao evt de mudança d
 
 Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, onde este foi reacoplado ao
   comp de pesquisa de lançamento p/ simplificação, preferi manter os comps separados. -->
-<p-table [value]="lancamentos" [paginator]="true" [lazy]="true" [rows]="itensPag"
-  [responsive]="true" [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)">
+<!-- <p-table [value]="lancamentos" [paginator]="true" [lazy]="true" [rows]="itensPag"
+  [responsive]="true" [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)"> -->
+
+<!-- 17.8. Excluindo lançamentos e o decorador @ViewChild:
+  Vamos adic uma var de tmpl chamada tabLanc e associá-la aà tab de lançamentos. Esta var fará c/ q esta tab
+  seja ligada à prop grid do comp, através do uso do decorador @ViewChild. -->
+<p-table [value]="lancamentos" [paginator]="true" [lazy]="true" [rows]="itensPag" [responsive]="true"
+  [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)" #tabLanc>
   <ng-template pTemplate="header">
       <tr>
           <th>Pessoa</th>
@@ -80,7 +86,14 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
           <td class="col-acoes-content">
             <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
             <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
-            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+            <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button> -->
+
+            <!-- 17.8. Excluindo lançamentos e o decorador @ViewChild:
+            Responde ao evto do btn de exclusão de um lançamento, recebendo o lançamento a ser excluído, notificando
+            o comp pai (pesquisa lançamentos) da exclusão, repassando a ele o lançamento. O comp pai é quem, de fato,
+            solicitará a eclusão ao serv de lançamentos.  -->
+            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"
+              (click)="aoExcluirLanc(lancamento);"></button>
           </td>
       </tr>
   </ng-template>

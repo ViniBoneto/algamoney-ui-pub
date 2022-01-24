@@ -82,7 +82,12 @@ export class LancamentoService {
 /* Como a gestão de recs no backend envolve acesso pré-authorizado aos métodos dos servs, usando a anotação
      Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
      do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyMDgxMTUsInVzZXJfbmFtZSI6ImFkbWluQGFsZ2Ftb25leS5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI2Yjc3NjMzMS1jYjQxLTQzMzUtYTZlYy03MWEwMDc5ZjgzMDEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.glmLOx5PUHG7KEHizfR1xT8sXfuArllUmYfyLN_dh8E");
+    // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDIyMDgxMTUsInVzZXJfbmFtZSI6ImFkbWluQGFsZ2Ftb25leS5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI2Yjc3NjMzMS1jYjQxLTQzMzUtYTZlYy03MWEwMDc5ZjgzMDEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.glmLOx5PUHG7KEHizfR1xT8sXfuArllUmYfyLN_dh8E");
+
+/* 17.8. Excluindo lançamentos e o decorador @ViewChild:
+    Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
+    q farão reqs HTTP. */
+    headers = this.configAuthReq(headers);
 
 /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
       Cria um obj de params http, p/ adiconar os params de filtro de busca (caso constem). Adiciona os params
@@ -161,5 +166,31 @@ export class LancamentoService {
             return objRet;
           }
     );
+  }
+
+/* 17.8. Excluindo lançamentos e o decorador @ViewChild:
+    Criação do método de exclusão de um lançamento, dado o seu cód. Este método invocará o método delete(),
+    do serv HttpClient associado ao comp, p/ fazer a req DELETE no backend.
+
+  O retorno será uma Promise<void> pq a req DELETE ñ retornará um corpo. Apenas o header, incluso aí o status
+      da operação. */
+  excluir(codigo: number): Promise<void> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = this.configAuthReq(headers);
+
+    return this.http.delete(`${this.lancamentosURL}/${codigo}`, { headers })
+      .toPromise().then( () => {} );
+  }
+
+/* 17.8. Excluindo lançamentos e o decorador @ViewChild:
+    Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
+    q farão reqs HTTP. */
+  private configAuthReq(headers: HttpHeaders): HttpHeaders {
+  /* Como a gestão de recs no backend envolve acesso pré-authorizado aos métodos dos servs, usando a anotação
+     Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
+     do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQzMDYxNDY1LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmNTA5YWQ5NC0wYTAwLTRmMGUtYjY4ZC04YjQ4MTczZTIyZDgiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.q1ctzi64qVizJfDLP58aKYpCHTxpJbrGQfmZI9B8dBU");
+
+    return headers;
   }
 }

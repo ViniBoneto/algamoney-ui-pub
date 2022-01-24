@@ -160,8 +160,18 @@
          no grid e uma nova pesquisa deve ser feita, no servidor, p/ trazer os regs relativos a esta pág. O arg passado
          p/ este evt de saída é o nº (ind) da pág a ser carregada. Esta será repassada ao método pesquisar(), p/ q seja
          feita a consulta p/ carregar os dados da pág selecionada. -->
+      <!-- <app-lancamentos-grid [lancamentos]="lancamentos" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)"></app-lancamentos-grid> -->
+
+      <!-- 17.8. Excluindo lançamentos e o decorador @ViewChild:
+        Foi criado o evt de saída exclusaoLancEvt, no grid de lançamentos, p/ avisar q um lançamento deve ser excluído.
+        O lançamento a ser removido, contigo no arg do evto, é repassado p/ o método excluir().
+
+      Tb Vamos usar o decorador @ViewChild, q é um decorador q configura uma consulta a um elem/comp filho na view,
+        p/ ligar a prop local grid c/ o comp de grid de lançamentos no DOM, marcado c/ a var #gridLanc (esta var será
+        usada p/ fazer a ligação, sendo atribuída à prop @ViewChild.selector).-->
       <app-lancamentos-grid [lancamentos]="lancamentos" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
-        (mudancaPagEvt)="pesquisar($event)"></app-lancamentos-grid>
+        (mudancaPagEvt)="pesquisar($event)" (exclusaoLancEvt)="excluir($event)" #gridLanc></app-lancamentos-grid>
     </div>
   </div>
 

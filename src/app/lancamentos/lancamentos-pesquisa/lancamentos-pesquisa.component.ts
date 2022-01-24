@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
+import { LancamentosGridComponent } from '../lancamentos-grid/lancamentos-grid.component';
+import { objParaStr } from '../../shared/shared.module';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
@@ -55,6 +57,12 @@ export class LancamentosPesquisaComponent implements OnInit {
   Acrescendo prop c/ total de regs da consulta, p/ ser usada no cálculo da pág a ser carregada, c/ paginação dinâmica
   da tab de dados do PNG. */
   totRegs: number = 0;
+
+/* 17.8. Excluindo lançamentos e o decorador @ViewChild:
+    Vamos usar o decorador @ViewChild, q é um decorador q configura uma consulta a um elem/comp filho na view,
+    p/ ligar a prop local grid c/ o comp de grid de lançamentos no DOM, marcado c/ a var #gridLanc (esta var será
+    usada p/ fazer a ligação, sendo atribuída à prop @ViewChild.selector). */
+  @ViewChild("gridLanc") grid: LancamentosGridComponent | undefined;
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
@@ -132,5 +140,42 @@ export class LancamentosPesquisaComponent implements OnInit {
           this.totRegs = resp.total;
         }
     );
+  }
+
+/* 17.8. Excluindo lançamentos e o decorador @ViewChild:
+    Exlcui um determinado lançamento no backend, invocando o método excluir(), do serv de lançamentos associado
+    a este comp. */
+  excluir(lancamento: any) {
+    // const resolvfn = (value: any) => Promise.resolve(value);
+
+    // new Promise( (resolvfn) => {
+    //     console.log(`Componente Grid Lançamentos Mapeado:\n${this.grid}`);
+    //     resolvfn(true);
+    //   }).then(() => {
+
+    this.lancaServ.excluir(lancamento.codigo).then(() => {
+      console.log(`Excluído lançamento id ${lancamento.codigo}.`);
+
+/*    Quando o lancamento é excluído, a pág ñ é automaticamente recarregada. P/ isto, o lançamento removido
+        continua aparecendo no grid e é preciso fazer uma atualização manual da pág (refresh). P/ resolver isto,
+        vamos fazer uma invocação ao método this.pesquisar(), q invocará os dados da 1ª pág, fazendo c/ q o grid
+        e a pág sejam automaticamente atualizados. */
+      // this.pesquisar();
+
+/*    Porém, aos se tentar a solução acima ( método this.pesquisar() ), aparece outro probl: o grid é recarregado
+        c/ os dados da 1ª pág (pág 0), porém o estado interno do grid (comp tab do PGN) ñ é atualizado e o ponteiro
+        de paginação continua apontando p/ a pág em q estava o lançamento excluído (no exemp, a 2ª pág), embora os
+        dados exibidos sejam sempre da 1ª pág. P/ superar este probl fazemos o seguinte: Vamos usar o decorador @ViewChild,
+        q é um decorador q configura uma consulta a um elem/comp filho na view, p/ ligar a prop local grid c/ o comp de
+        grid de lançamentos no DOM, marcado c/ a var #gridLanc (esta var será usada p/ fazer a ligação, sendo atribuída
+        à prop @ViewChild.selector). Então, vamos invacar o método atualizarGrid(), do grid de lançamentos, reiniciar o
+        estado da nossa tabela, refletindo a exclusão do lançamento. */
+      if(this.grid)
+        this.grid.atualizarGrid();
+
+      // Importa e usa a func SharedModule.objParaStr(), p/ imprimir suas props enumeráveis diretas do comp this.grid, testando
+      //  assim, se ele foi mapeado c/ sucesso.
+      // console.log(`Método LancamentosPesquisaComponent.excluir():\nComponente Grid Lançamentos Mapeado:\n${objParaStr(this.grid)}`);
+    });
   }
 }
