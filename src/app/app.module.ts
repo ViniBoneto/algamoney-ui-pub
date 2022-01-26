@@ -18,6 +18,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 import { AppRoutingModule } from './app-routing.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
 import { PessoasModule } from './pessoas/pessoas.module';
@@ -111,12 +114,26 @@ import { AppComponent } from './app.component';
     // NgxCurrencyModule
     // NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
 
+/*  17.9. Adicionando mensagem de sucesso com Angular Toasty:
+      Incompatibilidade com ng2-toasty: A biblioteca ng2-toasty não é compatível com a versão 12 do Angular.
+      Por esta razão, utilizaremos o componente Toast do PrimeNG.
+
+    Para usar o componente Toast devemos importar o ToastModule e prover o MessageService do PrimeNG no nosso AppModule. */
+    ToastModule,
+
     AppRoutingModule,
     LancamentosModule,
     PessoasModule,
     CoreModule
   ],
-  providers: [],
+  providers: [
+/*  17.9. Adicionando mensagem de sucesso com Angular Toasty:
+      Incompatibilidade com ng2-toasty: A biblioteca ng2-toasty não é compatível com a versão 12 do Angular.
+      Por esta razão, utilizaremos o componente Toast do PrimeNG.
+
+    Para usar o componente Toast devemos importar o ToastModule e prover o MessageService do PrimeNG no nosso AppModule. */
+    MessageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { MessageService } from 'primeng/api';
+
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 import { LancamentosGridComponent } from '../lancamentos-grid/lancamentos-grid.component';
 import { objParaStr } from '../../shared/shared.module';
@@ -67,7 +69,17 @@ export class LancamentosPesquisaComponent implements OnInit {
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
     Este serv será usado p/ acessar os lançamentos no backend. */
-  constructor(private lancaServ: LancamentoService) {}
+  // constructor(private lancaServ: LancamentoService) {}
+
+/* 17.9. Adicionando mensagem de sucesso com Angular Toasty:
+    Incompatibilidade com ng2-toasty: A biblioteca ng2-toasty não é compatível com a versão 12 do Angular.
+    Por esta razão, utilizaremos o componente Toast do PrimeNG.
+
+  Injetamos o MessageService no nosso LancamentosPesquisaComponent e adicionamos a mensagem de sucesso na exclusão do lançamento. */
+  constructor(
+    private lancaServ: LancamentoService,
+    private msgServ: MessageService
+  ) {}
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Invoca o método de consulta de lançamentos logo após o comp ser instanciado e suas props de dados inicializadas,
@@ -176,6 +188,17 @@ export class LancamentosPesquisaComponent implements OnInit {
       // Importa e usa a func SharedModule.objParaStr(), p/ imprimir suas props enumeráveis diretas do comp this.grid, testando
       //  assim, se ele foi mapeado c/ sucesso.
       // console.log(`Método LancamentosPesquisaComponent.excluir():\nComponente Grid Lançamentos Mapeado:\n${objParaStr(this.grid)}`);
+
+/*    17.9. Adicionando mensagem de sucesso com Angular Toasty:
+        Incompatibilidade com ng2-toasty: A biblioteca ng2-toasty não é compatível com a versão 12 do Angular.
+        Por esta razão, utilizaremos o componente Toast do PrimeNG.
+
+      Injetamos o MessageService no nosso LancamentosPesquisaComponent e adicionamos a mensagem de sucesso na exclusão do lançamento. */
+      this.msgServ.add({
+        severity:'success',
+        summary:'Lançamento excluído com sucesso!',
+        detail:`Exclusão feita para lançamento id ${lancamento.codigo}.`
+      });
     });
   }
 }
