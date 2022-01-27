@@ -170,8 +170,16 @@
       Tb Vamos usar o decorador @ViewChild, q é um decorador q configura uma consulta a um elem/comp filho na view,
         p/ ligar a prop local grid c/ o comp de grid de lançamentos no DOM, marcado c/ a var #gridLanc (esta var será
         usada p/ fazer a ligação, sendo atribuída à prop @ViewChild.selector).-->
+      <!-- <app-lancamentos-grid [lancamentos]="lancamentos" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)" (exclusaoLancEvt)="excluir($event)" #gridLanc></app-lancamentos-grid> -->
+
+      <!-- 17.10. Adicionando diálogo de confirmação antes da exclusão:
+        Temos que substituir o método a ser invocado no evt exclusaoLancEvt do grid: em vez de se invocar diretamente
+        excluir(), deve-se invocar confirmarExclusao(), q mostrará a caixa de confirm. Somente se o usuário confirmar,
+        o processo de exclusão seguirá. Senão será cancelado. -->
       <app-lancamentos-grid [lancamentos]="lancamentos" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
-        (mudancaPagEvt)="pesquisar($event)" (exclusaoLancEvt)="excluir($event)" #gridLanc></app-lancamentos-grid>
+        (mudancaPagEvt)="pesquisar($event)" (exclusaoLancEvt)="confirmarExclusao($event)" #gridLanc>
+      </app-lancamentos-grid>
     </div>
   </div>
 

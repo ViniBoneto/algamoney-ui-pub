@@ -18,8 +18,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
@@ -120,6 +121,10 @@ import { AppComponent } from './app.component';
 
     Para usar o componente Toast devemos importar o ToastModule e prover o MessageService do PrimeNG no nosso AppModule. */
     ToastModule,
+/*  17.10. Adicionando diálogo de confirmação antes da exclusão:
+      P/ usar o comp de caixa de confirm do PNG (ConfirmDialog) devemos importar o mód abaixo (o passo a passo é muito
+      semelhante ao da inclusão do comp de msg Toast, na aula anterior). */
+    ConfirmDialogModule,
 
     AppRoutingModule,
     LancamentosModule,
@@ -132,7 +137,12 @@ import { AppComponent } from './app.component';
       Por esta razão, utilizaremos o componente Toast do PrimeNG.
 
     Para usar o componente Toast devemos importar o ToastModule e prover o MessageService do PrimeNG no nosso AppModule. */
-    MessageService
+    MessageService,
+
+/*  17.10. Adicionando diálogo de confirmação antes da exclusão:
+      Para usar o componente ConfirmDialog devemos prover o ConfirmationService do PrimeNG no nosso AppModule (o passo
+      a passo é muito semelhante ao da inclusão do comp de msg Toast, na aula anterior). */
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

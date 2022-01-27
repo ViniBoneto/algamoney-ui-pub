@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 import { LancamentosGridComponent } from '../lancamentos-grid/lancamentos-grid.component';
@@ -76,9 +76,18 @@ export class LancamentosPesquisaComponent implements OnInit {
     Por esta razão, utilizaremos o componente Toast do PrimeNG.
 
   Injetamos o MessageService no nosso LancamentosPesquisaComponent e adicionamos a mensagem de sucesso na exclusão do lançamento. */
+  // constructor(
+  //   private lancaServ: LancamentoService,
+  //   private msgServ: MessageService
+  // ) {}
+
+/* 17.10. Adicionando diálogo de confirmação antes da exclusão:
+    Injetamos o ConfirmationService no nosso LancamentosPesquisaComponent e adicionamos a mensagem de confirmação antes da exclusão
+    do lançamento (o passo a passo é muito semelhante ao da inclusão do comp de msg Toast, na aula anterior). */
   constructor(
     private lancaServ: LancamentoService,
-    private msgServ: MessageService
+    private msgServ: MessageService,
+    private confirmServ: ConfirmationService
   ) {}
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
@@ -199,6 +208,21 @@ export class LancamentosPesquisaComponent implements OnInit {
         summary:'Lançamento excluído com sucesso!',
         detail:`Exclusão feita para lançamento id ${lancamento.codigo}.`
       });
+    });
+  }
+
+/* 17.10. Adicionando diálogo de confirmação antes da exclusão:
+    Chamados o método ConfirmationService.confirm() p/, em conjunto com o comp PNG p-confirmDialog, exibir uma msg de confirmação
+    antes de se excluir um lançamento. Se o usuário confirmar, exclui-se. Senão ñ. P/ isto, criamos o método abaixo, a ser chamado
+    antes do método excluir(), propriamente dito, no processo de exclusão. */
+  confirmarExclusao(lancamento: any) {
+    this.confirmServ.confirm({
+      // Str c/ msg de confirmação
+      message: "Tem certeza que deseja excluir o lançamento?",
+/*    Hndl p/ tratar aceitação do usuário. Neste método vamos invocar o método de exclusão, propriamente dito. Opcionalmente,
+       pode-se tb fornecer um hndl p/ rejeião (ñ confirmação). Neste caso não há necessidade, pois se em caso de rejeição,
+       basta se fechar a jan de confirm. */
+      accept: () => this.excluir(lancamento)
     });
   }
 }

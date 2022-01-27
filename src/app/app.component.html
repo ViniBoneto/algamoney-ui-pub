@@ -31,3 +31,25 @@
 
 Adicionamos a tag HTML do componente Toast no arquivo "app.component.html". -->
 <p-toast></p-toast>
+
+<!-- 17.10. Adicionando diálogo de confirmação antes da exclusão
+  Assim como foi feito com o comp Toast, na aula anterior, adicionamos o comp de caixa de confirmação no
+  templ principal da app. Este comp se comunicará e será acionado pelo serv ConfirmationService p/ exibir
+  as msgs de confirm da app. -->
+<!-- <p-confirmDialog></p-confirmDialog> -->
+
+<!-- O comp p-confirmDialog pode ser customizado. Entre outros, podemos configurar seu header, um ícone p/ aparecer
+  ao lado da msg (no caso será uma interrogação c/ um circ em volta) e podemos substituir os btns padrão da caixa
+  alterando o templ da seção footer. Por padrão o footer tem 2 btns c/ lbls "yes" e "no" e ícones pi-check e pi-times,
+  respectivamente.
+
+Tds os ícones são da biblio PrimeIcons. Os ícones dos btns serão o pi-check p/ sim (U+2713) e pi-times (X) p/ ñ.
+
+P/ q os btns se tornem funcionais é preciso associar uma var de tmpl ao comp confirmDialog (ex: #confDlg) e associar
+  os btns de aceitação e rejeição aos métodos do ConfirmDialog correspondentes: ConfirmDialog.accept() e ConfirmDialog.reject(). -->
+<p-confirmDialog header="Confirmação exclusão" icon="pi pi-question-circle" #confDlg>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-check" label="Sim" (click)="confDlg.accept()"></button>
+    <button type="button" pButton icon="pi pi-times" label="Não" (click)="confDlg.reject()"></button>
+  </ng-template>
+</p-confirmDialog>
