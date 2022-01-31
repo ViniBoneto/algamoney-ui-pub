@@ -1,7 +1,21 @@
-import { NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { FormsModule } from '@angular/forms';
+
+/* 17.11. Alterando o locale da aplicação para pt-BR:
+  Configurando locale: Para configurarmos o Locale de nossa aplicação Angular, ficou um pouco diferente,
+  precisando de algumas configurações extras.
+
+O pacote de locale que é carregado por padrão é apenas o americano (en-US), e para usarmos um locale diferente
+  desse, precisamos carregá-lo em nossa aplicação. Para isso, precisaremos registrar o locale desejado.
+
+Primeiro, precisamos importar este pacote e também a função que realizará o registro: */
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+// Depois de importados, basta registrar este pacote no início da nossa classe:
+registerLocaleData(localePt);
 
 // import { TabViewModule } from 'primeng/tabview';
 // import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +35,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
@@ -53,6 +69,26 @@ import { AppComponent } from './app.component';
   precision: 2,
   suffix: ""
 } */
+
+/* 17.11. Alterando o locale da aplicação para pt-BR:
+  Traduzindo o calendário do PrimeNG:
+    O calendário do PrimeNG é apresentado, por padrão, em inglês. Para alterar esta configuração, na versão 12
+    da biblioteca, é necessário trabalhar com o sistema de internacionalização i18n. Para isso é necessário adicionar
+    algumas novas dependências, com os comandos:
+      npm install @ngx-translate/core --save
+      npm install @ngx-translate/http-loader --save
+
+  Criação do arquivo de tradução:
+    Deve ser criado um arquivo JSON que conterá as traduções desejadas. O nome dele é livre para escolha, mas é indicado
+    utilizar o prefixo do idioma para o qual será realizada a tradução. Como será realizada a tradução para o português
+    o arquivo terá o nome pt.json. Este arquivo deve ser colocado na pasta src/assets/i18n.
+
+  Importação do módulo e serviço de tradução:
+    É necessário realizar a importação do módulo de tradução (TranslateModule) e a definição do provedor de tradução
+    (TranslateService) no AppModule, assim como a definição do HttpLoaderFactory. */
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}
 
 /* 14.6. Criando um Feature Module:
   P/ melhor se organizar a app, cria-se mód de lançamentos, move-se os comps de lançamentos daqui p/ lá
@@ -125,6 +161,17 @@ import { AppComponent } from './app.component';
       P/ usar o comp de caixa de confirm do PNG (ConfirmDialog) devemos importar o mód abaixo (o passo a passo é muito
       semelhante ao da inclusão do comp de msg Toast, na aula anterior). */
     ConfirmDialogModule,
+/*  17.11. Alterando o locale da aplicação para pt-BR:
+      Importação do módulo e serviço de tradução:
+      É necessário realizar a importação do módulo de tradução (TranslateModule) e a definição do provedor de tradução
+      (TranslateService) no AppModule, assim como a definição do HttpLoaderFactory. */
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+    }),
 
     AppRoutingModule,
     LancamentosModule,
@@ -138,11 +185,20 @@ import { AppComponent } from './app.component';
 
     Para usar o componente Toast devemos importar o ToastModule e prover o MessageService do PrimeNG no nosso AppModule. */
     MessageService,
-
 /*  17.10. Adicionando diálogo de confirmação antes da exclusão:
       Para usar o componente ConfirmDialog devemos prover o ConfirmationService do PrimeNG no nosso AppModule (o passo
       a passo é muito semelhante ao da inclusão do comp de msg Toast, na aula anterior). */
-    ConfirmationService
+    ConfirmationService,
+/*  17.11. Alterando o locale da aplicação para pt-BR:
+      Configurando locale: P/ alterarmos o locale padrão na app p/ pt-BR, devemos declarar um provider p/ valor no mód
+      raiz (AppModule), cujo token é o ID pré-def LOCALE_ID, q identifica o provedor do locale padrão duma app NG. Já
+      o valor do provedor deve ser "pt-BR". */
+    { provide: LOCALE_ID, useValue: "pt-BR" },
+/*  17.11. Alterando o locale da aplicação para pt-BR:
+      Importação do módulo e serviço de tradução:
+      É necessário realizar a importação do módulo de tradução (TranslateModule) e a definição do provedor de tradução
+      (TranslateService) no AppModule, assim como a definição do HttpLoaderFactory. */
+    TranslateService
   ],
   bootstrap: [AppComponent]
 })

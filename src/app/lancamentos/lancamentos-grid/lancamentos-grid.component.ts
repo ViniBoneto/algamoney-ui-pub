@@ -55,7 +55,7 @@ export class LancamentosGridComponent implements AfterViewInit, AfterContentInit
     // Importa e usa a func SharedModule.objParaStr(), p/ imprimir suas props enumeráveis diretas. Isto foi
     //  feito após as abordagens acima (comentadas) falharem em exibir corretamente as props do obj.
     //  Obs: Comentei o método abaixo e o movi p/ func ngOnit
-    console.log(`Método LancamentosGridComponent.ngAfterViewInit():\nComponente Grid Lançamentos Mapeado:\n${objParaStr(this.grid)}`);
+    // console.log(`Método LancamentosGridComponent.ngAfterViewInit():\nComponente Grid Lançamentos Mapeado:\n${objParaStr(this.grid)}`);
   }
 
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
