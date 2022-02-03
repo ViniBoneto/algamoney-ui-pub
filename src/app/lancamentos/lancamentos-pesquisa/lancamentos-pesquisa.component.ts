@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+import { ErrorHandlerService } from './../../core/error-handler.service';
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 import { LancamentosGridComponent } from '../lancamentos-grid/lancamentos-grid.component';
 import { objParaStr } from '../../shared/shared.module';
@@ -84,8 +85,17 @@ export class LancamentosPesquisaComponent implements OnInit {
 /* 17.10. Adicionando diálogo de confirmação antes da exclusão:
     Injetamos o ConfirmationService no nosso LancamentosPesquisaComponent e adicionamos a mensagem de confirmação antes da exclusão
     do lançamento (o passo a passo é muito semelhante ao da inclusão do comp de msg Toast, na aula anterior). */
+  // constructor(
+  //   private lancaServ: LancamentoService,
+  //   private msgServ: MessageService,
+  //   private confirmServ: ConfirmationService
+  // ) {}
+
+// 17.12. Criando um serviço de tratamento de erros:
+//   Injeta serv de tratamento de erros p/ tratar e exibir erros nas opers do comp.
   constructor(
     private lancaServ: LancamentoService,
+    private errServ: ErrorHandlerService,
     private msgServ: MessageService,
     private confirmServ: ConfirmationService
   ) {}
@@ -160,7 +170,11 @@ export class LancamentosPesquisaComponent implements OnInit {
           this.lancamentos = resp.lancamentos;
           this.totRegs = resp.total;
         }
-    );
+    )
+/*  17.12. Criando um serviço de tratamento de erros:
+      Adiciona um método catch() à cadeia de Promises, p/ poder capturar e tratar erros, usando o serv de tratamento
+      de erros. */
+    .catch(erro => this.errServ.handle(erro));
   }
 
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
@@ -208,7 +222,11 @@ export class LancamentosPesquisaComponent implements OnInit {
         summary:'Lançamento excluído com sucesso!',
         detail:`Exclusão feita para lançamento id ${lancamento.codigo}.`
       });
-    });
+    })
+/*  17.12. Criando um serviço de tratamento de erros:
+      Adiciona um método catch() à cadeia de Promises, p/ poder capturar e tratar erros, usando o serv de tratamento
+      de erros. */
+    .catch(erro => this.errServ.handle(erro));
   }
 
 /* 17.10. Adicionando diálogo de confirmação antes da exclusão:

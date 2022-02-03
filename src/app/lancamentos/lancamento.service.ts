@@ -43,6 +43,14 @@ export class LancamentoService {
   //  URL base dos servs de lançamentos
   private lancamentosURL = "http://localhost:8080/lancamentos";
 
+/* 17.12. Criando um serviço de tratamento de erros:
+    Vamos mudar a porta do serv de lançamentos p/ uma inválida (3080), p/ se gerar erro e se testar o
+    tratamento de erros da app.
+
+  Tb vamos fazer uma segunda simulação de erro, c/ a porta correta, porém um recurso inválido (lanc@ment0s). */
+  // private lancamentosURL = "http://localhost:3080/lancamentos";
+  // private lancamentosURL = "http://localhost:8080/lanc@ment0s";
+
   // Injetando o serv HttpClient p/ depend, p/ fazer as reqs http
   // constructor(private http: HttpClient) { }
 
@@ -179,6 +187,11 @@ export class LancamentoService {
     headers = this.configAuthReq(headers);
 
     return this.http.delete(`${this.lancamentosURL}/${codigo}`, { headers })
+/*  17.12. Criando um serviço de tratamento de erros:
+      Vamos mudar a URL de exclução de lançamentos p/ uma inválida (primeiro ${codigo}xxx e dps ${codigo}234),
+      p/ se gerar erro e se testar o tratamento de erros da app.
+    Obs: No primeiro caso o erro ret foi 400 e no segundo foi 404. */
+    // return this.http.delete(/* `${this.lancamentosURL}/${codigo}xxx` */ `${this.lancamentosURL}/${codigo}234`, { headers })
       .toPromise().then( () => {} );
   }
 
@@ -189,7 +202,7 @@ export class LancamentoService {
   /* Como a gestão de recs no backend envolve acesso pré-authorizado aos métodos dos servs, usando a anotação
      Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
      do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQzNjcwMzE1LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiIwMWVlYzU0NS02Y2E4LTRkMDgtYjE4MS0wMTM4YTU4NmJiNDAiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.IsdfudsVh0i5Nt_9E7KxG9Yczx7o3vzWH0tneF_wwlU");
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQzODYzMTMxLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmNjIwMWM4OC0xZWRhLTRjNzctOTIzNS00OTU4ODQ2ZjhiZTgiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.jHENMIgKhqfhJo0uY5kVVoa4HCVStQLwDJR0Ihf_fqo");
 
     return headers;
   }
