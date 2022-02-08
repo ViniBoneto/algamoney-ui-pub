@@ -29,7 +29,7 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
   [responsive]="true" [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)"> -->
 
 <!-- 17.8. Excluindo lançamentos e o decorador @ViewChild:
-  Vamos adic uma var de tmpl chamada tabLanc e associá-la aà tab de lançamentos. Esta var fará c/ q esta tab
+  Vamos adic uma var de tmpl chamada tabLanc e associá-la à tab de lançamentos. Esta var fará c/ q esta tab
   seja ligada à prop grid do comp, através do uso do decorador @ViewChild. -->
 <p-table [value]="lancamentos" [paginator]="true" [lazy]="true" [rows]="itensPag" [responsive]="true"
   [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)" #tabLanc>

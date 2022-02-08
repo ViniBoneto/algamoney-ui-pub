@@ -5,8 +5,14 @@
 
 <!-- 17.7. Desafio: criando a consulta e listagem de pessoas:
   Repetindo p/ o comp de grid de pessoas o msm q foi feito p/ o de grid de lançamentos (aulas 17.2-17.6). -->
+<!-- <p-table [value]="pessoas" [paginator]="true" [lazy]="true" [rows]="itensPag" [responsive]="true"
+  [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)"> -->
+
+<!-- 17.13. Desafio: implementando a exclusão de pessoas:
+  Vamos adic uma var de tmpl chamada tabPessoa e associá-la à tab de pessoas, associando-a tb à prop grid
+  do comp, através do uso do decorador @ViewChild, de modo análogo ao q foi feito no grid de lançamentos.  -->
 <p-table [value]="pessoas" [paginator]="true" [lazy]="true" [rows]="itensPag" [responsive]="true"
-  [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)">
+  [totalRecords]="totRegs" (onLazyLoad)="aoMudarPag($event)" #tabPessoa>
   <ng-template pTemplate="header">
       <tr>
           <th>Nome</th>
@@ -59,7 +65,13 @@
           <td class="col-acoes-content">
             <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
             <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
-            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button>
+            <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button> -->
+
+            <!-- 17.13. Desafio: implementando a exclusão de pessoas:
+              De modo análogo ao q foi feito no grid de lancs, associao o clique do btn de exclusão a um
+              método hndlr, q irá repassar o evento e o elem a ser excluído ao comp pai. -->
+            <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"
+              (click)="aoExcluirPessoa(pessoa);"></button>
           </td>
       </tr>
   </ng-template>

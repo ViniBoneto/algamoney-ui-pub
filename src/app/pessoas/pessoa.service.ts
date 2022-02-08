@@ -29,7 +29,13 @@ export class PessoaService {
     // Headers HTTP req
     let headers: HttpHeaders = new HttpHeaders();
     // Autenticação OAuth2
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQyNjMxNjY0LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI3Y2YwNWE2ZC03MDI3LTRkNGYtYWY5ZC0xYmRkOTVmYTEyMzIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.jxX6HjzJ9RtgFQ6d9jGl0XNK-4p3cL2yZo5GfQISOoU");
+    // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQyNjMxNjY0LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI3Y2YwNWE2ZC03MDI3LTRkNGYtYWY5ZC0xYmRkOTVmYTEyMzIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.jxX6HjzJ9RtgFQ6d9jGl0XNK-4p3cL2yZo5GfQISOoU");
+
+/* 17.13. Desafio: implementando a exclusão de pessoas:
+    Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
+    q farão reqs HTTP. */
+    headers = this.configAuthReq(headers);
+
     // Params HTTP
     let params = new HttpParams();
 
@@ -82,4 +88,24 @@ export class PessoaService {
 
     return objRet.pessoas;
   }
+
+// 17.13. Desafio: implementando a exclusão de pessoas:
+//  Cria um método p/ exclusão de pessoas, de modo análogo ao q foi feito c/ lançamentos (aulas 17.8-17.10).
+  excluir(codigo: number): Promise<void> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = this.configAuthReq(headers);
+
+    return this.http.delete(`${this.pessoasURL}/${codigo}`, { headers })
+      .toPromise().then( () => {} );
+  }
+
+/* 17.13. Desafio: implementando a exclusão de pessoas:
+    Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
+    q farão reqs HTTP. */
+  private configAuthReq(headers: HttpHeaders): HttpHeaders {
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0MjgwMjU2LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJlZjAxZmFmOS04MGIxLTRjNWYtODA5Yi00YTdlNTIwYzBhNGMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.ixpikmG04XBVs7JY6ZQWWamUqDbZ5sYjJwV3Gqy5lPo");
+
+    return headers;
+  }
+
 }

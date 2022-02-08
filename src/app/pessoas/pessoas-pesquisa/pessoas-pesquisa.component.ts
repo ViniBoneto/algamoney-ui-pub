@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { ConfirmationService, MessageService } from 'primeng/api';
+
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { PessoaFiltro, PessoaService } from '../pessoa.service';
+import { PessoasGridComponent } from '../pessoas-grid/pessoas-grid.component';
 
 @Component({
   selector: 'app-pessoas-pesquisa',
@@ -29,10 +33,25 @@ export class PessoasPesquisaComponent implements OnInit {
  filtro: PessoaFiltro = new PessoaFiltro();
  totRegs: number = 0;
 
+/* 17.13. Desafio: implementando a exclusão de pessoas:
+  Identifica o comp filho de grid de pessoas na view, usando o decorador @ViewChild, de modo análago ao
+  q foi feito c/ lançamentos (aulas 17.8-17.10). */
+  @ViewChild("gridPessoa") grid: PessoasGridComponent | undefined;
+
 /* 17.7. Desafio: criando a consulta e listagem de pessoas:
   Comp de pesquisa de pessoas receberá um serv de pessoas por inj de depend (D.I.), em seu construtor.
   Este serv será usado p/ acessar as pessoas no backend. */
- constructor(private pessoaServ: PessoaService) {}
+//  constructor(private pessoaServ: PessoaService) {}
+
+/* 17.13. Desafio: implementando a exclusão de pessoas:
+   Injeta no construtor servs de tratamento de erros, msgs e caixa de confirm. Como foi feito c/ comp de
+   pesquisa de lançamentos (aulas 17.8-17.12). */
+  constructor(
+    private pessoaServ: PessoaService,
+    private errServ: ErrorHandlerService,
+    private msgServ: MessageService,
+    private confirmServ: ConfirmationService
+  ) {}
 
   // Invoca a consulta de pessoas, no serviço, logo após a inicialização do comp, p/ carregar o comp
   //  grid filho.
@@ -59,6 +78,40 @@ export class PessoasPesquisaComponent implements OnInit {
 
         this.pessoas = resp.pessoas;
         this.totRegs = resp.total;
+    })
+    /* 17.13. Desafio: implementando a exclusão de pessoas:
+      De modo análogo ao q foi feito no comp de pesquisa de lancs, adiciona tratamento de erros à oper de pesquisa
+      de pessoas, usando o serv de tratamento de erros p/ isto. */
+    .catch(erro => this.errServ.handle(erro));
+  }
+
+  /* 17.13. Desafio: implementando a exclusão de pessoas:
+    Cria um método p/ exclusão de pessoas, de modo análogo ao q foi feito c/ lançamentos (aulas 17.8-17.10)
+    e, assim como c/ lançamentos, usa o serv de tratamento de erros (aula 17.12) p/ reportar erros de opers
+    c/ pessoas. */
+  excluir(pessoa: any) {
+    this.pessoaServ.excluir(pessoa.codigo).then(() => {
+    // Promise.resolve(pessoa.codigo).then(() => {
+      console.log(`Excluída pessoa id ${pessoa.codigo}.`);
+
+      if(this.grid)
+        this.grid.atualizarGrid();
+
+      this.msgServ.add({
+          severity:'success',
+          summary:'Pessoa excluída com sucesso!',
+          detail:`Exclusão feita para pessoa id ${pessoa.codigo}.`
+        });
+      })
+      .catch(erro => this.errServ.handle(erro));
+  }
+
+  // 17.13. Desafio: implementando a exclusão de pessoas:
+  //   Cria um método p/ confirm antes da exclusão de pessoas, de modo análogo ao q foi feito c/ lancs (aulas 17.8-17.10).
+  confirmarExclusao(pessoa: any) {
+    this.confirmServ.confirm({
+      message: "Tem certeza que deseja excluir a pessoa?",
+      accept: () => this.excluir(pessoa)
     });
   }
 }

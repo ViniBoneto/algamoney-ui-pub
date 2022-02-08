@@ -75,8 +75,27 @@
 
       <!-- 17.7. Desafio: criando a consulta e listagem de pessoas:
         Repetindo p/ o comp de pesquisa de pessoas o msm q foi feito p/ o de pesquisa de lançamentos (aulas 17.2-17.6). -->
+      <!-- <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)"></app-pessoas-grid> -->
+
+      <!-- 17.13. Desafio: implementando a exclusão de pessoas:
+        Identifica o comp filho de grid de pessoas na view, usando o decorador @ViewChild, de modo análago ao
+        q foi feito c/ lançamentos (aulas 17.8-17.10).
+
+      Tb de modo análogo ao q foi feito no grid de lancs, associa evto de saída do grid exclusaoPessoaEvt, q irá
+        notificar e repssar o elem a ser excluído ao comp de pesquisa, ao método excluir(), q irá efetivamente excluir
+        a pessoa.-->
+      <!-- <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)" (exclusaoPessoaEvt)="excluir($event)" #gridPessoa>
+      </app-pessoas-grid> -->
+
+      <!-- 17.13. Desafio: implementando a exclusão de pessoas:
+        De modo análogo ao comp de pesquisa de lancs, muda o método associado ao evto exclusaoPessoaEvt do método
+        excluir(), q excluí a pessoa diretamente p/ o método confirmarExclusao(), p/ dar a chance do usr confirmar
+        ou não a exclusão. -->
       <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
-        (mudancaPagEvt)="pesquisar($event)"></app-pessoas-grid>
+        (mudancaPagEvt)="pesquisar($event)" (exclusaoPessoaEvt)="confirmarExclusao($event)" #gridPessoa>
+      </app-pessoas-grid>
     </div>
   </div>
 
