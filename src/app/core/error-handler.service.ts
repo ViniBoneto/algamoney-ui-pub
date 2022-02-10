@@ -49,6 +49,25 @@ export class ErrorHandlerService {
         errors = errorResp.error;
 
       errors && errors[0] && (msg = errors[0].mensagemUsuario);
+
+/*    Obs: Sugestão presente no cód fornecido como solução pela Algaworks:
+        if (typeof errorResponse === 'string') {
+          msg = errorResponse;
+
+        } else if (errorResponse instanceof HttpErrorResponse
+            && errorResponse.status >= 400 && errorResponse.status <= 499) {
+          msg = 'Ocorreu um erro ao processar a sua solicitação';
+
+          try {
+            msg = errorResponse.error[0].mensagemUsuario;
+          } catch (e) { }
+
+          console.error('Ocorreu um erro', errorResponse);
+
+        } else {
+          msg = 'Erro ao processar serviço remoto. Tente novamente.';
+          console.error('Ocorreu um erro', errorResponse);
+        } */
     }
 
     if(msg === undefined || msg === "")
