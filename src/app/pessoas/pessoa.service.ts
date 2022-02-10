@@ -95,6 +95,11 @@ export class PessoaService {
     let headers: HttpHeaders = new HttpHeaders();
     headers = this.configAuthReq(headers);
 
+/*  17.14. Desafio: mensagem de erro de usuário na exclusão de pessoa:
+      Vamos adicionar um sufixo 123 ao cód de pessoa, p/ c/ isso, forçar um cód inválido de pessoa, obter um
+      retorno 404 e testar se a msg de erro p/ o usr, vinda no corpo de resp, será exibida no comp de msg Toast. */
+    // return this.http.delete(`${this.pessoasURL}/${codigo}123`, { headers })
+
     return this.http.delete(`${this.pessoasURL}/${codigo}`, { headers })
       .toPromise().then( () => {} );
   }
@@ -103,7 +108,7 @@ export class PessoaService {
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
   private configAuthReq(headers: HttpHeaders): HttpHeaders {
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0MjgwMjU2LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJlZjAxZmFmOS04MGIxLTRjNWYtODA5Yi00YTdlNTIwYzBhNGMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.ixpikmG04XBVs7JY6ZQWWamUqDbZ5sYjJwV3Gqy5lPo");
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0NDYxNDIwLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmZGVmNGVkYy03MjI1LTRmNjQtYjJmNy1iM2I0ZDg4NjIwYzEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.3kGBOoGBZUI14O9kdqoj2usVTiNJimmrEhfeEE-V_ik");
 
     return headers;
   }
