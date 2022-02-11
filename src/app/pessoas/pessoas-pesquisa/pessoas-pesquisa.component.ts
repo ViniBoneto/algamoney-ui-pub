@@ -127,8 +127,14 @@ export class PessoasPesquisaComponent implements OnInit {
         console.log(`Status pessoa id ${pessoa.codigo} atualizado p/ ${ativo ? "ativo" : "inativo"}.`);
 
         // Atualiza grid pessoas p/ refletir novo status ativo pessoa
-        if(this.grid)
-          this.grid.atualizarGrid();
+        // if(this.grid)
+        //   this.grid.atualizarGrid();
+
+/*      Em vez de se chamar o método de reinicialização do grid ( this.grid.atualizarGrid() ), foi feita
+          apenas a atribuição abaixo. Isso faz com q, se a pessoa cujo status for atualizado estiver em alguma
+          pág após a 1ª, o grid ñ volte p/ esta, saindo da pág em questão. Porém, a col relativa ao status da
+          pessoa será atualizada p/ refletir seu novo status. Isto melhora a usabilidade. */
+        pessoa.ativo = ativo;
 
         // Informa ao usr sucesso da opr
         this.msgServ.add({
