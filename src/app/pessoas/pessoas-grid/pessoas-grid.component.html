@@ -57,9 +57,18 @@
               Na implementação do serv de pessoas, q busca os recursos no backend, muda a forma de verificar
               a prop ativo, pois o obj de ret vem num formato diferente do obj mock no frontend, inicialmente
               usado p/ tst. -->
-            <a href="javascript:;" *ngIf="pessoa.ativo === true; else elseBlock" pTooltip="Inativar">Ativo</a>
+            <!-- <a href="javascript:;" *ngIf="pessoa.ativo === true; else elseBlock" pTooltip="Inativar">Ativo</a>
             <ng-template #elseBlock>
               <a href="javascript:;" pTooltip="Ativar">Inativo</a>
+            </ng-template> -->
+
+            <!-- 17.15. Desafio: implementando a mudança de status de pessoas:
+              Associa o clique do btn de ativação/desativação de pessoas a um método hndlr, q irá repassar o evento
+              e o elem cujo status será alterado ao comp pai. -->
+            <a href="javascript:;" *ngIf="pessoa.ativo === true; else elseBlock" pTooltip="Inativar"
+              (click)="aoMudarStatPessoa(pessoa);">Ativo</a>
+            <ng-template #elseBlock>
+              <a href="javascript:;" pTooltip="Ativar" (click)="aoMudarStatPessoa(pessoa);">Inativo</a>
             </ng-template>
           </td>
           <td class="col-acoes-content">

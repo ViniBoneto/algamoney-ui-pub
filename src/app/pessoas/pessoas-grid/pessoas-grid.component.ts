@@ -27,8 +27,13 @@ export class PessoasGridComponent {
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     De modo análogo ao q foi feito no grid de lancs, cria um evto de saída, acionado no clique do btn de exclusão
-    de pessoas, q irá notificar e repssar o elem a ser excluído ao comp pai. */
+    de pessoas, q irá notificar e repassar o elem a ser excluído ao comp pai. */
   @Output() exclusaoPessoaEvt = new EventEmitter<Object>();
+
+/* 17.15. Desafio: implementando a mudança de status de pessoas:
+    Cria um evto de saída, acionado no clique do btn de altareação de status pessoa (atiavação/inativação), q irá
+    notificar e repassar o elem a ser ativado/inativado ao comp pai. */
+  @Output() altStatPessoaEvt = new EventEmitter<Object>();
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Vamos usar o decorador @ViewChild p/ ligar a prop grid ao elem PNG p-table da view, de modo análogo ao
@@ -55,9 +60,16 @@ export class PessoasGridComponent {
   }
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:
-    De modo análogo ao q foi feito no grid de lancs, associao o clique do btn de exclusão de pessoas a um
+    De modo análogo ao q foi feito no grid de lancs, associa o clique do btn de exclusão de pessoas a um
     método hndlr, q irá repassar o evento e o elem a ser excluído ao comp pai. */
   aoExcluirPessoa(pessoa: any) {
     this.exclusaoPessoaEvt.emit(pessoa);
+  }
+
+/* 17.15. Desafio: implementando a mudança de status de pessoas:
+    Associa o clique do btn de ativação/desativação de pessoas a um método hndlr, q irá repassar o evento
+    e o elem cujo status será alterado ao comp pai. */
+  aoMudarStatPessoa(pessoa: any) {
+    this.altStatPessoaEvt.emit(pessoa);
   }
 }

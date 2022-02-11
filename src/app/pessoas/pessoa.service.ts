@@ -104,11 +104,23 @@ export class PessoaService {
       .toPromise().then( () => {} );
   }
 
+/* 17.15. Desafio: implementando a mudança de status de pessoas:
+  Vamos implementar o método q atualizará apenas o status de uma pessoa (de ativo p/ inativo ou vice-versa),
+  invocando o respectivo método na API de backend. O método HTTP usado será o PUT (p/ ser uma atualização) e
+  o corpo de resp conterá apenas um booleano (true p/ ativar pessoa e false p/ desativar). */
+mudarStatus(codigo: number, status: boolean): Promise<void> {
+  let headers: HttpHeaders = new HttpHeaders();
+  headers = this.configAuthReq(headers);
+
+  return this.http.put(`${this.pessoasURL}/${codigo}/ativo`, status, { headers })
+    .toPromise().then( () => {} );
+}
+
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
   private configAuthReq(headers: HttpHeaders): HttpHeaders {
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0NDYxNDIwLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmZGVmNGVkYy03MjI1LTRmNjQtYjJmNy1iM2I0ZDg4NjIwYzEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.3kGBOoGBZUI14O9kdqoj2usVTiNJimmrEhfeEE-V_ik");
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0NjIwNjk1LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJmMjkwZjk5Ni02YTk4LTQzOWUtYmUzMC0wZTkzZDY5ODRkNTUiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.exccGtEyU6CmdS1RAd08l1mshinIpmwcRyZ04DPlLQ4");
 
     return headers;
   }

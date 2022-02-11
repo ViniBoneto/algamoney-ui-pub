@@ -83,7 +83,7 @@
         q foi feito c/ lançamentos (aulas 17.8-17.10).
 
       Tb de modo análogo ao q foi feito no grid de lancs, associa evto de saída do grid exclusaoPessoaEvt, q irá
-        notificar e repssar o elem a ser excluído ao comp de pesquisa, ao método excluir(), q irá efetivamente excluir
+        notificar e repassar o elem a ser excluído ao comp de pesquisa, ao método excluir(), q irá efetivamente excluir
         a pessoa.-->
       <!-- <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
         (mudancaPagEvt)="pesquisar($event)" (exclusaoPessoaEvt)="excluir($event)" #gridPessoa>
@@ -93,8 +93,17 @@
         De modo análogo ao comp de pesquisa de lancs, muda o método associado ao evto exclusaoPessoaEvt do método
         excluir(), q excluí a pessoa diretamente p/ o método confirmarExclusao(), p/ dar a chance do usr confirmar
         ou não a exclusão. -->
-      <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+      <!-- <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
         (mudancaPagEvt)="pesquisar($event)" (exclusaoPessoaEvt)="confirmarExclusao($event)" #gridPessoa>
+      </app-pessoas-grid> -->
+
+      <!-- 17.15. Desafio: implementando a mudança de status de pessoas:
+        Associa evto de saída do grid altStatPessoaEvt, q irá e notificar e repassar o elem a ter o status alterado
+        (ativado ou inativado) ao comp de pesquisa, ao método mudarStatus(), q irá efetivamente mudar o status pessoa,
+        ativando-a ou inativando-a. -->
+      <app-pessoas-grid [pessoas]="pessoas" [totRegs]="totRegs" [itensPag]="filtro.itensPagina"
+        (mudancaPagEvt)="pesquisar($event)" (exclusaoPessoaEvt)="confirmarExclusao($event)"
+        (altStatPessoaEvt)="mudarStatus($event)" #gridPessoa>
       </app-pessoas-grid>
     </div>
   </div>

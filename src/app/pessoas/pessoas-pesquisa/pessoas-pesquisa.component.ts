@@ -114,4 +114,30 @@ export class PessoasPesquisaComponent implements OnInit {
       accept: () => this.excluir(pessoa)
     });
   }
+
+/* 17.15. Desafio: implementando a mudança de status de pessoas:
+  Vamos implementar o método q atualizará apenas o status de uma pessoa (de ativo p/ inativo ou vice-versa),
+  invocando o serv de pessoa, q invocará o respectivo método na API de backend. */
+  mudarStatus(pessoa: any) {
+    let ativo: boolean;
+
+    // Se pessoa for ativa, inativa e vice-versa.
+    this.pessoaServ.mudarStatus(pessoa.codigo, ativo = !pessoa.ativo).then(() => {
+      // Promise.resolve(pessoa.codigo).then(() => {
+        console.log(`Status pessoa id ${pessoa.codigo} atualizado p/ ${ativo ? "ativo" : "inativo"}.`);
+
+        // Atualiza grid pessoas p/ refletir novo status ativo pessoa
+        if(this.grid)
+          this.grid.atualizarGrid();
+
+        // Informa ao usr sucesso da opr
+        this.msgServ.add({
+            severity:'success',
+            summary:'Status pessoa atualizado!',
+            detail:`Pessoa ${ativo ? "ativada" : "desativada"} com sucesso.`
+          });
+        })
+        // Tratar possíveis erros
+        .catch(erro => this.errServ.handle(erro));
+  }
 }
