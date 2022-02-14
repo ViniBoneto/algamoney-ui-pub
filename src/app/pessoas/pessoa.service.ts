@@ -52,19 +52,19 @@ export class PessoaService {
 /*  Faz a req HTTP GET q retorna uma Promise q, em caso de sucesso, resolve p/ a resp À consulta de pessoas
       q é um obj de ret de paginação, contendo, além do array de pessoas, outras props relativos à paginação. */
       return this.http.get(`${this.pessoasURL}`, { headers, params } /* Equivale a { headers: headers, params: params } */)
-      .toPromise().then(
-        (resp: any) => {
-          const pessoas = resp["content"];
+        .toPromise().then(
+          (resp: any) => {
+            const pessoas = resp["content"];
 
-          const objRet = {
-            // Array de pessoas
-            pessoas, /* Equivale a "pessoas: pessoas," */
-            // Total de pessoas
-            total: resp["totalElements"]
-          };
+            const objRet = {
+              // Array de pessoas
+              pessoas, /* Equivale a "pessoas: pessoas," */
+              // Total de pessoas
+              total: resp["totalElements"]
+            };
 
           return objRet;
-      });
+        });
   }
 
   // Busca todas as pessoas, s/ filtrar ou paginar
@@ -120,7 +120,7 @@ mudarStatus(codigo: number, status: boolean): Promise<void> {
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
   private configAuthReq(headers: HttpHeaders): HttpHeaders {
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0NjIzMjQzLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiIwNDZmYmJjYy0xYzQ3LTQwYmYtYmNlMi04ZWIzZWNmMTA4OGYiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.QKxX9f_qPXrK3blz3OaIX5PrsSTwBsSbBzyEvgl6t9k");
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0ODcxMjY0LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiIwMWNhYmVlZi1hOWIxLTQxYjAtYjU0Yy00ODQ4MGNkODQxN2MiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.avtpP8qiZK8jcex6JYWN7CkmTy9C-inecBKWXxrUElU");
 
     return headers;
   }

@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
 
+import { PessoaService } from './pessoas/pessoa.service';
+import { CategoriaService } from './categorias/categoria.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,9 +22,20 @@ export class AppComponent implements OnInit {
 
   title = 'algamoney-ui';
 
+  // Criando props p/ preencher comboboxes (selects) na view, c/ pessoas e categs, p/ testar servs de listagem de pessoas (aula 17.7)
+  //   e de categs (aula 17.16), q serão, futuramente, usados p/ carregar as combos na tela de cadastro de lancs.
+  arrPessoas!: any[];
+  arrCategs!: any[];
+
   constructor(
     private config: PrimeNGConfig,
     private translateService: TranslateService
+
+    // Injetando servs de listagem de pessoas (aula 17.7) e de categs (aula 17.16), p/ preencher comboboxes (selects) na view, c/ pessoas
+    //  e categs, p/ testar estes servs, q serão, futuramente, usados p/ carregar as combos na tela de cadastro de lancs.
+    ,
+    private pessoaServ: PessoaService,
+    private categServ: CategoriaService
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +70,10 @@ export class AppComponent implements OnInit {
         "today": "Hoje",
         "weekHeader": "Sem"
     });
+
+    // Inicializa props p/ preencher comboboxes (selects) na view, c/ pessoas e categs, usando os servs de listagem de tps respectivos.
+    this.pessoaServ.listar().then( resp => this.arrPessoas = resp );
+    this.categServ.listar().then( resp => this.arrCategs = resp );
   }
 
 }
