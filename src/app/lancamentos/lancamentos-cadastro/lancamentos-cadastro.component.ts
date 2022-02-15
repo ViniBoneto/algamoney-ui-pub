@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { PessoaService } from './../../pessoas/pessoa.service';
+import { Lancamento } from './../../core/model';
 
 @Component({
   selector: 'app-lancamentos-cadastro',
@@ -53,6 +55,14 @@ export class LancamentosCadastroComponent implements OnInit {
   //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
   pessoas = [];
 
+/* 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+    Criando uma prop representando o novo lançamento a ser cadastrado. Esta prop poderia ser do tp any ou um obj
+    genérico. Mas, por boa prática, vamos implementar e associá-la à cls de negócios (modelo) Lancamento, até p/
+    facilitar o controle, validação e o mapeamento de props p/ parte da IDE, em tempo de dev. Serve até p/ deixar
+    o cód tipado e p/ os tps ficarem documentados. Esta e as d+ clss de negócio/modelo serão criadas dentro do mód
+    Core. */
+  lancamento = new Lancamento();
+
   constructor(
 /* 17.17. Listando as categorias cadastradas no dropdown:
     Iremos injetar no comp de cadastro de lançamento o serv de categs, p/ preencher dinamicamente a combo desta
@@ -99,5 +109,16 @@ export class LancamentosCadastroComponent implements OnInit {
       this.pessoas = pessoas.map( (pessoa: any) => ( { label: pessoa.nome, value: pessoa.codigo } ) );
     })
     .catch(erro => this.errHndServ.handle(erro));
+  }
+
+/* 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+    Criando método p/ salvar um lançamento novo. O envio ao servidor será implementado noutra aula. Nesta
+    será efetuada a implementação da cls de modelo (model) e o mapeamento (binding) entre as props da view
+    e as props duma instância desta cls, representando o novo lançamento a ser cadastrado.
+
+  Este método recebe como param o form de cadastro de lanc. Porém tds os vals dos seus cntrls já estarão
+    mapeados p/ as props internas da prop lancamento. */
+  salvar(lancForm: NgForm) {
+    console.log("Salvando lançamento:\n", this.lancamento);
   }
 }

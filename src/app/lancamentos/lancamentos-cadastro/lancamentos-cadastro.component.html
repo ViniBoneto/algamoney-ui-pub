@@ -18,7 +18,12 @@
   <!-- 13.10. Desafio: controles, validações e mensagens de erro:
     Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
     estiverem com estado de validação positivo. -->
-  <form #form="ngForm">
+  <!-- <form #form="ngForm"> -->
+
+  <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+    Ligando o evto de submissão do ngForm (ngSubmit) ao método salvar(), q irá enviar o novo lanc p/
+    cadastro no servidor. -->
+  <form #form="ngForm" (ngSubmit)="salvar(form);">
     <div class="grid">
       <div class="col-12">
         <h1>Novo Lançamento</h1>
@@ -28,7 +33,12 @@
         Vamos usar o comp PNG SelecButton p/ alternar entre as abas de tp lançamento (receita ou despesa).
         Associa uma var de template (#tipo) ao comp, para referencia-lo futuramente. -->
       <div class="col-12">
-        <p-selectButton [options]="tipos" #tipo></p-selectButton>
+        <!-- <p-selectButton [options]="tipos" #tipo></p-selectButton> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
+        <p-selectButton [options]="tipos" name="tipo" [(ngModel)]="lancamento.tipo" #tipo></p-selectButton>
       </div>
 
       <div class="col-6 md:col-3 p-fluid">
@@ -63,9 +73,16 @@
           Os campos input, decorados com a diretiva pInputText ainda aceitam a forma padrão do HTML, mas também funcionam
           com a forma descrita para os componentes do PrimeNG.
         -->
+        <!-- <p-calendar [readonlyInput]="false" [inline]="false" [showIcon]="false"
+          [dateFormat]="'dd/mm/yy'" name="vencimento" ngModel #dtVenc="ngModel"
+          [required]="true"></p-calendar> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
         <p-calendar [readonlyInput]="false" [inline]="false" [showIcon]="false"
           [dateFormat]="'dd/mm/yy'" name="vencimento" ngModel #dtVenc="ngModel"
-          [required]="true"></p-calendar>
+          [required]="true" [(ngModel)]="lancamento.dataVencimento" ></p-calendar>
 
         <!-- 14.6. Criando um Feature Module:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -94,7 +111,13 @@
           expr em TS. -->
         <!-- <input type="text" pInputText> -->
 
-        <p-calendar dateFormat="dd/mm/yy"></p-calendar>
+        <!-- <p-calendar dateFormat="dd/mm/yy"></p-calendar> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
+        <p-calendar dateFormat="dd/mm/yy" name="{{ tipo.value === 'RECEITA' ? 'recebimento' : 'pagamento' }}"
+          [(ngModel)]="lancamento.dataPagamento"></p-calendar>
       </div>
 
       <div class="col-12 md:col-9 p-fluid">
@@ -119,8 +142,14 @@
         -->
         <!-- <br> Descripiton.errors = {{ desc.errors | json }} -->
 
+        <!-- <input pInputText type="text" name="descricao" ngModel #desc="ngModel"
+          required minlength="5"> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
         <input pInputText type="text" name="descricao" ngModel #desc="ngModel"
-          required minlength="5">
+          required minlength="5" [(ngModel)]="lancamento.descricao">
 
         <!-- <div *ngIf="desc.dirty && desc.hasError('required')" class="p-message p-message-error">
           Informe uma descrição válida.
@@ -201,8 +230,14 @@
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Valor" o procedimento p/ "Vencimento". Só não há necessidade de colocar msg erro,
           pois o campo sempre terá um val (nem que seja o 0,00 default). -->
+        <!-- <p-inputNumber mode="currency" currency="BRL" placeholder="R$ 0,00" [inputStyle]="{'text-align': 'end'}"
+          name="valor" ngModel [required]="true"></p-inputNumber> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
         <p-inputNumber mode="currency" currency="BRL" placeholder="R$ 0,00" [inputStyle]="{'text-align': 'end'}"
-          name="valor" ngModel [required]="true"></p-inputNumber>
+          name="valor" ngModel [required]="true" [(ngModel)]="lancamento.valor"></p-inputNumber>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
@@ -222,8 +257,14 @@
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Categoria" o procedimento p/ "Vencimento". Só não há necessidade de colocar msg erro,
           pois o campo sempre terá um val válido qdo estiver dirty, pela própria dinâmica do dropdown. -->
+        <!-- <p-dropdown [options]="categorias" placeholder="Selecione" #categ
+          name="categoria" ngModel [required]="true"></p-dropdown> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
         <p-dropdown [options]="categorias" placeholder="Selecione" #categ
-          name="categoria" ngModel [required]="true"></p-dropdown>
+          name="categoria" ngModel [required]="true" [(ngModel)]="lancamento.categoria.codigo"></p-dropdown>
       </div>
 
       <div class="col-12 md:col-6 p-fluid">
@@ -242,13 +283,24 @@
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Pessoa" o procedimento p/ "Vencimento". Só não há necessidade de colocar msg erro,
           pois o campo sempre terá um val válido qdo estiver dirty, pela própria dinâmica do dropdown. -->
-        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa
-          name="pessoa" ngModel [required]="true"></p-dropdown>
+        <!-- <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa
+          name="pessoa" ngModel [required]="true"></p-dropdown> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
+        <p-dropdown [options]="pessoas" placeholder="Selecione" [filter]="true" #pessoa name="pessoa"
+          ngModel [required]="true" [(ngModel)]="lancamento.pessoa.codigo"></p-dropdown>
       </div>
 
       <div class="col-12 p-fluid">
         <label>Observação</label>
-        <textarea rows="3" pInputTextarea></textarea>
+        <!-- <textarea rows="3" pInputTextarea></textarea> -->
+
+        <!-- 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
+          Mapeia a prop da view à prop equivalente na cls de modelo instanciada no comp de cadastro de lanc.
+          Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
+        <textarea rows="3" pInputTextarea name="observacao" [(ngModel)]="lancamento.observacao"></textarea>
       </div>
 
       <div class="col-12">
