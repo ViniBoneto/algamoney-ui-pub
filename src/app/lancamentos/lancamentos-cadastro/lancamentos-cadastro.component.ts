@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
+import { PessoaService } from './../../pessoas/pessoa.service';
 
 @Component({
   selector: 'app-lancamentos-cadastro',
@@ -35,7 +36,7 @@ export class LancamentosCadastroComponent implements OnInit {
     de categs será dinamicamente carregada pelo serv de categs. */
   categorias = [];
 
-  pessoas = [
+/*   pessoas = [
     { label: "Jacinto L. Aquino Rego", value: "1" },
     { label: "Romeu Pinto", value: "2" },
     { label: "Ava Berta", value: "3" },
@@ -46,20 +47,30 @@ export class LancamentosCadastroComponent implements OnInit {
     { label: "Laís C. Navarra", value: "8" },
     { label: "Major Tommas", value: "9" },
     { label: "Patinhas McPato", value: "10" }
-  ];
+  ]; */
+
+  // 17.18. Desafio: listando as pessoas cadastradas no dropdown
+  //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
+  pessoas = [];
 
   constructor(
 /* 17.17. Listando as categorias cadastradas no dropdown:
     Iremos injetar no comp de cadastro de lançamento o serv de categs, p/ preencher dinamicamente a combo desta
     e tb o serv de tratamento de erros, p/ tratar qq erro q venha a ocorrer. */
     private categServ: CategoriaService,
-    private errHndServ: ErrorHandlerService
+    private errHndServ: ErrorHandlerService,
+    // 17.18. Desafio: listando as pessoas cadastradas no dropdown
+    //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
+    private pessoaServ: PessoaService
   ) { }
 
   ngOnInit(): void {
     // 17.17. Listando as categorias cadastradas no dropdown:
     //  Chama o método p/ carregar dinamicamente a combo de categs, logo após o comp ter suas props inicializadas.
     this.carregarCategs();
+    // 17.18. Desafio: listando as pessoas cadastradas no dropdown
+    //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
+    this.carregarPessoas();
   }
 
 /* 17.17. Listando as categorias cadastradas no dropdown:
@@ -78,6 +89,15 @@ export class LancamentosCadastroComponent implements OnInit {
       this.categorias = categs.map( (categ: any) => ( { label: categ.nome, value: categ.codigo } ) );
     })
     // É preciso tb fazer um tratamento de erros
+    .catch(erro => this.errHndServ.handle(erro));
+  }
+
+  // 17.18. Desafio: listando as pessoas cadastradas no dropdown
+  //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
+  carregarPessoas(){
+    this.pessoaServ.listar().then(pessoas => {
+      this.pessoas = pessoas.map( (pessoa: any) => ( { label: pessoa.nome, value: pessoa.codigo } ) );
+    })
     .catch(erro => this.errHndServ.handle(erro));
   }
 }
