@@ -3,8 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
 
+import { AuthService } from './shared/auth.service';
+// import { obterAccessToken } from './shared/shared.module';
+
 // import { PessoaService } from './pessoas/pessoa.service';
 // import { CategoriaService } from './categorias/categoria.service';
+
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+  Transferindo a prop oauth2Token do serv de auth p/ o comp raiz (AppComponent), p/, c/ isto, o seu estado
+  ser mantido ao longo da app, até ser alterado programaticamente. */
+export var oauth2Token = "RecebeAlgumoauth2TokenValido";
 
 @Component({
   selector: 'app-root',
@@ -21,6 +29,8 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit {
 
   title = 'algamoney-ui';
+  primChamada = true;
+  // oauth2Token: string | undefined;
 
   // Criando props p/ preencher comboboxes (selects) na view, c/ pessoas e categs, p/ testar servs de listagem de pessoas (aula 17.7)
   //   e de categs (aula 17.16), q serão, futuramente, usados p/ carregar as combos na tela de cadastro de lancs.
@@ -29,13 +39,18 @@ export class AppComponent implements OnInit {
 
   constructor(
     private config: PrimeNGConfig,
-    private translateService: TranslateService
+    private translateService: TranslateService,
 
     // Injetando servs de listagem de pessoas (aula 17.7) e de categs (aula 17.16), p/ preencher comboboxes (selects) na view, c/ pessoas
     //  e categs, p/ testar estes servs, q serão, futuramente, usados p/ carregar as combos na tela de cadastro de lancs.
     // ,
     // private pessoaServ: PessoaService,
     // private categServ: CategoriaService
+
+/*  17.20. Implementando o serviço de cadastro de lançamentos:
+      Injetando serv c/ funcs q retornam o access token oauth2 p/ os servs da app q o requerem. Isto poupará o trab
+      de ter q copiar e colar o token do Postman p/ os servs. */
+    private authServ: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -76,4 +91,15 @@ export class AppComponent implements OnInit {
     // this.categServ.listar().then( resp => this.arrCategs = resp );
   }
 
+  // 17.20. Implementando o serviço de cadastro de lançamentos:
+  //  Tst da func obterOauth2AccessToken(), q ret o access token oauth2 p/ os servs da app q o requerem.
+  // async obterAccessToken(sync: boolean = false): Promise<string | undefined> {
+  //   if(this.primChamada) {
+  //     // this.oauth2Token = await ( sync ? this.authServ.obterOauth2AccessTokenSync() : this.authServ.obterOauth2AccessToken() );
+  //     this.oauth2Token = await obterAccessToken(this.authServ, sync);
+  //     this.primChamada = false;
+  //   }
+
+  //   return this.oauth2Token /* obterOauth2AccessToken() */;
+  // }
 }

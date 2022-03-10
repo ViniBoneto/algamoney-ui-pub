@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { DataService } from './../shared/data.service';
+import { Lancamento } from './../core/model';
+import { AuthService } from '../shared/auth.service';
+import { obterAccessToken } from '../shared/shared.module';
 
 /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
   Tb cria uma interface do tp LancamentoFiltro, trocando o param filtro de any p/ este tp. Isto serve p/
@@ -56,7 +59,11 @@ export class LancamentoService {
 
   // 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
   //   Injeta serv de manipulação de dts, p/ converter os params de dts p/ strs na formatação correta.
-  constructor(private http: HttpClient, private dtServ: DataService) { }
+  // constructor(private http: HttpClient, private dtServ: DataService) { }
+
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Injetando serv de auth, p/ obter o token de acesso no backend programaticamente. */
+  constructor(private http: HttpClient, private dtServ: DataService, private authServ: AuthService) { }
 
 /* Consulta a app background e retorna uma Promise q resolve c/ os lançamentos retornados.
   Aqui estou ainda usando o método Observable.toPromise(), da biblio RXJS, pois na versão
@@ -95,85 +102,90 @@ export class LancamentoService {
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
-    headers = this.configAuthReq(headers);
+    // headers = this.configAuthReq(headers);
+    /* 17.20. Implementando o serviço de cadastro de lançamentos:
+        Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+        programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+        HttpHeaders p/ Promise<HttpHeaders>. */
+    return this.configAuthReq(headers).then(headers => {
+      /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
+            Cria um obj de params http, p/ adiconar os params de filtro de busca (caso constem). Adiciona os params
+            ao obj da prop options do método HttpClient.get().  */
+          let params = new HttpParams();
+          // Tb é necessário fazer a atribuição abaixo, pelo msm motivo do HttpHeaders. A adic do param só será feita
+          //  se ele constar no obj filtro.
+          if(filtro.descricao)
+            params = params.set("descricao", filtro.descricao);
 
-/* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
-      Cria um obj de params http, p/ adiconar os params de filtro de busca (caso constem). Adiciona os params
-      ao obj da prop options do método HttpClient.get().  */
-    let params = new HttpParams();
-    // Tb é necessário fazer a atribuição abaixo, pelo msm motivo do HttpHeaders. A adic do param só será feita
-    //  se ele constar no obj filtro.
-    if(filtro.descricao)
-      params = params.set("descricao", filtro.descricao);
+      /*  17.4. Adicionando filtro por datas na pesquisa de lançamentos:
+            Adiciona filtros p/ dts min e max de venc, caso existam no obj filtro e sejam válidas. Usa o serv
+            de manipulação de dts, p/ converter os params de Date p/ str, na formatação entendida pela API de
+            backend ("YYYY-MM-DD"). */
+          let dtFiltro: string;
 
-/*  17.4. Adicionando filtro por datas na pesquisa de lançamentos:
-      Adiciona filtros p/ dts min e max de venc, caso existam no obj filtro e sejam válidas. Usa o serv
-      de manipulação de dts, p/ converter os params de Date p/ str, na formatação entendida pela API de
-      backend ("YYYY-MM-DD"). */
-    let dtFiltro: string;
+          if(filtro.dataVencimentoIni) {
+            // Usando o método DataService.dataParaStr() p/ gerar a str de dt no formato certo. Este método
+            //  invoca internamente o obj JS Intl.DateTimeFormat.
+            // dtFiltro = this.dtServ.dataParaStr(filtro.dataVencimentoIni);
 
-    if(filtro.dataVencimentoIni) {
-      // Usando o método DataService.dataParaStr() p/ gerar a str de dt no formato certo. Este método
-      //  invoca internamente o obj JS Intl.DateTimeFormat.
-      // dtFiltro = this.dtServ.dataParaStr(filtro.dataVencimentoIni);
-
-      // Opcionalmente, pode-se invocar o método DataService.dataParaStrDtPipe() p/ gerar a str de dt no
-      //  formato certo. Este método invoca internamente o pipe DatePipe nativo do Angular.
-      dtFiltro = this.dtServ.dataParaStrDtPipe(filtro.dataVencimentoIni);
-      // console.log(`dataVencimentoDe: ${dtFiltro}`);
-      params = params.set("dataVencimentoDe", dtFiltro);
-    }
-
-    if(filtro.dataVencimentoFim) {
-      // dtFiltro = this.dtServ.dataParaStr(filtro.dataVencimentoFim);
-
-      dtFiltro = this.dtServ.dataParaStrDtPipe(filtro.dataVencimentoFim);
-      // console.log(`dataVencimentoAté: ${dtFiltro}`);
-      params = params.set("dataVencimentoAte", dtFiltro);
-    }
-
-/*  17.5. Implementando a paginação no serviço de lançamentos:
-      Mapeia os campos de paginação do filtro p/ os params de req entendidos pelo mecanismo de paginação
-      no servidor (page e size).
-
-    Obs: Como vimos na aula anterior, HttpParams é um componente imutável então precisamos reatribuir seu
-      valor quando usarmos o método set. */
-    params = params.set("page", filtro.pagina);
-    params = params.set("size", filtro.itensPagina);
-
-    // return this.http.get(`${this.lancamentosURL}?resumo`, { headers } /* Equivale a { headers: headers } */)
-    return this.http.get(`${this.lancamentosURL}?resumo`, { headers, params } /* Equivale a { headers: headers, params: params } */)
-      .toPromise().then(
-        // Loga todo o corp de resp (um obj Pageable, pq o backend Spring usa recurso de paginação)
-        // (resp) => console.log(resp)
-
-        // Loga apenas o array c/ lançamentos (prop content do corpo de resp)
-        // (resp: any) => console.log(resp["content"])
-
-        // Retorna o array de lançamentos como conteúdo da Promise resolvida
-        // (resp: any) => {
-        //   console.log(`Resposta HTTP\n: ${JSON.stringify(resp)}`);
-        //   return resp["content"];
-        // }
-
-/*      17.5. Implementando a paginação no serviço de lançamentos:
-          Agora ñ iremos mais retornar apenas a prop content, do obj de resp, q contém o array de lançamentos.
-          Vamos precisar tb da prop totalElements, q contém o nº total de lançamentos, p/ o data table do PNG
-          poder calcular o nº de págs a exibir e sincronizar sua paginação local c/ a paginação do backend. Então,
-          agora retornaremos um obj contendo tanto o array de lançamentos qto o total de lançamentos. */
-          (resp: any) => {
-            const lancamentos = resp["content"];
-
-            const objRet = {
-              // Array de lançamentos
-              lancamentos, /* Equivale a "lancamentos: lancamentos," */
-              // Total de lançamentos
-              total: resp["totalElements"]
-            };
-
-            return objRet;
+            // Opcionalmente, pode-se invocar o método DataService.dataParaStrDtPipe() p/ gerar a str de dt no
+            //  formato certo. Este método invoca internamente o pipe DatePipe nativo do Angular.
+            dtFiltro = this.dtServ.dataParaStrDtPipe(filtro.dataVencimentoIni);
+            // console.log(`dataVencimentoDe: ${dtFiltro}`);
+            params = params.set("dataVencimentoDe", dtFiltro);
           }
-    );
+
+          if(filtro.dataVencimentoFim) {
+            // dtFiltro = this.dtServ.dataParaStr(filtro.dataVencimentoFim);
+
+            dtFiltro = this.dtServ.dataParaStrDtPipe(filtro.dataVencimentoFim);
+            // console.log(`dataVencimentoAté: ${dtFiltro}`);
+            params = params.set("dataVencimentoAte", dtFiltro);
+          }
+
+      /*  17.5. Implementando a paginação no serviço de lançamentos:
+            Mapeia os campos de paginação do filtro p/ os params de req entendidos pelo mecanismo de paginação
+            no servidor (page e size).
+
+          Obs: Como vimos na aula anterior, HttpParams é um componente imutável então precisamos reatribuir seu
+            valor quando usarmos o método set. */
+          params = params.set("page", filtro.pagina);
+          params = params.set("size", filtro.itensPagina);
+
+          // return this.http.get(`${this.lancamentosURL}?resumo`, { headers } /* Equivale a { headers: headers } */)
+          return this.http.get(`${this.lancamentosURL}?resumo`, { headers, params } /* Equivale a { headers: headers, params: params } */)
+            .toPromise().then(
+              // Loga todo o corp de resp (um obj Pageable, pq o backend Spring usa recurso de paginação)
+              // (resp) => console.log(resp)
+
+              // Loga apenas o array c/ lançamentos (prop content do corpo de resp)
+              // (resp: any) => console.log(resp["content"])
+
+              // Retorna o array de lançamentos como conteúdo da Promise resolvida
+              // (resp: any) => {
+              //   console.log(`Resposta HTTP\n: ${JSON.stringify(resp)}`);
+              //   return resp["content"];
+              // }
+
+      /*      17.5. Implementando a paginação no serviço de lançamentos:
+                Agora ñ iremos mais retornar apenas a prop content, do obj de resp, q contém o array de lançamentos.
+                Vamos precisar tb da prop totalElements, q contém o nº total de lançamentos, p/ o data table do PNG
+                poder calcular o nº de págs a exibir e sincronizar sua paginação local c/ a paginação do backend. Então,
+                agora retornaremos um obj contendo tanto o array de lançamentos qto o total de lançamentos. */
+                (resp: any) => {
+                  const lancamentos = resp["content"];
+
+                  const objRet = {
+                    // Array de lançamentos
+                    lancamentos, /* Equivale a "lancamentos: lancamentos," */
+                    // Total de lançamentos
+                    total: resp["totalElements"]
+                  };
+
+                  return objRet;
+                }
+          );
+    });
   }
 
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
@@ -184,26 +196,112 @@ export class LancamentoService {
       da operação. */
   excluir(codigo: number): Promise<void> {
     let headers: HttpHeaders = new HttpHeaders();
-    headers = this.configAuthReq(headers);
+    // headers = this.configAuthReq(headers);
+    /* 17.20. Implementando o serviço de cadastro de lançamentos:
+        Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+        programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+        HttpHeaders p/ Promise<HttpHeaders>. */
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.delete(`${this.lancamentosURL}/${codigo}`, { headers })
+  /*  17.12. Criando um serviço de tratamento de erros:
+        Vamos mudar a URL de exclução de lançamentos p/ uma inválida (primeiro ${codigo}xxx e dps ${codigo}234),
+        p/ se gerar erro e se testar o tratamento de erros da app.
+      Obs: No primeiro caso o erro ret foi 400 e no segundo foi 404. */
+      // return this.http.delete(/* `${this.lancamentosURL}/${codigo}xxx` */ `${this.lancamentosURL}/${codigo}234`, { headers })
+        .toPromise().then( () => {} );
+    });
+  }
 
-    return this.http.delete(`${this.lancamentosURL}/${codigo}`, { headers })
-/*  17.12. Criando um serviço de tratamento de erros:
-      Vamos mudar a URL de exclução de lançamentos p/ uma inválida (primeiro ${codigo}xxx e dps ${codigo}234),
-      p/ se gerar erro e se testar o tratamento de erros da app.
-    Obs: No primeiro caso o erro ret foi 400 e no segundo foi 404. */
-    // return this.http.delete(/* `${this.lancamentosURL}/${codigo}xxx` */ `${this.lancamentosURL}/${codigo}234`, { headers })
-      .toPromise().then( () => {} );
+  /* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Criando método p/ inserir um novo lanç no backend. Este método usa o método HTTP POST p/ enviar o novo lanç
+    e retorna uma Promise do tp lançamento, pq o método POST retorna, no corpo da resp, o próprio lanç enviado
+    e cadastrado, acrescido de sua ID interna, atribuída na base de dados. O param de entrada será um obj da cls
+    de modelo Lancamento. */
+  adicionar(lanc: Lancamento): Promise<Lancamento> {
+    let headers: HttpHeaders = new HttpHeaders();
+    // headers = this.configAuthReq(headers);
+
+    /* 17.20. Implementando o serviço de cadastro de lançamentos:
+        Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+        programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+        HttpHeaders p/ Promise<HttpHeaders>. */
+    return this.configAuthReq(headers).then(headers => {
+    // headers = this.configAuthReqSync(headers);
+      // Datas de venc e paggo/receb estão no formato "YYYY-MM-DDTHH:mm:ss.sssZ" mas os tps aceitos no servidor são
+      //   LocalDate, q ñ aceitam nem hr e nem TZ. Logo, dts precisam ser convert ao formato "YYYY-MM-DD".
+      // console.log(`Lançamento antes conversão datas:\n${JSON.stringify(lanc)}`);
+      // lanc.dataPagamento = this.dtServ.dataParaStrDtPipe( new Date(lanc.dataPagamento) );
+      // lanc.dataVencimento = this.dtServ.dataParaStrDtPipe( new Date(lanc.dataVencimento) );
+      // console.log(`\n---------------------------------------------------------\nLançamento pós conversão datas:\n${JSON.stringify(lanc)}`);
+
+      /* 17.20. Implementando o serviço de cadastro de lançamentos:
+        Separa comps das datas antes de submetê-los ao contrutor, p/ driblar erro na instanciação de dts, a partir
+        da str (Invalid Date). C/ isso uso o constr de Date q recebe as partes da data individualmente. */
+      // console.log(`Lançamento antes conversão datas:\n${JSON.stringify(lanc)}`);
+      // this.converterDatas(lanc);
+      // console.log(`\n---------------------------------------------------------\nLançamento pós conversão datas:\n${JSON.stringify(lanc)}`);
+
+      // return Promise.resolve(lanc);
+
+      // Podemos utilizar tipagem no método post para que possamos obter a resposta diretamente como Lancamento.
+      // return this.http.post<Lancamento>(this.lancamentosURL, lanc, { headers }).toPromise();
+      // Como retorno o corpo de resp inalterado, ñ preciso invocar o then() abaixo. Basta retornar a Promise
+      //  retornada pelo método toPromise().
+        /* .then( (resp) => resp ); */
+
+  /* 17.20. Implementando o serviço de cadastro de lançamentos:
+      Seguindo dicas neste post aqui https://app.algaworks.com/forum/topicos/82129/tipo-date , p/ tentar superar o
+      erro gerando no p-calendar indicado aqui https://stackoverflow.com/questions/70017960/p-calendar-ngmodel-data-error-error-uncaught-in-promise-unexpected-l */
+      return this.http.post<Lancamento>(this.lancamentosURL, Lancamento.toJson(lanc), { headers }).toPromise();
+    });
   }
 
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
-  private configAuthReq(headers: HttpHeaders): HttpHeaders {
+  private async configAuthReq(headers: HttpHeaders): Promise<HttpHeaders> {
   /* Como a gestão de recs no backend envolve acesso pré-authorizado aos métodos dos servs, usando a anotação
-     Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
-     do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0MjgwMjU2LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiJlZjAxZmFmOS04MGIxLTRjNWYtODA5Yi00YTdlNTIwYzBhNGMiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.ixpikmG04XBVs7JY6ZQWWamUqDbZ5sYjJwV3Gqy5lPo");
+      Spring @PreAuthorize, q está intrinsicamente ligada ao tipo de segurança oauth2 (verifica escopo perm
+      do cli, p/ exemp), ñ funciona usar segurança basic. P/ isto, trocamos p/ tipo oauth2, msm em amb de dev. */
+    // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ1MjQwMTE2LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI1ZTRiODA1My04ZDdjLTRkZmItODc3NS1jMzZkNzBhZjNmMDgiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.amjpLzRC-qLrFX04frvkvbsCPChflDP69YgEuzDOnpY");
+
+    /* 17.20. Implementando o serviço de cadastro de lançamentos:
+        Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+        programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+        HttpHeaders p/ Promise<HttpHeaders>. */
+    let oauth2Token = await obterAccessToken(this.authServ, true);
+    headers = headers.append("Authorization", `Bearer ${oauth2Token}`);
 
     return headers;
+  }
+
+  private configAuthReqSync(headers: HttpHeaders): HttpHeaders {
+    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ1ODQ5MDYzLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI1NGY3Mjc2MC1jZGQ1LTRhZmItYmE3Mi05ZGQ1NzI3NzZkZWEiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.mmXshDVP_rOWg3kkZB0k5AWOlx2Iay8KkXVM6NtXf7A");
+
+    return headers;
+  }
+
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Separa comps das datas antes de submetê-los ao contrutor, p/ driblar erro na instanciação de dts, a partir
+    da str (Invalid Date). C/ isso uso o constr de Date q recebe as partes da data individualmente. */
+  private converterDatas(lanc: Lancamento) {
+/*     let arrDt = (lanc.dataPagamento) ? this.dtServ.separaData(lanc.dataPagamento) : [];
+
+    if(arrDt.length > 0)
+      lanc.dataPagamento = this.dtServ.dataParaStrDtPipe( new Date(arrDt[2], arrDt[1] - 1, arrDt[0]) );
+    else
+      lanc.dataPagamento = "";
+
+    arrDt = (lanc.dataVencimento) ? this.dtServ.separaData(lanc.dataVencimento) : [];
+
+    if(arrDt.length > 0)
+      lanc.dataVencimento = this.dtServ.dataParaStrDtPipe( new Date(arrDt[2], arrDt[1] - 1, arrDt[0]) );
+    else
+      lanc.dataVencimento = ""; */
+
+    // Voltei os campos de dt do lanç de tp str p/ Date, em + uma tentativa de contornar o erro aqui descrito:
+    //  https://app.algaworks.com/forum/topicos/54922/pq-sera-que-estou-recebendo-este-erro-ao-tentar-salvar-usando-o-calendar-sem-o-calendar-esta-funcio
+    lanc.dataPagamento = new Date( this.dtServ.dataParaStrDtPipe(lanc.dataPagamento) );
+    lanc.dataVencimento = new Date( this.dtServ.dataParaStrDtPipe(lanc.dataVencimento) );
   }
 }

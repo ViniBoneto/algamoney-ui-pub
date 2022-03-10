@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MessageModule } from 'primeng/message';
 
 import { DataService } from './data.service';
+import { AuthService } from './auth.service';
 import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.component';
 
 
@@ -27,7 +28,11 @@ import { MensagensErroComponent } from './mensagens-erro/mensagens-erro.componen
 /* 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
       Criando um serv p/ tratamento de dts, q inclui funcs p/ conversão e formatação, e incluindo-o entre
       os servs injetáveis providos pelo mód compartilhado. */
-    DataService
+    DataService,
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+  Criando serv c/ funcs q retornam o access token oauth2 p/ os servs da app q o requerem. Isto poupará o trab
+  de ter q copiar e colar o token do Postman p/ os servs. */
+    AuthService
   ]
 })
 export class SharedModule { }
@@ -63,4 +68,23 @@ export function objParaStr(obj: Object | undefined | null): string {
   objStr += "}";
 
   return objStr;
+}
+
+// Func utilitária q recebe um obj literal c/ props e os converte p/ um obj FormData contendo as msms props
+export function gerarFormData(formParams: any): FormData {
+  let form = new FormData();
+
+  for (const param in formParams) {
+    form.append(param, formParams[param]);
+  }
+
+  return form;
+}
+
+// 17.20. Implementando o serviço de cadastro de lançamentos:
+//  Func obterAccessToken() ret o access token oauth2 p/ os servs da app q o requerem, de maneira síncrona ou assíncrona.
+export async function obterAccessToken(authServ: AuthService, sync: boolean = false): Promise<string | undefined> {
+  let oauth2Token = await ( sync ? authServ.obterOauth2AccessTokenSync() : authServ.obterOauth2AccessToken() );
+
+  return oauth2Token;
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML de teste
+    <script>
+      var oaut2Token = "RecebeAlgumOaut2TokenValido";
+
+      function obterOauth2AccessToken() {
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${oaut2Token}`);
+
+        fetch("http://localhost:8080/categorias",
+          {
+            method: "HEAD",
+            headers: myHeaders
+          }
+        ).then(resp => {
+          console.log("Resposta:\n", resp);
+        })
+        .catch(err => console.error("Erro!!!", err))
+        .finally( () => console.log(`Requisição encerrada. token atual é ${oaut2Token}`) );
+
+        return oaut2Token;
+      }
+    </script>
+  </title>
+</head>
+<body>
+<!-- 17.20. Implementando o serviço de cadastro de lançamentos:
+  Tst da func obterOauth2AccessToken(), q ret o access token oauth2 p/ os servs da app q o requerem. -->
+  <script>
+    document.write(`<p>Retorno obtido: <br/> obterOauth2AccessToken()</p>`);
+  </script>
+</body>
+</html>

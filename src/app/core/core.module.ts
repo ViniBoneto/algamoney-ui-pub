@@ -1,6 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
-import localePt from '@angular/common/locales/pt'
+import localePt from '@angular/common/locales/pt';
 import { HttpClient } from '@angular/common/http';
 
 import { ToastModule } from 'primeng/toast';
@@ -11,7 +11,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { ErrorHandlerService } from './error-handler.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { core } from '@angular/compiler';
 
 /* 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
   Adição do DatePipe: Usando o  pipe DatePipe, nativo do Angular, p/ format dts no serv DateService.

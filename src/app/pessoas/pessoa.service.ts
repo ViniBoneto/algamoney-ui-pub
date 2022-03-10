@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { AuthService } from '../shared/auth.service';
+import { obterAccessToken } from '../shared/shared.module';
+
 /* 17.7. Desafio: criando a consulta e listagem de pessoas:
   Replicando p/ pessoas o q foi feito p/ lançamentos em aulas anteriores (17.2-17.6): Criando um serv p/
   consultar e gerir recursos de pessoas. */
@@ -22,7 +25,11 @@ export class PessoaService {
   private pessoasURL = "http://localhost:8080/pessoas";
 
   // Injetando o serv HttpClient p/ depend, p/ fazer as reqs http
-  constructor(private http: HttpClient) { }
+  // constructor(private http: HttpClient) { }
+
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Injetando serv de auth, p/ obter o token de acesso no backend programaticamente. */
+  constructor(private http: HttpClient, private authServ: AuthService) { }
 
   // Faz pesquisa de pessoas usando filtro e/ou paginação opcional
   pesquisar(filtro: PessoaFiltro): Promise<any> {
@@ -34,37 +41,43 @@ export class PessoaService {
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
-    headers = this.configAuthReq(headers);
+    // headers = this.configAuthReq(headers);
 
-    // Params HTTP
-    let params = new HttpParams();
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+    programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+    HttpHeaders p/ Promise<HttpHeaders>. */
+    return this.configAuthReq(headers).then(headers => {
+      // Params HTTP
+      let params = new HttpParams();
 
-    // Se filtro nome ou params de paginação válidos foram fornecidos, inclui-os nos params de req
-    if(filtro.nome)
-      params = params.set("nome", filtro.nome);
+      // Se filtro nome ou params de paginação válidos foram fornecidos, inclui-os nos params de req
+      if(filtro.nome)
+        params = params.set("nome", filtro.nome);
 
-    if(filtro.pagina)
-      params = params.set("page", filtro.pagina);
+      if(filtro.pagina)
+        params = params.set("page", filtro.pagina);
 
-    if(filtro.itensPagina)
-      params = params.set("size", filtro.itensPagina);
+      if(filtro.itensPagina)
+        params = params.set("size", filtro.itensPagina);
 
-/*  Faz a req HTTP GET q retorna uma Promise q, em caso de sucesso, resolve p/ a resp À consulta de pessoas
-      q é um obj de ret de paginação, contendo, além do array de pessoas, outras props relativos à paginação. */
-      return this.http.get(`${this.pessoasURL}`, { headers, params } /* Equivale a { headers: headers, params: params } */)
-        .toPromise().then(
-          (resp: any) => {
-            const pessoas = resp["content"];
+  /*  Faz a req HTTP GET q retorna uma Promise q, em caso de sucesso, resolve p/ a resp À consulta de pessoas
+        q é um obj de ret de paginação, contendo, além do array de pessoas, outras props relativos à paginação. */
+        return this.http.get(`${this.pessoasURL}`, { headers, params } /* Equivale a { headers: headers, params: params } */)
+          .toPromise().then(
+            (resp: any) => {
+              const pessoas = resp["content"];
 
-            const objRet = {
-              // Array de pessoas
-              pessoas, /* Equivale a "pessoas: pessoas," */
-              // Total de pessoas
-              total: resp["totalElements"]
-            };
+              const objRet = {
+                // Array de pessoas
+                pessoas, /* Equivale a "pessoas: pessoas," */
+                // Total de pessoas
+                total: resp["totalElements"]
+              };
 
-          return objRet;
-        });
+            return objRet;
+          });
+    });
   }
 
   // Busca todas as pessoas, s/ filtrar ou paginar
@@ -93,15 +106,21 @@ export class PessoaService {
 //  Cria um método p/ exclusão de pessoas, de modo análogo ao q foi feito c/ lançamentos (aulas 17.8-17.10).
   excluir(codigo: number): Promise<void> {
     let headers: HttpHeaders = new HttpHeaders();
-    headers = this.configAuthReq(headers);
+    // headers = this.configAuthReq(headers);
 
-/*  17.14. Desafio: mensagem de erro de usuário na exclusão de pessoa:
-      Vamos adicionar um sufixo 123 ao cód de pessoa, p/ c/ isso, forçar um cód inválido de pessoa, obter um
-      retorno 404 e testar se a msg de erro p/ o usr, vinda no corpo de resp, será exibida no comp de msg Toast. */
-    // return this.http.delete(`${this.pessoasURL}/${codigo}123`, { headers })
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+    programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+    HttpHeaders p/ Promise<HttpHeaders>. */
+    return this.configAuthReq(headers).then(headers => {
+      /*  17.14. Desafio: mensagem de erro de usuário na exclusão de pessoa:
+            Vamos adicionar um sufixo 123 ao cód de pessoa, p/ c/ isso, forçar um cód inválido de pessoa, obter um
+            retorno 404 e testar se a msg de erro p/ o usr, vinda no corpo de resp, será exibida no comp de msg Toast. */
+          // return this.http.delete(`${this.pessoasURL}/${codigo}123`, { headers })
 
-    return this.http.delete(`${this.pessoasURL}/${codigo}`, { headers })
-      .toPromise().then( () => {} );
+          return this.http.delete(`${this.pessoasURL}/${codigo}`, { headers })
+            .toPromise().then( () => {} );
+    });
   }
 
 /* 17.15. Desafio: implementando a mudança de status de pessoas:
@@ -110,17 +129,30 @@ export class PessoaService {
   o corpo de resp conterá apenas um booleano (true p/ ativar pessoa e false p/ desativar). */
 mudarStatus(codigo: number, status: boolean): Promise<void> {
   let headers: HttpHeaders = new HttpHeaders();
-  headers = this.configAuthReq(headers);
+  // headers = this.configAuthReq(headers);
 
-  return this.http.put(`${this.pessoasURL}/${codigo}/ativo`, status, { headers })
-    .toPromise().then( () => {} );
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+    programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+    HttpHeaders p/ Promise<HttpHeaders>. */
+  return this.configAuthReq(headers).then(headers => {
+    return this.http.put(`${this.pessoasURL}/${codigo}/ativo`, status, { headers })
+      .toPromise().then( () => {} );
+  });
 }
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
-  private configAuthReq(headers: HttpHeaders): HttpHeaders {
-    headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ0OTY3MTcwLCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI1NmVkZmUzYi1iYjM1LTQ0OGEtODczNS0yZTgzNjExNTc0ZWQiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.THozWjNcaribYzgDLohz5UnVz7FR79prFq_40j07kF8");
+  private async configAuthReq(headers: HttpHeaders): Promise<HttpHeaders> {
+    // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ1ODUxNDc5LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI4ODMyZGUxYS04YzdmLTRhMWYtYWMxMi0xMTIxMzc4NGUxZjgiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.HuQuN6CNZh3BKqozOP0WjcuJYFNafoyahcSZRV54P1E");
+
+    /* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+    programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+    HttpHeaders p/ Promise<HttpHeaders>. */
+    let oauth2Token = await obterAccessToken(this.authServ, true);
+    headers = headers.append("Authorization", `Bearer ${oauth2Token}`);
 
     return headers;
   }

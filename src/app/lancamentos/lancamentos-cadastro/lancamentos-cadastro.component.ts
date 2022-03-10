@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
+import { MessageService } from 'primeng/api';
+
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../../categorias/categoria.service';
 import { PessoaService } from './../../pessoas/pessoa.service';
+import { LancamentoService } from './../lancamento.service';
 import { Lancamento } from './../../core/model';
 
 @Component({
@@ -63,6 +66,11 @@ export class LancamentosCadastroComponent implements OnInit {
     Core. */
   lancamento = new Lancamento();
 
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Cria um mecanismo p/ forçar q categs sejam carregadas 1º e q só se tente carregar pessoas após a concslusão de
+    categs. */
+  // categsCarregadas: boolean | undefined;
+
   constructor(
 /* 17.17. Listando as categorias cadastradas no dropdown:
     Iremos injetar no comp de cadastro de lançamento o serv de categs, p/ preencher dinamicamente a combo desta
@@ -71,16 +79,37 @@ export class LancamentosCadastroComponent implements OnInit {
     private errHndServ: ErrorHandlerService,
     // 17.18. Desafio: listando as pessoas cadastradas no dropdown
     //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
-    private pessoaServ: PessoaService
+    private pessoaServ: PessoaService,
+/*  17.20. Implementando o serviço de cadastro de lançamentos:
+      Injetando serv de lanç no comp, p/ fazer a inclusão do novo lanç e injetando tb o serv de msg do PNG, p/ exibir
+      msg de retorno ao usr. */
+    private lancServ: LancamentoService,
+    private msgServ: MessageService
   ) { }
 
   ngOnInit(): void {
+    // this.categsCarregadas = false;
+
     // 17.17. Listando as categorias cadastradas no dropdown:
     //  Chama o método p/ carregar dinamicamente a combo de categs, logo após o comp ter suas props inicializadas.
-    this.carregarCategs();
-    // 17.18. Desafio: listando as pessoas cadastradas no dropdown
-    //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
-    this.carregarPessoas();
+    // this.carregarCategs();
+
+    /* 17.20. Implementando o serviço de cadastro de lançamentos:
+      Cria um mecanismo p/ forçar q categs sejam carregadas 1º e q só se tente carregar pessoas após a concslusão de
+      categs. */
+    // while( !this.categsCarregadas ) {
+    //   console.log(`categsCarregadas === ${this.categsCarregadas}`);
+
+/*  17.20. Implementando o serviço de cadastro de lançamentos:
+      Mudança de estrat p/ implementar sinc e linearidade entre os carregamentos de categs e pessoas: Em vez de se
+      usar uma var de sinc (categsCarregadas), usar-se-á o próprio mecanismo de Promises p/ fazer c/ q pessoas só
+      sejam carregadas após conclusão de categs. */
+    this.carregarCategs().then(() => {
+      // 17.18. Desafio: listando as pessoas cadastradas no dropdown
+      //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
+      this.carregarPessoas();
+    } );
+    // }
   }
 
 /* 17.17. Listando as categorias cadastradas no dropdown:
@@ -90,7 +119,19 @@ export class LancamentosCadastroComponent implements OnInit {
     aceito pelo p-dropdown e d+ comps semelhantes do PNG. Então, uma conversão ou mapeamento de arrays terá q ser feita. */
   carregarCategs(){
     // Como anteriormente explicado, ñ se pode simplesmente fazer "this.categorias = categs;". É preciso fazer um map.
-    this.categServ.listar().then(categs => {
+    // this.categServ.listar().then(categs => {
+
+      /* 17.20. Implementando o serviço de cadastro de lançamentos:
+        Cria um mecanismo p/ forçar q categs sejam carregadas 1º e q só se tente carregar pessoas após a concslusão de
+        categs. */
+      // this.categsCarregadas = true;
+
+/*  17.20. Implementando o serviço de cadastro de lançamentos:
+      Mudança de estrat p/ implementar sinc e linearidade entre os carregamentos de categs e pessoas: Em vez de se
+      usar uma var de sinc (categsCarregadas), usar-se-á o próprio mecanismo de Promises p/ fazer c/ q pessoas só
+      sejam carregadas após conclusão de categs. */
+    return this.categServ.listar().then(categs => {
+
       // this.categorias = categs.map( (categ: any) => {
       //   return { label: categ.nome, value: categ.codigo };
 
@@ -119,6 +160,27 @@ export class LancamentosCadastroComponent implements OnInit {
   Este método recebe como param o form de cadastro de lanc. Porém tds os vals dos seus cntrls já estarão
     mapeados p/ as props internas da prop lancamento. */
   salvar(lancForm: NgForm) {
-    console.log("Salvando lançamento:\n", this.lancamento);
+    // console.log("Salvando lançamento:\n", this.lancamento);
+
+/*  17.20. Implementando o serviço de cadastro de lançamentos:
+      Vamos implementar a chamada ao serv de lanç, p/ cadastrar novo lanç no servidor. Ao completar o
+      cadastro c/ sucesso, será exibida msg informativa ao usr (através do comp PNG toast). Em caso de
+      erro, este será tratado c/ o serv de tratamento de erros. Tb resetamos o conteúdo do form e a prop
+      lancamento, atribuindo-a a um novo obj. */
+    this.lancServ.adicionar(this.lancamento).then(
+      // Ñ iremos usar o lanç retornado no corpo de resp (o msm cadastrado), então podemos ignorar o param
+      //  de entrada do hnd de tratamento de sucesso.
+      () => {
+        this.msgServ.add({
+          severity:'success',
+          summary:'Lançamento cadastrado!',
+          detail: 'O lançamento foi adicionado com sucesso!'
+        });
+
+        lancForm.reset();
+        this.lancamento = new Lancamento();
+      }
+    )
+    .catch(erro => this.errHndServ.handle(erro));
   }
 }

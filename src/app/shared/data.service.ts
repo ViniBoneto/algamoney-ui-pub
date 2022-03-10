@@ -19,7 +19,7 @@ export class DataService {
   // Método p/ format dts q converte uma determinada dt em str no formato "YYYY-MM-DD", retornando esta.
   //  Esta func usa o obj Intl.DateTimeFormat p/ formatar a dt.
   dataParaStr(data: Date): string {
-    const arrDt = new Array(3);
+/*     const arrDt = new Array(3);
 
     Intl.DateTimeFormat("pt-BR").formatToParts(data).forEach(({type, value}) => {
       switch(type) {
@@ -36,7 +36,12 @@ export class DataService {
     });
 
     // console.log(arrDt.join("-"));
-    return arrDt.join("-");
+    return arrDt.join("-"); */
+
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Criando um método estático p/ poder ser chamado s/ se instanciar e injetar um serv de datas, mas
+    invocar o método direto, como feito no modelo de Lancamento. */
+    return DataService.dtParaStr(data);
   }
 
 // Método p/ format dts q converte uma determinada dt em str no formato "YYYY-MM-DD", retornando esta.
@@ -46,7 +51,47 @@ export class DataService {
 
     if( (strDt = this.dtPipe.transform(data, "yyyy-MM-dd")) !== null )
       return strDt;
+
+    return "";
+  }
+
+  // Cria método p/ receber uma str nos formatos "dd/MM/yy" ou "MM/dd/yy" ou "yy-MM-dd" e retornar um array
+  //  c/ as partes da data em cada pos, como nºs.
+  separaData(data: string): Array<number> {
+    let sep = " ";
+
+    if(data.includes("/"))
+      sep = "/";
+    else if(data.includes("-"))
+      sep = "-";
     else
-      return "";
+      return new Array(0);
+
+    let dtArr = data.split(sep);
+
+    return dtArr.map( (strVal) => Number.parseInt(strVal) );
+  }
+
+/* 17.20. Implementando o serviço de cadastro de lançamentos:
+    Criando um método estático p/ poder ser chamado s/ se instanciar e injetar um serv de datas, mas
+    invocar o método direto, como feito no modelo de Lancamento. */
+  static dtParaStr(data: Date): string {
+    const arrDt = new Array(3);
+
+    Intl.DateTimeFormat("pt-BR").formatToParts(data).forEach(({type, value}) => {
+      switch(type) {
+        case "year":
+          arrDt[0] = value;
+          break;
+        case "month":
+          arrDt[1] = value;
+          break;
+        case "day":
+          arrDt[2] = value;
+          break;
+      }
+    });
+
+    return arrDt.join("-");
   }
 }

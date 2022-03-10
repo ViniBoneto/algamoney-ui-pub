@@ -84,6 +84,13 @@
           [dateFormat]="'dd/mm/yy'" name="vencimento" ngModel #dtVenc="ngModel"
           [required]="true" [(ngModel)]="lancamento.dataVencimento" ></p-calendar>
 
+        <!-- 17.20. Implementando o serviço de cadastro de lançamentos:
+          Mudando o tp do val da dt de Date p/ str, p/ tentar ajeitar erro explicado neste tópico:
+          https://stackoverflow.com/questions/70017960/p-calendar-ngmodel-data-error-error-uncaught-in-promise-unexpected-l -->
+        <!-- <p-calendar [readonlyInput]="false" [inline]="false" [showIcon]="false" dataType="string"
+          [dateFormat]="'dd/mm/yy'" name="vencimento" ngModel #dtVenc="ngModel" [required]="true"
+          [(ngModel)]="lancamento.dataVencimento" ></p-calendar> -->
+
         <!-- 14.6. Criando um Feature Module:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
           raiz (AppModule) futuramente.
@@ -118,6 +125,12 @@
           Esta última mapeará as infos preenchidas na tela (view) e representará o lanc a ser cadastrado. -->
         <p-calendar dateFormat="dd/mm/yy" name="{{ tipo.value === 'RECEITA' ? 'recebimento' : 'pagamento' }}"
           [(ngModel)]="lancamento.dataPagamento"></p-calendar>
+
+        <!-- 17.20. Implementando o serviço de cadastro de lançamentos:
+          Mudando o tp do val da dt de Date p/ str, p/ tentar ajeitar erro explicado neste tópico:
+          https://stackoverflow.com/questions/70017960/p-calendar-ngmodel-data-error-error-uncaught-in-promise-unexpected-l -->
+        <!-- <p-calendar dateFormat="dd/mm/yy" name="{{ tipo.value === 'RECEITA' ? 'recebimento' : 'pagamento' }}"
+          dataType="string" [(ngModel)]="lancamento.dataPagamento"></p-calendar> -->
       </div>
 
       <div class="col-12 md:col-9 p-fluid">
