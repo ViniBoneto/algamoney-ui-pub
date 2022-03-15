@@ -8,6 +8,25 @@ export class Pessoa {
   // P/ enquanto só vamos criar a prop cód, p/ poder cadastrar lanc e pessoa associada. D+ props de pessoa
   //  serão adicionadas posteriormente.
   codigo!: number;
+/* 17.21. Desafio: implementando o cadastro de pessoas:
+    Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+    Adicionando campos faltantes no modelo de Pessoa. */
+  nome!: string;
+  ativo!: boolean;
+  endereco!: Endereco | null;
+}
+
+/* 17.21. Desafio: implementando o cadastro de pessoas:
+    Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+    Criando cls Endereco q comporá cls Pessoa. */
+export class Endereco {
+  logradouro!: string;
+  numero!: string;
+  complemento!: string;
+  bairro!: string;
+  cep!: string;
+  cidade!: string;
+  estado!: string;
 }
 
 export class Categoria {

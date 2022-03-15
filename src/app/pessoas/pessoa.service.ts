@@ -1,3 +1,4 @@
+import { Pessoa } from './../core/model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -124,22 +125,32 @@ export class PessoaService {
   }
 
 /* 17.15. Desafio: implementando a mudança de status de pessoas:
-  Vamos implementar o método q atualizará apenas o status de uma pessoa (de ativo p/ inativo ou vice-versa),
-  invocando o respectivo método na API de backend. O método HTTP usado será o PUT (p/ ser uma atualização) e
-  o corpo de resp conterá apenas um booleano (true p/ ativar pessoa e false p/ desativar). */
-mudarStatus(codigo: number, status: boolean): Promise<void> {
-  let headers: HttpHeaders = new HttpHeaders();
-  // headers = this.configAuthReq(headers);
+    Vamos implementar o método q atualizará apenas o status de uma pessoa (de ativo p/ inativo ou vice-versa),
+    invocando o respectivo método na API de backend. O método HTTP usado será o PUT (p/ ser uma atualização) e
+    o corpo de resp conterá apenas um booleano (true p/ ativar pessoa e false p/ desativar). */
+  mudarStatus(codigo: number, status: boolean): Promise<void> {
+    let headers: HttpHeaders = new HttpHeaders();
+    // headers = this.configAuthReq(headers);
 
-/* 17.20. Implementando o serviço de cadastro de lançamentos:
-    Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
-    programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-    HttpHeaders p/ Promise<HttpHeaders>. */
-  return this.configAuthReq(headers).then(headers => {
-    return this.http.put(`${this.pessoasURL}/${codigo}/ativo`, status, { headers })
-      .toPromise().then( () => {} );
-  });
-}
+  /* 17.20. Implementando o serviço de cadastro de lançamentos:
+      Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+      programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+      HttpHeaders p/ Promise<HttpHeaders>. */
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.put(`${this.pessoasURL}/${codigo}/ativo`, status, { headers })
+        .toPromise().then( () => {} );
+    });
+  }
+
+/* 17.21. Desafio: implementando o cadastro de pessoas:
+      Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro. */
+  adicionar(pessoa: Pessoa): Promise<Pessoa> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.post<Pessoa>(this.pessoasURL, pessoa, { headers }).toPromise();
+    });
+  }
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos

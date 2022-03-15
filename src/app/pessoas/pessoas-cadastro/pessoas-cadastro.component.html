@@ -6,7 +6,12 @@
   <!-- 13.10. Desafio: controles, validações e mensagens de erro:
     Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
     estiverem com estado de validação positivo. -->
-  <form #form="ngForm">
+  <!-- <form #form="ngForm"> -->
+
+  <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+    Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+    Submentendo o form e tratando evto submissão no comp. -->
+  <form #form="ngForm" (ngSubmit)="salvar(form);">
     <div class="grid">
       <div class="col-12">
         <h1>Nova Pessoa</h1>
@@ -19,7 +24,12 @@
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Nome" os procedimentos p/ os campos validados no cadastro de lançamentos.
           Validação de pessoa.nome será idêntica a de lançamento.descrição. -->
-        <input type="text" pInputText name="nome" ngModel #nome="ngModel" required minlength="5">
+        <!-- <input type="text" pInputText name="nome" ngModel #nome="ngModel" required minlength="5"> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <input type="text" pInputText name="nome" [(ngModel)]="pessoa.nome" #nome="ngModel" required minlength="5">
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -42,7 +52,19 @@
 
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Logradouro" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
-        <input type="text" pInputText name="logradouro" ngModel #logra="ngModel" required>
+        <!-- <input type="text" pInputText name="logradouro" ngModel #logra="ngModel" required> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <input type="text" pInputText name="logradouro" [(ngModel)]="pessoa.endereco?.logradouro"
+          #logra="ngModel" required> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <input type="text" pInputText name="logradouro" ngModel [value]="pessoa.endereco?.logradouro"
+          #logra="ngModel" required>
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -64,7 +86,19 @@
 
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Número" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
-        <p-inputNumber mode="decimal" name="numero" ngModel #num="ngModel" [required]="true"></p-inputNumber>
+        <!-- <p-inputNumber mode="decimal" name="numero" ngModel #num="ngModel" [required]="true"></p-inputNumber> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <p-inputNumber mode="decimal" name="numero" [(ngModel)]="pessoa.endereco?.numero" #num="ngModel"
+          [required]="true"></p-inputNumber> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <p-inputNumber mode="decimal" name="numero" ngModel value="pessoa.endereco?.numero" #num="ngModel"
+          [required]="true"></p-inputNumber>
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -79,7 +113,17 @@
 
       <div class="col-12 md:col-4 p-fluid">
         <label>Complemento</label>
-        <input type="text" pInputText>
+        <!-- <input type="text" pInputText> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <input type="text" pInputText name="complemento" [(ngModel)]="pessoa.endereco?.complemento"> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <input type="text" pInputText name="complemento" ngModel [value]="pessoa.endereco?.complemento">
       </div>
 
       <div class="col-12 md:col-4 p-fluid">
@@ -88,7 +132,19 @@
 
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Bairro" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
-        <input type="text" pInputText name="bairro" ngModel #bairro="ngModel" required>
+        <!-- <input type="text" pInputText name="bairro" ngModel #bairro="ngModel" required> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <input type="text" pInputText name="bairro" [(ngModel)]="pessoa.endereco?.bairro"
+          #bairro="ngModel" required> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <input type="text" pInputText name="bairro" ngModel [value]="pessoa.endereco?.bairro"
+          #bairro="ngModel" required>
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -118,7 +174,19 @@
 
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "CEP" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
-        <p-inputMask mask="99.999-999" name="cep" ngModel #cep="ngModel" [required]="true"></p-inputMask>
+        <!-- <p-inputMask mask="99.999-999" name="cep" ngModel #cep="ngModel" [required]="true"></p-inputMask> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <p-inputMask mask="99.999-999" name="cep" [(ngModel)]="pessoa.endereco?.cep" #cep="ngModel"
+          [required]="true"></p-inputMask> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <p-inputMask mask="99.999-999" name="cep" ngModel value="pessoa.endereco?.cep" #cep="ngModel"
+          [required]="true"></p-inputMask>
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -137,7 +205,19 @@
 
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Cidade" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
-        <input type="text" pInputText name="cidade" ngModel #cidade="ngModel" required>
+        <!-- <input type="text" pInputText name="cidade" ngModel #cidade="ngModel" required> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <input type="text" pInputText name="cidade" [(ngModel)]="pessoa.endereco?.cidade"
+          #cidade="ngModel" required> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <input type="text" pInputText name="cidade" ngModel [value]="pessoa.endereco?.cidade"
+          #cidade="ngModel" required>
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -156,7 +236,19 @@
 
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Repetir p/ campo "Estado" os procedimentos p/ os campos validados no cadastro de lançamentos. -->
-        <input type="text" pInputText name="estado" ngModel #estado="ngModel" required>
+        <!-- <input type="text" pInputText name="estado" ngModel #estado="ngModel" required> -->
+
+        <!-- 17.21. Desafio: implementando o cadastro de pessoas:
+          Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro.
+          Ligando os campos do form de cadastro pessoa às props do modelo, via 2-way-databind. -->
+        <!-- <input type="text" pInputText name="estado" [(ngModel)]="pessoa.endereco?.estado"
+          #estado="ngModel" required> -->
+
+        <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
+          de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
+          no back. -->
+        <input type="text" pInputText name="estado" ngModel [value]="pessoa.endereco?.estado"
+          #estado="ngModel" required>
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
