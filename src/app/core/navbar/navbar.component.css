@@ -49,3 +49,10 @@
 .navbar-menuitem > a:hover {
   color: white;
 }
+
+/* 18.4. Estilizando links da rota ativa:
+  P/ facilitar a nav do usr, vamos botar uma outra cor de fundo p/ o item de menu q estiver correntemente
+  selecionado (ativo). */
+  .navbar-menuitem.ativo {
+    background-color: #494541;
+  }

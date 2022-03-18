@@ -33,11 +33,28 @@
     <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li> -->
 
     <!-- Links da maneira padrão no JS (acima) funcionam, mas há um refresh c/ recarregamento da app cada vez q o link é
-    clicado, c/ recarregamento de tds arqs necessários (levando + tempo) e perda de infos da app. O correto é se
-    implementar links c/ a dir NG routerLink. C/ ela, a app é carregada uma única vez (s/ perda de infos e recarregamento
-    de arqs a cada clique). Não há refresh na app, há apenas uma alteração entre as views dos comps. -->
-    <li class="navbar-menuitem"><a routerLink="/lancamentos">Lançamentos</a></li>
-    <li class="navbar-menuitem"><a routerLink="/pessoas">Pessoas</a></li>
+      clicado, c/ recarregamento de tds arqs necessários (levando + tempo) e perda de infos da app. O correto é se
+      implementar links c/ a dir NG routerLink. C/ ela, a app é carregada uma única vez (s/ perda de infos e recarregamento
+      de arqs a cada clique). Não há refresh na app, há apenas uma alteração entre as views dos comps. -->
+    <!-- <li class="navbar-menuitem"><a routerLink="/lancamentos">Lançamentos</a></li> -->
+
+    <!-- 18.4. Estilizando links da rota ativa:
+      Coloca a cls css .ativo fixa no link de lanç, p/ testar estilização -->
+    <!-- <li class="navbar-menuitem ativo"><a routerLink="/lancamentos">Lançamentos</a></li> -->
+
+    <!-- Vamos utilizar a dir NG routerLinkActive. C/ ela, podemos adicionar dinamicamente uma cls css (no caso .ativo) ao link q
+      estiver selecionado (ativo). A dir poderia estar diretamente no link (elem <a>), mas como o elem <li> envolve o link,
+      podemos colocar a dir nela, q o roteador "entende" e funciona do msm jeito. -->
+    <li class="navbar-menuitem" routerLinkActive="ativo" ><a routerLink="/lancamentos">Lançamentos</a></li>
+
+    <!-- <li class="navbar-menuitem"><a routerLink="/pessoas">Pessoas</a></li> -->
+
+    <!-- 18.4. Estilizando links da rota ativa:
+      Vamos utilizar a dir NG routerLinkActive. C/ ela, podemos adicionar dinamicamente uma cls css (no caso .ativo) ao link q
+      estiver selecionado (ativo). A dir poderia estar diretamente no link (elem <a>), mas como o elem <li> envolve o link,
+      podemos colocar a dir nela, q o roteador "entende" e funciona do msm jeito. -->
+    <li class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
+
     <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li>
   </ul>
 
