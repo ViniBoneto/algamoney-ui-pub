@@ -185,6 +185,12 @@
 
   <div class="p-col-12">
     <!-- Dir pButton tb pode ser adicionada a uma âncora (<a>) -->
-    <a pButton label="Novo lançamento"></a>
+    <!-- <a pButton label="Novo lançamento"></a> -->
+
+    <!-- 18.3. Navegando com Router Link:
+      Implementando links c/ dir NG routerLink. C/ ela, a app é carregada uma única vez (s/ perda de infos e
+      recarregamento de arqs a cada clique). Não há refresh na app, há apenas uma alteração entre as views dos
+      comps. -->
+    <a pButton label="Novo lançamento" routerLink="/lancamentos/novo"></a>
   </div>
 </div>

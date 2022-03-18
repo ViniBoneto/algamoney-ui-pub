@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -71,6 +72,9 @@ export const customCurrencyMaskConfig = {
     // 17.2. Criando o serviço de consulta de lançamentos:
     //   Importando o mód http p/ poder se usar os comps HttpClient e HttpHeaders.
     HttpClientModule,
+    // 18.3. Navegando com Router Link:
+    //   É preciso importar o mód de roteamento p/ a dir routerLink funcionar.
+    RouterModule,
 
     InputTextModule,
     ButtonModule,

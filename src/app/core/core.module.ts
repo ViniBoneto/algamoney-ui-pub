@@ -2,6 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -36,6 +37,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [NavbarComponent],
   imports: [
     CommonModule,
+    // 18.3. Navegando com Router Link:
+    //   É preciso importar o mód de roteamento p/ a dir routerLink funcionar no comp de nav.
+    RouterModule,
 
     /* 17.12. Criando um serviço de tratamento de erros:
     Criamos um serv de tratamento de erros, p/ concentrar e padronizar o tratamento de erros da app. Este

@@ -324,7 +324,13 @@
           estiverem com estado de validação positivo. -->
         <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button>
         <button pButton type="button" label="Novo" class="p-button-info"></button>
-        <a href="javascript:;">Voltar para a pesquisa</a>
+        <!-- <a href="javascript:;">Voltar para a pesquisa</a> -->
+
+        <!-- 18.3. Navegando com Router Link:
+          Implementando links c/ dir NG routerLink. C/ ela, a app é carregada uma única vez (s/ perda de infos e
+          recarregamento de arqs a cada clique). Não há refresh na app, há apenas uma alteração entre as views dos
+          comps. -->
+        <a routerLink="/lancamentos">Voltar para a pesquisa</a>
       </div>
     </div>
   </form>
