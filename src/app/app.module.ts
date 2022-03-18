@@ -3,13 +3,14 @@ import { NgModule /* , LOCALE_ID */ } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { FormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
 
 /* 17.11. Alterando o locale da aplicação para pt-BR:
-  Configurando locale: Para configurarmos o Locale de nossa aplicação Angular, ficou um pouco diferente,
-  precisando de algumas configurações extras.
+Configurando locale: Para configurarmos o Locale de nossa aplicação Angular, ficou um pouco diferente,
+precisando de algumas configurações extras.
 
 O pacote de locale que é carregado por padrão é apenas o americano (en-US), e para usarmos um locale diferente
-  desse, precisamos carregá-lo em nossa aplicação. Para isso, precisaremos registrar o locale desejado.
+desse, precisamos carregá-lo em nossa aplicação. Para isso, precisaremos registrar o locale desejado.
 
 Primeiro, precisamos importar este pacote e também a função que realizará o registro: */
 // import { registerLocaleData } from '@angular/common';
@@ -17,33 +18,37 @@ Primeiro, precisamos importar este pacote e também a função que realizará o 
 
 // Depois de importados, basta registrar este pacote no início da nossa classe:
 // 17.12. Criando um serviço de tratamento de erros:
-//   Pode-se comentar a func registerLocaleData() aqui, pois ela tb existe no mód core e ficará só lá.
-// registerLocaleData(localePt);
+  //   Pode-se comentar a func registerLocaleData() aqui, pois ela tb existe no mód core e ficará só lá.
+  // registerLocaleData(localePt);
 
-// import { TabViewModule } from 'primeng/tabview';
-// import { InputTextModule } from 'primeng/inputtext';
-// import { ButtonModule } from 'primeng/button';
-// import { TableModule } from 'primeng/table';
-// import { TooltipModule } from 'primeng/tooltip';
-// import { InputTextareaModule } from 'primeng/inputtextarea';
-// import { CalendarModule } from 'primeng/calendar';
-// import { SelectButtonModule } from 'primeng/selectbutton';
-// import { DropdownModule } from 'primeng/dropdown';
-// import { InputNumberModule } from 'primeng/inputnumber';
-// import { InputMaskModule } from 'primeng/inputmask';
-// import { MessageModule } from 'primeng/message';
+  // import { TabViewModule } from 'primeng/tabview';
+  // import { InputTextModule } from 'primeng/inputtext';
+  // import { ButtonModule } from 'primeng/button';
+  // import { TableModule } from 'primeng/table';
+  // import { TooltipModule } from 'primeng/tooltip';
+  // import { InputTextareaModule } from 'primeng/inputtextarea';
+  // import { CalendarModule } from 'primeng/calendar';
+  // import { SelectButtonModule } from 'primeng/selectbutton';
+  // import { DropdownModule } from 'primeng/dropdown';
+  // import { InputNumberModule } from 'primeng/inputnumber';
+  // import { InputMaskModule } from 'primeng/inputmask';
+  // import { MessageModule } from 'primeng/message';
 
-// import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
+  // import { NgxCurrencyModule, CurrencyMaskInputMode } from 'ngx-currency';
 
-// import { ToastModule } from 'primeng/toast';
-// import { ConfirmDialogModule } from 'primeng/confirmdialog';
-// import { ConfirmationService, MessageService } from 'primeng/api';
-// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-// import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+  // import { ToastModule } from 'primeng/toast';
+  // import { ConfirmDialogModule } from 'primeng/confirmdialog';
+  // import { ConfirmationService, MessageService } from 'primeng/api';
+  // import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+  // import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
+import { LancamentosPesquisaComponent } from './lancamentos/lancamentos-pesquisa/lancamentos-pesquisa.component';
+import { LancamentosCadastroComponent } from './lancamentos/lancamentos-cadastro/lancamentos-cadastro.component';
 import { PessoasModule } from './pessoas/pessoas.module';
+import { PessoasPesquisaComponent } from './pessoas/pessoas-pesquisa/pessoas-pesquisa.component';
+import { PessoasCadastroComponent } from './pessoas/pessoas-cadastro/pessoas-cadastro.component';
 import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 // import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
@@ -96,6 +101,19 @@ import { AppComponent } from './app.component';
 //   return new TranslateHttpLoader(http);
 // }
 
+/* 18.2. Configurando rotas na aplicação:
+  Criando um obj Routes, q é um array de rotas da app. Routes contém vários objs Route, sendo cada um uma
+  config duma rota usada pelo roteador (Router) da app. */
+const routes: Routes = [
+  {
+    path: "lancamentos", // Route.path: URL do comp, relativa ao caminho raiz da app
+    component: LancamentosPesquisaComponent // Route.component: O comp a ser instanciado qdo a URL bater
+  },
+  { path: "lancamentos/novo", component: LancamentosCadastroComponent },
+  { path: "pessoas", component: PessoasPesquisaComponent },
+  { path: "pessoas/nova", component: PessoasCadastroComponent }
+];
+
 /* 14.6. Criando um Feature Module:
   P/ melhor se organizar a app, cria-se mód de lançamentos, move-se os comps de lançamentos daqui p/ lá
   e se importa o mód de lançamento p/ cá, em vez importar diretamente os comps. Tb se move daqui p/ lá
@@ -137,6 +155,10 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     // FormsModule,
+/*  18.2. Configurando rotas na aplicação:
+      Importa o mod de roteamento e o configura no mod raiz, p/ instanciar o serv de roteamento (Router) e
+      cadastrar as rotas (ends urls / comps) a serem mapeadas pela app. */
+    RouterModule.forRoot(routes),
 
     // TabViewModule
     // InputTextModule,
