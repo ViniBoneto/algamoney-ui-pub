@@ -84,7 +84,15 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
             (de edição lançamento), enquanto o btn de exclusão será apenas um disparador de ação (de exclusão). Ambos terão
             a dir pButton p/ aplicar estilos e funcionalidades do Angular -->
           <td class="col-acoes-content">
-            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
+            <!-- <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a> -->
+
+            <!-- 18.5. Recebendo parâmetros da rota:
+              Vamos criar links dinâmicos no btn de edt, q levará à pág de edição do lanç correspondente àquela lin. P/ facilitar,
+              vamos usar o recurso de fazer prop bind na dir routerLink, quebrando a URL alvo em partes num array. P/ ex:
+              [routerLink]="['/lancamentos', 'novo']" equivale a routerLink="/lancamentos/novo". -->
+            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+              [routerLink]="['/lancamentos', lancamento.codigo]"></a>
+
             <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
             <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button> -->
 

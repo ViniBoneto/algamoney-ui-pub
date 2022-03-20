@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { MessageService } from 'primeng/api';
 
@@ -84,7 +85,12 @@ export class LancamentosCadastroComponent implements OnInit {
       Injetando serv de lanç no comp, p/ fazer a inclusão do novo lanç e injetando tb o serv de msg do PNG, p/ exibir
       msg de retorno ao usr. */
     private lancServ: LancamentoService,
-    private msgServ: MessageService
+    private msgServ: MessageService,
+
+/*  18.5. Recebendo parâmetros da rota:
+      Injetamos no comp o serv ActivatedRoute q contém infos sobre a rota ativada p/ renderizar este comp, incluso seu
+      caminho, estado, params, segmentos, config de rota, etc... */
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -110,6 +116,16 @@ export class LancamentosCadastroComponent implements OnInit {
       this.carregarPessoas();
     } );
     // }
+
+/*  18.5. Recebendo parâmetros da rota:
+      Através das infos da rota ativada (ActivatedRoute) acessamos a prop snapshot, q é do tp ActivatedRouteSnapshot e
+      corresponde a um snapshot (estado atual) da rota. Nesta, acessamos a prop params (do tp Params), q corresponde aos
+      params matrizes (exclui aqueles da query) e seus vals neste snapshot da rota.
+
+    Obs: Quando se carrega o comp pela rota "/lancamentos/novo" a prop params é um obj vazio, pois neste caso não há params
+      na URL. */
+    // console.log( this.route.snapshot.params );
+    console.log( this.route.snapshot.params["codigo"] );
   }
 
 /* 17.17. Listando as categorias cadastradas no dropdown:

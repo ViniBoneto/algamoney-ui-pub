@@ -110,6 +110,17 @@ const routes: Routes = [
     component: LancamentosPesquisaComponent // Route.component: O comp a ser instanciado qdo a URL bater
   },
   { path: "lancamentos/novo", component: LancamentosCadastroComponent },
+
+/* 18.5. Recebendo parâmetros da rota:
+    P/ edição de lançs existentes, vamos adiconar uma rota c/ um placeholder a ser substituído por um param q
+    corresponderá ao cód do lanç a ser alterado. Tudo q vier após os : será interpretado como um token a ser
+    substituído por um param. A url "/lancamentos/" seguida de qq outra coisa cairá nesta rota, a exceção de
+    "/lancamentos/novo", q cairá na rota de cima.
+
+    Obs: "/lancamentos/novo" e  "lancamentos/:codigo" (:codigo sendo placeholder) caem na msma view (msm comp),
+      porém as rotas ativadas são diferentes. */
+  { path: "lancamentos/:codigo", component: LancamentosCadastroComponent },
+
   { path: "pessoas", component: PessoasPesquisaComponent },
   { path: "pessoas/nova", component: PessoasCadastroComponent }
 ];
