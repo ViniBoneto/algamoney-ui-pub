@@ -39,7 +39,11 @@ export class Lancamento {
   codigo!: number;
   descricao!: string;
   dataVencimento!: Date;
-  dataPagamento!: Date;
+  // dataPagamento!: Date;
+
+  // 18.6. Desafio: implementando os serviços de atualização e busca por código:
+  //   Adicionando possibilidade da prop dataPagamento poder ser nula.
+  dataPagamento!: Date | null;
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Trocando os tps das datas de Date p/ str, p/ evitar o problema de incompatibilidades de formatos,
     ocorrido no método LancamentoService.adicionar(). */
@@ -59,7 +63,7 @@ export class Lancamento {
     return {
       ...lanc,
       dataVencimento: DataService.dtParaStr(lanc.dataVencimento),
-      dataPagamento: DataService.dtParaStr(lanc.dataPagamento)
+      dataPagamento: DataService.dtParaStr( (lanc.dataPagamento) ? lanc.dataPagamento : null )
     };
   }
 }

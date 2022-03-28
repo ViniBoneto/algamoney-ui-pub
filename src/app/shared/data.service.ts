@@ -72,11 +72,34 @@ export class DataService {
     return dtArr.map( (strVal) => Number.parseInt(strVal) );
   }
 
+/* 18.6. Desafio: implementando os serviços de atualização e busca por código:
+    Criando func p/ converter uma dada str, num formato conformante c/ os padrões informados aqui https://datatracker.ietf.org/doc/html/rfc2822#page-14
+    e aqui https://262.ecma-international.org/11.0/#sec-date.parse, p/ o tp JS dt. */
+  strParaData(str: string): Date {
+/*  A conversão da string no formato yyyy-MM-dd para Date pode ser realizada com a instanciação de um novo objeto passando
+      a string como parâmetro.
+
+    Evita bug na hora da edição, adiciona o timezone do usuário. */
+    let offset = new Date().getTimezoneOffset() * 60000;
+    let data = new Date(new Date(str).getTime() + offset);
+
+    return data;
+  }
+
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Criando um método estático p/ poder ser chamado s/ se instanciar e injetar um serv de datas, mas
     invocar o método direto, como feito no modelo de Lancamento. */
-  static dtParaStr(data: Date): string {
+  // static dtParaStr(data: Date): string {
+
+// 18.6. Desafio: implementando os serviços de atualização e busca por código:
+//   Adicionando possibilidade da dt passada poder ser nula (ou indefinida).
+  static dtParaStr(data: Date | null | undefined): string {
     const arrDt = new Array(3);
+
+  // 18.6. Desafio: implementando os serviços de atualização e busca por código:
+  //   Adicionando possibilidade da dt passada poder ser nula (ou indefinida).
+    if(!data)
+      return "";
 
     Intl.DateTimeFormat("pt-BR").formatToParts(data).forEach(({type, value}) => {
       switch(type) {

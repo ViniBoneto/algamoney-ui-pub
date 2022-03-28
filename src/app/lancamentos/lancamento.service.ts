@@ -256,6 +256,44 @@ export class LancamentoService {
     });
   }
 
+/* 18.6. Desafio: implementando os serviços de atualização e busca por código:
+  Criando método de atualização dum lanç existente. Este será muito semelhante ao método de adição. Porém, ele
+  usará o método HTTP PUT em vez do POST. Ele retornará uma Promise q resolverá retornando o lanç atualizado. */
+  atualizar(lanc: Lancamento): Promise<Lancamento> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.put<Lancamento>(`${this.lancamentosURL}/${lanc.codigo}`, Lancamento.toJson(lanc),
+        { headers }).toPromise().then( (lanc) => {
+/*        Quando lanç é desserializado, lanc.dataVencimento e lanc.dataPagamento (se ñ nulo) vêm como str.
+            Como no tp Lancamento, estas props estão previstas como sendo do tp dt, farei aqui a conversão
+            delas de str p/ dt. */
+          this.converterStringsParaDatas([lanc]);
+
+          return lanc;
+        } );
+     });
+  }
+
+/* 18.6. Desafio: implementando os serviços de atualização e busca por código:
+    Criando método de obtenção dum lanç existente, dado seu cód. Ele retornará uma Promise q resolverá retornando
+    o lanç, caso exista, ou rejeitará, caso contrário. */
+  buscar(codigo: number): Promise<Lancamento> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.get<Lancamento>(`${this.lancamentosURL}/${codigo}`, { headers: headers } )
+        .toPromise().then( (lanc) => {
+/*        Quando lanç é desserializado, lanc.dataVencimento e lanc.dataPagamento (se ñ nulo) vêm como str.
+            Como no tp Lancamento, estas props estão previstas como sendo do tp dt, farei aqui a conversão
+            delas de str p/ dt. */
+          this.converterStringsParaDatas([lanc]);
+
+          return lanc;
+        } );
+    });
+  }
+
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
@@ -301,7 +339,20 @@ export class LancamentoService {
 
     // Voltei os campos de dt do lanç de tp str p/ Date, em + uma tentativa de contornar o erro aqui descrito:
     //  https://app.algaworks.com/forum/topicos/54922/pq-sera-que-estou-recebendo-este-erro-ao-tentar-salvar-usando-o-calendar-sem-o-calendar-esta-funcio
-    lanc.dataPagamento = new Date( this.dtServ.dataParaStrDtPipe(lanc.dataPagamento) );
+    if(lanc.dataPagamento)
+      lanc.dataPagamento = new Date( this.dtServ.dataParaStrDtPipe(lanc.dataPagamento) );
+
     lanc.dataVencimento = new Date( this.dtServ.dataParaStrDtPipe(lanc.dataVencimento) );
+  }
+
+  // 18.6. Desafio: implementando os serviços de atualização e busca por código:
+  //   Criando func p/ converter as dada do lanç, q são desserealizadas do backend como str, p/ o tp JS dt.
+  private converterStringsParaDatas(lancamentos: Lancamento[]) {
+    for (const lancamento of lancamentos) {
+      lancamento.dataVencimento = this.dtServ.strParaData(lancamento.dataVencimento.toString());
+
+      if(lancamento.dataPagamento)
+        lancamento.dataPagamento = this.dtServ.strParaData(lancamento.dataPagamento.toString());
+    }
   }
 }

@@ -114,18 +114,72 @@ export class LancamentosCadastroComponent implements OnInit {
       // 17.18. Desafio: listando as pessoas cadastradas no dropdown
       //   Replica p/ pessoas o msm q foi feito p/ categs na aula anterior (17.17).
       this.carregarPessoas();
+  /*  18.5. Recebendo parâmetros da rota:
+        Através das infos da rota ativada (ActivatedRoute) acessamos a prop snapshot, q é do tp ActivatedRouteSnapshot e
+        corresponde a um snapshot (estado atual) da rota. Nesta, acessamos a prop params (do tp Params), q corresponde aos
+        params matrizes (exclui aqueles da query) e seus vals neste snapshot da rota.
+
+      Obs: Quando se carrega o comp pela rota "/lancamentos/novo" a prop params é um obj vazio, pois neste caso não há params
+        na URL. */
+      // console.log( this.route.snapshot.params );
+      console.log( this.route.snapshot.params["codigo"] );
+
+/*    18.6. Desafio: implementando os serviços de atualização e busca por código:
+        Se for passado um cód válido na URL (isto é, algo dif de "/novo"), sabe-se q é p/ carregar o lanç correspondente, caso haja.
+        Neste caso, farei uma chamada tst ao método do serv de lanç p/ buscá-lo. */
+      let codLanc = this.route.snapshot.params["codigo"];
+
+      if(codLanc) {
+/*      18.6. Desafio: implementando os serviços de atualização e busca por código:
+          Bota uma msg de confirm p/ só prosseguir a atualização tst se o usuário confirmar (clicar OK), pois a
+          atualização estava acontecendo automaticamente no carreg da pág. */
+        if( !confirm(`Continuar buscando e atualizando lançamento código\t${codLanc}?`) )
+          return;
+
+        console.log(`Buscando lançamento código\t${codLanc}...`);
+
+        this.lancServ.buscar(codLanc).then((lanc) => {
+          // console.log(`Lançamento buscado:\n${lanc}`);
+          console.log(`Lançamento buscado:\n${JSON.stringify(lanc)}`);
+
+          // Em adição, tb farei uma chamada tst ao método do serv de lanç p/ atualizar o lanç buscado.
+          lanc.dataVencimento.setFullYear(lanc.dataVencimento.getFullYear() + 1); // Add 1 ano a dt venc
+
+          if(lanc.dataPagamento) // Se válida, add 1 ano a dt pag
+            lanc.dataPagamento.setFullYear(lanc.dataPagamento.getFullYear() + 1);
+            // lanc.dataPagamento = null;
+
+          lanc.valor += 150; // Add 150 R$ ao val
+          // Add ao campo obs a str "Alterado {n}x programaticamente.", sendo n uma var incrementada
+          //  a cada alt.
+          let re = /Alterado\s(\d+)x\sprogramaticamente/;
+          let n;
+
+          if(lanc.observacao) {
+            let match = lanc.observacao.match(re);
+            // Incremente o nº de x de alts
+            match && (n = parseInt(match[1]) + 1);
+            // substitui a str c/ nº de alts atualizado
+            lanc.observacao = lanc.observacao.replace(re,  `Alterado ${n}x programaticamente`);
+          }
+          else
+            lanc.observacao = " >>> Alterado 1x programaticamente.";
+
+          // Muda categ do lanç
+          lanc.categoria.codigo = 1;
+          // Muda pessoa do lanç
+          lanc.pessoa.codigo = 17;
+
+          // Faz atualização do lanç c/ os vals programaticamente alterados. Exibe lanç atualizado na console.
+          this.lancServ.atualizar(lanc).then( (lanc) => console.log(`Lançamento atualizado c/ sucesso:\n${JSON.stringify(lanc)}`) )
+            .catch( erro => this.errHndServ.handle(erro) );
+        })
+        .catch(erro => {
+          this.errHndServ.handle(erro);
+        });
+      }
     } );
     // }
-
-/*  18.5. Recebendo parâmetros da rota:
-      Através das infos da rota ativada (ActivatedRoute) acessamos a prop snapshot, q é do tp ActivatedRouteSnapshot e
-      corresponde a um snapshot (estado atual) da rota. Nesta, acessamos a prop params (do tp Params), q corresponde aos
-      params matrizes (exclui aqueles da query) e seus vals neste snapshot da rota.
-
-    Obs: Quando se carrega o comp pela rota "/lancamentos/novo" a prop params é um obj vazio, pois neste caso não há params
-      na URL. */
-    // console.log( this.route.snapshot.params );
-    console.log( this.route.snapshot.params["codigo"] );
   }
 
 /* 17.17. Listando as categorias cadastradas no dropdown:
