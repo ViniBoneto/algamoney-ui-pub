@@ -213,9 +213,14 @@ export class LancamentosCadastroComponent implements OnInit {
 
   Este método recebe como param o form de cadastro de lanc. Porém tds os vals dos seus cntrls já estarão
     mapeados p/ as props internas da prop lancamento. */
-  salvar(lancForm: NgForm) {
+  // salvar(lancForm: NgForm) {
     // console.log("Salvando lançamento:\n", this.lancamento);
 
+/* 18.8. Salvando lançamentos editados:
+    Transforma o método salvar(), q add novo lanç, em adicionarLanc() e cria outro método salvar(), a ser
+    chamado no evto de submissão. Este último irá chamar método p/ adicionar ou p/ editar lanç, a depender
+    se estivermos na view de edt ou de novo lanç (vide prop editando). */
+  adicionarLanc(lancForm: NgForm) {
 /*  17.20. Implementando o serviço de cadastro de lançamentos:
       Vamos implementar a chamada ao serv de lanç, p/ cadastrar novo lanç no servidor. Ao completar o
       cadastro c/ sucesso, será exibida msg informativa ao usr (através do comp PNG toast). Em caso de
@@ -236,6 +241,39 @@ export class LancamentosCadastroComponent implements OnInit {
       }
     )
     .catch(erro => this.errHndServ.handle(erro));
+  }
+
+  // 18.8. Salvando lançamentos editados:
+  //   Cria método p/ alterar lanç editado, q invocará LancamentoService.atualizar() p/ fazer a alt
+  //   no backend.
+  atualizarLanc(lancForm: NgForm) {
+    this.lancServ.atualizar(this.lancamento).then(
+      (lanc) => {
+        this.msgServ.add({
+          severity:'success',
+          summary:'Lançamento editado!',
+          detail: 'O lançamento foi atualizado com sucesso!'
+        });
+
+/*      Neste caso especificamente ñ seria necessário a atribuição abaixo, pois nenhuma prop/característica do lanç
+          editado é alterada no backend. Porém, é boa prática atribuir a prop de lanç associado ao comp ao lanç retornado
+          no corpo de resp da chamada de atualização, pois sempre há a possibilidade de algo ser atualizado ou alterado
+          no backend. */
+        this.lancamento = lanc;
+      }
+    )
+    .catch(erro => this.errHndServ.handle(erro));
+  }
+
+/* 18.8. Salvando lançamentos editados:
+    Transforma o método salvar(), q add novo lanç, em adicionarLanc() e cria outro método salvar(), a ser
+    chamado no evto de submissão. Este último irá chamar método p/ adicionar ou p/ editar lanç, a depender
+    se estivermos na view de edt ou de novo lanç (vide prop editando). */
+  salvar(lancForm: NgForm) {
+    if(this.editando) // Se estiver editando, atualizada lanç editado, senão cadastra novo lanç
+      this.atualizarLanc(lancForm);
+    else
+      this.adicionarLanc(lancForm);
   }
 
 /* 18.7. Preenchendo os campos na edição de lançamentos:
