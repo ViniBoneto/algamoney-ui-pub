@@ -72,6 +72,14 @@ export class LancamentosCadastroComponent implements OnInit {
     categs. */
   // categsCarregadas: boolean | undefined;
 
+/* 18.7. Preenchendo os campos na edição de lançamentos:
+    Cria uma prop getter q retorna se a view é de edição de ou de novo (adição) lanç. Como quem cria um cód e associa
+    ao lanç é o backend, se a prop de lanç associada ao comp já tiver um cód válido, estamos editando, senão estamos
+    adicionando um novo. */
+  get editando() : boolean {
+    return Boolean(this.lancamento.codigo);
+  }
+
   constructor(
 /* 17.17. Listando as categorias cadastradas no dropdown:
     Iremos injetar no comp de cadastro de lançamento o serv de categs, p/ preencher dinamicamente a combo desta
@@ -130,53 +138,16 @@ export class LancamentosCadastroComponent implements OnInit {
       let codLanc = this.route.snapshot.params["codigo"];
 
       if(codLanc) {
-/*      18.6. Desafio: implementando os serviços de atualização e busca por código:
-          Bota uma msg de confirm p/ só prosseguir a atualização tst se o usuário confirmar (clicar OK), pois a
-          atualização estava acontecendo automaticamente no carreg da pág. */
-        if( !confirm(`Continuar buscando e atualizando lançamento código\t${codLanc}?`) )
-          return;
+/*      18.7. Preenchendo os campos na edição de lançamentos:
+          Movendo o cód de tsts dos métodos de busca e atualização, da aula anterior (18.6), p/ uma func à parte,
+          comentando-a pois esses tsts ñ são + necessários. */
+        // this.testaBuscaAlteracao(codLanc);
 
-        console.log(`Buscando lançamento código\t${codLanc}...`);
-
-        this.lancServ.buscar(codLanc).then((lanc) => {
-          // console.log(`Lançamento buscado:\n${lanc}`);
-          console.log(`Lançamento buscado:\n${JSON.stringify(lanc)}`);
-
-          // Em adição, tb farei uma chamada tst ao método do serv de lanç p/ atualizar o lanç buscado.
-          lanc.dataVencimento.setFullYear(lanc.dataVencimento.getFullYear() + 1); // Add 1 ano a dt venc
-
-          if(lanc.dataPagamento) // Se válida, add 1 ano a dt pag
-            lanc.dataPagamento.setFullYear(lanc.dataPagamento.getFullYear() + 1);
-            // lanc.dataPagamento = null;
-
-          lanc.valor += 150; // Add 150 R$ ao val
-          // Add ao campo obs a str "Alterado {n}x programaticamente.", sendo n uma var incrementada
-          //  a cada alt.
-          let re = /Alterado\s(\d+)x\sprogramaticamente/;
-          let n;
-
-          if(lanc.observacao) {
-            let match = lanc.observacao.match(re);
-            // Incremente o nº de x de alts
-            match && (n = parseInt(match[1]) + 1);
-            // substitui a str c/ nº de alts atualizado
-            lanc.observacao = lanc.observacao.replace(re,  `Alterado ${n}x programaticamente`);
-          }
-          else
-            lanc.observacao = " >>> Alterado 1x programaticamente.";
-
-          // Muda categ do lanç
-          lanc.categoria.codigo = 1;
-          // Muda pessoa do lanç
-          lanc.pessoa.codigo = 17;
-
-          // Faz atualização do lanç c/ os vals programaticamente alterados. Exibe lanç atualizado na console.
-          this.lancServ.atualizar(lanc).then( (lanc) => console.log(`Lançamento atualizado c/ sucesso:\n${JSON.stringify(lanc)}`) )
-            .catch( erro => this.errHndServ.handle(erro) );
-        })
-        .catch(erro => {
-          this.errHndServ.handle(erro);
-        });
+/*      18.7. Preenchendo os campos na edição de lançamentos:
+          Se há um param código válido na URL (obtido através do serv ActivatedRoute), é pq estamos na view de edição
+          (ñ de adição). Usaremos o método LancamentoService.buscar(), criado na aula anterior (18.6) p/ obter o lanç
+          cujo cód foi informado, a ser editado. */
+        this.carregarLanc(codLanc);
       }
     } );
     // }
@@ -222,6 +193,19 @@ export class LancamentosCadastroComponent implements OnInit {
     .catch(erro => this.errHndServ.handle(erro));
   }
 
+/* 18.7. Preenchendo os campos na edição de lançamentos:
+    Se estivermos na view de edição (ñ de adição), obteremos o lanç cujo cód foi informado, a ser editado.
+    Usaremos o método LancamentoService.buscar(), criado na aula anterior (18.6). */
+  carregarLanc(codLanc: number) {
+    this.lancServ.buscar(codLanc).then((lanc) => {
+      // Atribui o lanç buscado à prop de lanç associada ao comp.
+      this.lancamento = lanc;
+    })
+    .catch(erro => {
+      this.errHndServ.handle(erro);
+    });
+  }
+
 /* 17.19. Criando classes de modelo e usando no cadastro de lançamentos:
     Criando método p/ salvar um lançamento novo. O envio ao servidor será implementado noutra aula. Nesta
     será efetuada a implementação da cls de modelo (model) e o mapeamento (binding) entre as props da view
@@ -252,5 +236,58 @@ export class LancamentosCadastroComponent implements OnInit {
       }
     )
     .catch(erro => this.errHndServ.handle(erro));
+  }
+
+/* 18.7. Preenchendo os campos na edição de lançamentos:
+    Movendo o cód de tsts dos métodos de busca e atualização, da aula anterior (18.6), p/ uma func à parte,
+    comentando-a pois esses tsts ñ são + necessários. */
+  private testaBuscaAlteracao(codLanc: number) {
+/*  18.6. Desafio: implementando os serviços de atualização e busca por código:
+      Bota uma msg de confirm p/ só prosseguir a atualização tst se o usuário confirmar (clicar OK), pois a
+      atualização estava acontecendo automaticamente no carreg da pág. */
+    if( !confirm(`Continuar buscando e atualizando lançamento código\t${codLanc}?`) )
+      return;
+
+    console.log(`Buscando lançamento código\t${codLanc}...`);
+
+    this.lancServ.buscar(codLanc).then((lanc) => {
+      // console.log(`Lançamento buscado:\n${lanc}`);
+      console.log(`Lançamento buscado:\n${JSON.stringify(lanc)}`);
+
+      // Em adição, tb farei uma chamada tst ao método do serv de lanç p/ atualizar o lanç buscado.
+      lanc.dataVencimento.setFullYear(lanc.dataVencimento.getFullYear() + 1); // Add 1 ano a dt venc
+
+      if(lanc.dataPagamento) // Se válida, add 1 ano a dt pag
+        lanc.dataPagamento.setFullYear(lanc.dataPagamento.getFullYear() + 1);
+        // lanc.dataPagamento = null;
+
+      lanc.valor += 150; // Add 150 R$ ao val
+      // Add ao campo obs a str "Alterado {n}x programaticamente.", sendo n uma var incrementada
+      //  a cada alt.
+      let re = /Alterado\s(\d+)x\sprogramaticamente/;
+      let n;
+
+      if(lanc.observacao) {
+        let match = lanc.observacao.match(re);
+        // Incremente o nº de x de alts
+        match && (n = parseInt(match[1]) + 1);
+        // substitui a str c/ nº de alts atualizado
+        lanc.observacao = lanc.observacao.replace(re,  `Alterado ${n}x programaticamente`);
+      }
+      else
+        lanc.observacao = " >>> Alterado 1x programaticamente.";
+
+      // Muda categ do lanç
+      lanc.categoria.codigo = 1;
+      // Muda pessoa do lanç
+      lanc.pessoa.codigo = 17;
+
+      // Faz atualização do lanç c/ os vals programaticamente alterados. Exibe lanç atualizado na console.
+      this.lancServ.atualizar(lanc).then( (lanc) => console.log(`Lançamento atualizado c/ sucesso:\n${JSON.stringify(lanc)}`) )
+        .catch( erro => this.errHndServ.handle(erro) );
+    })
+    .catch(erro => {
+      this.errHndServ.handle(erro);
+    });
   }
 }

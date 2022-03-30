@@ -26,7 +26,12 @@
   <form #form="ngForm" (ngSubmit)="salvar(form);">
     <div class="grid">
       <div class="col-12">
-        <h1>Novo Lançamento</h1>
+        <!-- <h1>Novo Lançamento</h1> -->
+
+        <!-- 18.7. Preenchendo os campos na edição de lançamentos:
+          Deixa o título da seção din: ele deverá informar se está em view de edt lanç ou de novo lanç. P/
+          diferenciar, usa a prop editando do comp. -->
+        <h1> {{ editando ? "Edição de" : "Novo" }} Lançamento</h1>
       </div>
 
       <!-- 13.3. Adicionando botão de seleção:
