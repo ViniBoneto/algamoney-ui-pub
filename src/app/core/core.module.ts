@@ -12,6 +12,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { ErrorHandlerService } from './error-handler.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 
 /* 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
   Adição do DatePipe: Usando o  pipe DatePipe, nativo do Angular, p/ format dts no serv DateService.
@@ -34,7 +35,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   Nesta app criaremos um core module chamado CoreModule, q conterá o comp de barra de menu (NavbarComponent),
   q será retirado do mód raiz. */
 @NgModule({
-  declarations: [NavbarComponent],
+  declarations: [NavbarComponent, PaginaNaoEncontradaComponent],
   imports: [
     CommonModule,
     // 18.3. Navegando com Router Link:

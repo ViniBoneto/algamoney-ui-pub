@@ -97,8 +97,14 @@ export const customCurrencyMaskConfig = {
     SharedModule
   ],
   exports: [
-    LancamentosPesquisaComponent,
-    LancamentosCadastroComponent
+/*  18.11. Tratando rota não encontrada:
+      Qdo estávamos usando os seletores de comps diretamente no comp raiz (app-root), era necessário q os
+      móds de pessoas e lançs exportassem os respectivos comps de pequisa e cadastro. A partir de agora, q
+      td o acesso a estes será feito através do serviço de roteamento do NG (Router), isso não é mais necessário.
+      Estes comps ainda precisam ser declarados pelos móds, mas n + exportados. Logo, comentaremos as exportações
+      abaixo. */
+    // LancamentosPesquisaComponent,
+    // LancamentosCadastroComponent
   ],
   providers:[
 /* 17.2. Criando o serviço de consulta de lançamentos:

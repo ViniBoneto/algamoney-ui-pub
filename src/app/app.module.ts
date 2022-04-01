@@ -51,6 +51,7 @@ import { PessoasPesquisaComponent } from './pessoas/pessoas-pesquisa/pessoas-pes
 import { PessoasCadastroComponent } from './pessoas/pessoas-cadastro/pessoas-cadastro.component';
 import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
+import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
 // import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 // import { NavbarComponent } from './navbar/navbar.component';
 // import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
@@ -131,7 +132,16 @@ const routes: Routes = [
   { path: "lancamentos/:codigo", component: LancamentosCadastroComponent },
 
   { path: "pessoas", component: PessoasPesquisaComponent },
-  { path: "pessoas/nova", component: PessoasCadastroComponent }
+  { path: "pessoas/nova", component: PessoasCadastroComponent },
+
+/* 18.11. Tratando rota não encontrada:
+    Vamos adicionar uma rota p/ o comp de pág ñ encontrada. */
+  { path: "pagina-nao-encontrada", component: PaginaNaoEncontradaComponent },
+/* Além duma rota p/ o comp de pág ñ encontrada, precisamos tb adicionar uma rota em q qq URL q seja inválida (q ñ
+    bata c/ alguma das rotas pré-config) seja redirecionada p/ este comp. P/ isto, vamos usar os wildcards "**", q
+    significam qq URL q não foi validada p/ uma das outras rotas. É importante que esta rota "coringa" esteja p/ último,
+    dps das d+. */
+  { path: "**", redirectTo: "pagina-nao-encontrada" }
 ];
 
 /* 14.6. Criando um Feature Module:
