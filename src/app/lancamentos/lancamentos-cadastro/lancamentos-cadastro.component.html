@@ -328,7 +328,13 @@
           Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
           estiverem com estado de validação positivo. -->
         <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button>
-        <button pButton type="button" label="Novo" class="p-button-info"></button>
+        <!-- <button pButton type="button" label="Novo" class="p-button-info"></button> -->
+
+        <!-- 18.9. Implementando navegação imperativa:
+          Criando um evt binding p/ btn de novo lanç q irá invocar o método hndlr novo() no comp. -->
+        <button pButton type="button" label="Novo" class="p-button-info"
+          (click)="novo(form);"></button>
+
         <!-- <a href="javascript:;">Voltar para a pesquisa</a> -->
 
         <!-- 18.3. Navegando com Router Link:

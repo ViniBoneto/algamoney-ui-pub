@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MessageService } from 'primeng/api';
 
@@ -98,7 +98,11 @@ export class LancamentosCadastroComponent implements OnInit {
 /*  18.5. Recebendo parâmetros da rota:
       Injetamos no comp o serv ActivatedRoute q contém infos sobre a rota ativada p/ renderizar este comp, incluso seu
       caminho, estado, params, segmentos, config de rota, etc... */
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+
+    // 18.9. Implementando navegação imperativa:
+    //   Adicionamos o serv de roteamento do NG (Router) ao comp p/ implementar a nav imperativa (programática).
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -229,15 +233,30 @@ export class LancamentosCadastroComponent implements OnInit {
     this.lancServ.adicionar(this.lancamento).then(
       // Ñ iremos usar o lanç retornado no corpo de resp (o msm cadastrado), então podemos ignorar o param
       //  de entrada do hnd de tratamento de sucesso.
-      () => {
+      // () => {
+
+      // 18.9. Implementando navegação imperativa:
+      //   Agora precisaremos obter o retorno da req, p/ acessar o cód atribuído no backend ao novo lanç cadastrado.
+      ( lancAdd ) => {
         this.msgServ.add({
           severity:'success',
           summary:'Lançamento cadastrado!',
           detail: 'O lançamento foi adicionado com sucesso!'
         });
 
-        lancForm.reset();
-        this.lancamento = new Lancamento();
+        // lancForm.reset();
+        // this.lancamento = new Lancamento();
+
+/*      18.9. Implementando navegação imperativa:
+          Após salvar um novo lanç, em vez de apenas limpar os campos e renovar a prop lancamento, vamos agora
+          redirecionar p/ a pág de listagem de lançs.
+
+        O método Router.navigate() recebe um array c/ os fragmentos da URL a ser direcionada, a exemp da dir routerLink. */
+        // this.router.navigate(["/lancamentos"]);
+
+        // Agora, em vez de irmos p/ a pág de listagem de lançs, vamos p/ a pág de edt do lanç adicionado. P/ isso,
+        //   vamos concat o cód do novo lanç à URL de lançs.
+        this.router.navigate(["/lancamentos", lancAdd.codigo]);
       }
     )
     .catch(erro => this.errHndServ.handle(erro));
@@ -274,6 +293,38 @@ export class LancamentosCadastroComponent implements OnInit {
       this.atualizarLanc(lancForm);
     else
       this.adicionarLanc(lancForm);
+  }
+
+/* 18.9. Implementando navegação imperativa:
+    Criando o método hndlr novo() no comp, p/ tratar o clique no btn de novo lanç. Se fosse apenas para fazer a
+    nav ( equiv ao método Router.navigate() ), ñ seria necessário este proced. Bastaria se add um routerLink ao
+    btn na view. Este procidento de evt binding e tratamento de evto é necessário pelos d+ tratamentos efetuados
+    no método. */
+  novo(lancForm: NgForm) {
+/*  Qdo estivermos na view de edt e clicarmos no btn novo, o comp será reinstanciado, seus métodos de inicialização
+      reinvocados e suas props reiniciadas, pois a rota (URL) irá mudar. Qdo já estivermos na view de add, nada
+      disto será feito, pois a rota ñ irá mudar. P/ q os campos do form sejam limpos, neste 2º caso, é necessário
+      resetar o form e reiniciar a prop lancamento (como era feito originalmente na add). */
+    lancForm.reset();
+    // this.lancamento = new Lancamento();
+
+/*  O método ngForm.reset() reseta o form, colocando tds os vals de seus campos nulos. Qdo associamos as props
+      de this.lancamento aos campos, o tp já deve estar como RECEITA p/ padrão. No entanto, p/ algum bug do NG,
+      isto não está ocorrendo e o tp está nulo (s/ marcação). P/ contornar isso, vamos disparar a atribuição da
+      prop lançamento assincronamente, após um delay de 1 ms, com a func setTimeout(). */
+    // setTimeout(() => {
+    //   this.lancamento = new Lancamento();
+    // }, 1);
+
+/*  Na maneita feita acima ainda há um prob, pois qdo disparamos a atribuição assincronamente, com a func setTimeout(),
+      a palavra-chave this ñ se refere mais ao comp (diferente do q ocorre nos métodos deste). P/ isso a atribuição ñ
+      funciona. P/ contornar isso, vamos fazer um Function.bind() no setTimeout(), passando o comp como o this p/ a func. */
+    setTimeout(( () => {
+      this.lancamento = new Lancamento();
+    } ).bind(this), 1);
+
+    // A clicar no btn "Novo", vamos nav p/ a pág de novo lanç
+    this.router.navigate(["/lancamentos/novo"]);
   }
 
 /* 18.7. Preenchendo os campos na edição de lançamentos:
