@@ -105,6 +105,15 @@ import { AppComponent } from './app.component';
   Criando um obj Routes, q é um array de rotas da app. Routes contém vários objs Route, sendo cada um uma
   config duma rota usada pelo roteador (Router) da app. */
 const routes: Routes = [
+/* 18.10. Fazendo redirecionamento:
+    Qdo acessamos o path raiz (s/ nada ou apenas c/ uma "/" após o host. Em ambiente dev é "http://localhost:4200"
+    ou "http://localhost:4200/") vamos p/ uma pág em branco, pois ñ é associado a qq comp. Vamos mudar isso criando
+    uma rota associada ao path raiz. Esta rota porém ñ irá associá-lo a um comp, mas sim fazer um redirect p/ a view
+    de pesquisa de lançs. P/ padrão o pathMatch, q determina o tp de comparação de URLS, é "prefix", q significa q o
+    prefixo da URL será comparado à prop path. Aqui vamos mudar p/ "full", q significar q a rota será acionada apenas
+    se a URL inteira bater c/ o path. */
+  { path: "", redirectTo: "lancamentos", pathMatch: "full" },
+
   {
     path: "lancamentos", // Route.path: URL do comp, relativa ao caminho raiz da app
     component: LancamentosPesquisaComponent // Route.component: O comp a ser instanciado qdo a URL bater
