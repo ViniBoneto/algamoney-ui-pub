@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -97,7 +98,14 @@ export class LancamentosPesquisaComponent implements OnInit {
     private lancaServ: LancamentoService,
     private errServ: ErrorHandlerService,
     private msgServ: MessageService,
-    private confirmServ: ConfirmationService
+    private confirmServ: ConfirmationService,
+
+/*  18.12. Definindo o título da página dinamicamente:
+      O cód dos comps NG são renderizados, a partir do comp raiz (app-root), é renderizado no corpo (<body>) da pág
+      índice da app (index.html). P/ conta disto, o título da app, q está na tag <title> da msg pág índice, ñ pode
+      ser manipulado diretamente pelo cód das views e comps do NG. Então, p/ se obter e/ou alterar o título da app,
+      usa-se o serv Title, fonecido pelo NG. */
+    private title: Title
   ) {}
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
@@ -110,6 +118,10 @@ export class LancamentosPesquisaComponent implements OnInit {
       onLazyLoad, c/ nº pág 0) será automaticamente invocado qdo o comp for carregado (as d+ págs serão carregadas conforme
       a paginação no comp for efetuada). */
     // this.pesquisar();
+
+    // 18.12. Definindo o título da página dinamicamente:
+    //   Alterando dinamicamente o título da pág de pesquisa de lançs através do serv Title.
+    this.title.setTitle("Pesquisa lançamentos");
   }
 
   // 17.2. Criando o serviço de consulta de lançamentos:

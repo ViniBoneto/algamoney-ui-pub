@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { MessageService } from 'primeng/api';
 
@@ -102,11 +103,22 @@ export class LancamentosCadastroComponent implements OnInit {
 
     // 18.9. Implementando navegação imperativa:
     //   Adicionamos o serv de roteamento do NG (Router) ao comp p/ implementar a nav imperativa (programática).
-    private router: Router
+    private router: Router,
+
+/*  18.12. Definindo o título da página dinamicamente:
+      O cód dos comps NG são renderizados, a partir do comp raiz (app-root), é renderizado no corpo (<body>) da pág índice
+      da app (index.html). P/ conta disto, o título da app, q está na tag <title> da msg pág índice, ñ pode ser manipulado
+      diretamente pelo cód das views e comps do NG. Então, p/ se obter e/ou alterar o título da app, usa-se o serv Title,
+      fonecido pelo NG. */
+    private title: Title
   ) { }
 
   ngOnInit(): void {
     // this.categsCarregadas = false;
+
+    // 18.12. Definindo o título da página dinamicamente:
+    //   Alterando dinamicamente o título da pág de cadastro de lançs através do serv Title.
+    this.title.setTitle("Novo lançamento");
 
     // 17.17. Listando as categorias cadastradas no dropdown:
     //  Chama o método p/ carregar dinamicamente a combo de categs, logo após o comp ter suas props inicializadas.
@@ -205,6 +217,12 @@ export class LancamentosCadastroComponent implements OnInit {
       // Atribui o lanç buscado à prop de lanç associada ao comp.
       this.lancamento = lanc;
     })
+/*  18.12. Definindo o título da página dinamicamente:
+      Este comp compartilha as views de cadastro novo lanç e edt lanç existente. Qdo estivermos no 2º caso,
+      vamos trocar o título da pág, informando q é modo edt e tb mostrando a descr do lanç sendo alterado.
+      P/ isto, precisamos efetuar a alt de título após o lanç ter sido buscado no backend. Faremos isso
+      adicionando uma Promise, c/ a alt de título, na Promise chain do carregamento do lanç. */
+    .then( ( ) => this.atualizarTituloEdt() )
     .catch(erro => {
       this.errHndServ.handle(erro);
     });
@@ -281,6 +299,11 @@ export class LancamentosCadastroComponent implements OnInit {
         this.lancamento = lanc;
       }
     )
+/*  18.12. Definindo o título da página dinamicamente:
+      Qdo estamos na edt de lanç, informamos a descr do lanç sendo alterado. Porém, ao atualizamos um lanç, se alteramos sua
+      descr, ela ñ se reflete de imediato na descr no título. Temos q sair e voltar ou dar refresh na pág. P/ resolvermos isto,
+      vamos adicionar uma Promise, c/ a alt de título, na Promise chain da atualização do lanç. */
+    .then( () => this.atualizarTituloEdt() )
     .catch(erro => this.errHndServ.handle(erro));
   }
 
@@ -378,5 +401,12 @@ export class LancamentosCadastroComponent implements OnInit {
     .catch(erro => {
       this.errHndServ.handle(erro);
     });
+  }
+
+/* 18.12. Definindo o título da página dinamicamente:
+    Vamos criar um método a ser invocado na edt de lanç, informando q é modo edt e tb mostrando a descr do lanç sendo alterado.
+    P/ isto, precisamos invocá-lo após o lanç ter sido buscado no backend. */
+  private atualizarTituloEdt() {
+    this.title.setTitle(`Edição lançamento: ${this.lancamento.descricao}`);
   }
 }

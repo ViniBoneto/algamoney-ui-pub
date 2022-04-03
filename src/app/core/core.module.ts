@@ -3,6 +3,7 @@ import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -74,6 +75,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       Adição do DatePipe: O DatePipe do Angular deve ser adicionado como provider no CoreModule. Como este pipe
       trabalha com as definições de localização, é necessário configurá-las também para que funcionem corretamente. */
     DatePipe,
+    // 18.12. Definindo o título da página dinamicamente:
+    //   Importo o serv Title, p/ manipulação do título das págs, no mód core, pois ele será usado em td a app.
+    Title,
     {provide: LOCALE_ID, useValue: "pt-BR"},
 
     MessageService,
