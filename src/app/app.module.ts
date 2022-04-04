@@ -3,7 +3,7 @@ import { NgModule /* , LOCALE_ID */ } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+// import { Routes, RouterModule } from '@angular/router';
 
 /* 17.11. Alterando o locale da aplicação para pt-BR:
 Configurando locale: Para configurarmos o Locale de nossa aplicação Angular, ficou um pouco diferente,
@@ -44,14 +44,14 @@ Primeiro, precisamos importar este pacote e também a função que realizará o 
 
 import { AppRoutingModule } from './app-routing.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
-import { LancamentosPesquisaComponent } from './lancamentos/lancamentos-pesquisa/lancamentos-pesquisa.component';
-import { LancamentosCadastroComponent } from './lancamentos/lancamentos-cadastro/lancamentos-cadastro.component';
+// import { LancamentosPesquisaComponent } from './lancamentos/lancamentos-pesquisa/lancamentos-pesquisa.component';
+// import { LancamentosCadastroComponent } from './lancamentos/lancamentos-cadastro/lancamentos-cadastro.component';
 import { PessoasModule } from './pessoas/pessoas.module';
-import { PessoasPesquisaComponent } from './pessoas/pessoas-pesquisa/pessoas-pesquisa.component';
-import { PessoasCadastroComponent } from './pessoas/pessoas-cadastro/pessoas-cadastro.component';
+// import { PessoasPesquisaComponent } from './pessoas/pessoas-pesquisa/pessoas-pesquisa.component';
+// import { PessoasCadastroComponent } from './pessoas/pessoas-cadastro/pessoas-cadastro.component';
 import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
-import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
+// import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
 // import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 // import { NavbarComponent } from './navbar/navbar.component';
 // import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
@@ -104,8 +104,15 @@ import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.compo
 
 /* 18.2. Configurando rotas na aplicação:
   Criando um obj Routes, q é um array de rotas da app. Routes contém vários objs Route, sendo cada um uma
-  config duma rota usada pelo roteador (Router) da app. */
-const routes: Routes = [
+  config duma rota usada pelo roteador (Router) da app.
+
+  18.13. Refatorando as rotas para usar Routing Module:
+    Conforme adicionamos rotas à app (sobretudo em apps grandes), o mód q as contêm vai ficando + cheio e confuso.
+    P/ evitar isto, é padrão em apps NG criar um mód próprio p/ abrigar as configs de rotas. Este mód tem, p/ padrão,
+    a nomenclatura <nome mód>-rounting.module.ts. Neste caso, como as configs de roteamento estavam no mód app.module.ts,
+    vamos criar o mód app.module-rounting.ts e mover as configs p/ este mód. Dito isto, vamos deixar as rotas origs aqui
+    comentadas. */
+// const routes: Routes = [
 /* 18.10. Fazendo redirecionamento:
     Qdo acessamos o path raiz (s/ nada ou apenas c/ uma "/" após o host. Em ambiente dev é "http://localhost:4200"
     ou "http://localhost:4200/") vamos p/ uma pág em branco, pois ñ é associado a qq comp. Vamos mudar isso criando
@@ -113,13 +120,13 @@ const routes: Routes = [
     de pesquisa de lançs. P/ padrão o pathMatch, q determina o tp de comparação de URLS, é "prefix", q significa q o
     prefixo da URL será comparado à prop path. Aqui vamos mudar p/ "full", q significar q a rota será acionada apenas
     se a URL inteira bater c/ o path. */
-  { path: "", redirectTo: "lancamentos", pathMatch: "full" },
+  // { path: "", redirectTo: "lancamentos", pathMatch: "full" },
 
-  {
-    path: "lancamentos", // Route.path: URL do comp, relativa ao caminho raiz da app
-    component: LancamentosPesquisaComponent // Route.component: O comp a ser instanciado qdo a URL bater
-  },
-  { path: "lancamentos/novo", component: LancamentosCadastroComponent },
+  // {
+  //   path: "lancamentos", // Route.path: URL do comp, relativa ao caminho raiz da app
+  //   component: LancamentosPesquisaComponent // Route.component: O comp a ser instanciado qdo a URL bater
+  // },
+  // { path: "lancamentos/novo", component: LancamentosCadastroComponent },
 
 /* 18.5. Recebendo parâmetros da rota:
     P/ edição de lançs existentes, vamos adiconar uma rota c/ um placeholder a ser substituído por um param q
@@ -129,20 +136,20 @@ const routes: Routes = [
 
     Obs: "/lancamentos/novo" e  "lancamentos/:codigo" (:codigo sendo placeholder) caem na msma view (msm comp),
       porém as rotas ativadas são diferentes. */
-  { path: "lancamentos/:codigo", component: LancamentosCadastroComponent },
+  // { path: "lancamentos/:codigo", component: LancamentosCadastroComponent },
 
-  { path: "pessoas", component: PessoasPesquisaComponent },
-  { path: "pessoas/nova", component: PessoasCadastroComponent },
+  // { path: "pessoas", component: PessoasPesquisaComponent },
+  // { path: "pessoas/nova", component: PessoasCadastroComponent },
 
 /* 18.11. Tratando rota não encontrada:
     Vamos adicionar uma rota p/ o comp de pág ñ encontrada. */
-  { path: "pagina-nao-encontrada", component: PaginaNaoEncontradaComponent },
+  // { path: "pagina-nao-encontrada", component: PaginaNaoEncontradaComponent },
 /* Além duma rota p/ o comp de pág ñ encontrada, precisamos tb adicionar uma rota em q qq URL q seja inválida (q ñ
     bata c/ alguma das rotas pré-config) seja redirecionada p/ este comp. P/ isto, vamos usar os wildcards "**", q
     significam qq URL q não foi validada p/ uma das outras rotas. É importante que esta rota "coringa" esteja p/ último,
     dps das d+. */
-  { path: "**", redirectTo: "pagina-nao-encontrada" }
-];
+//   { path: "**", redirectTo: "pagina-nao-encontrada" }
+// ];
 
 /* 14.6. Criando um Feature Module:
   P/ melhor se organizar a app, cria-se mód de lançamentos, move-se os comps de lançamentos daqui p/ lá
@@ -187,8 +194,15 @@ const routes: Routes = [
     // FormsModule,
 /*  18.2. Configurando rotas na aplicação:
       Importa o mod de roteamento e o configura no mod raiz, p/ instanciar o serv de roteamento (Router) e
-      cadastrar as rotas (ends urls / comps) a serem mapeadas pela app. */
-    RouterModule.forRoot(routes),
+      cadastrar as rotas (ends urls / comps) a serem mapeadas pela app.
+
+    18.13. Refatorando as rotas para usar Routing Module:
+      Conforme adicionamos rotas à app (sobretudo em apps grandes), o mód q as contêm vai ficando + cheio e confuso.
+      P/ evitar isto, é padrão em apps NG criar um mód próprio p/ abrigar as configs de rotas. Este mód tem, p/ padrão,
+      a nomenclatura <nome mód>-rounting.module.ts. Neste caso, como as configs de roteamento estavam no mód app.module.ts,
+      vamos criar o mód app.module-rounting.ts e mover as configs p/ este mód. Dito isto, vamos deixar as rotas origs aqui
+      comentadas. */
+    // RouterModule.forRoot(routes),
 
     // TabViewModule
     // InputTextModule,
@@ -238,10 +252,13 @@ const routes: Routes = [
       }
     }), */
 
-    AppRoutingModule,
     LancamentosModule,
     PessoasModule,
-    CoreModule
+    CoreModule,
+/*  18.13. Refatorando as rotas para usar Routing Module:
+      Como já explicado, cria um mód próprio p/ configs de rotas e move as configs p/ lá. Devemos tb importar este
+      mód aqui no mód raiz. */
+    AppRoutingModule
   ],
   providers: [
 /*  17.9. Adicionando mensagem de sucesso com Angular Toasty:
