@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+// import { RouterModule } from '@angular/router';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,7 @@ import { MessageModule } from 'primeng/message';
 import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
 
 import { SharedModule } from '../shared/shared.module';
+import { LancamentosRoutingModule } from './lancamentos-routing.module';
 import { LancamentoService } from './lancamento.service';
 import { LancamentosGridComponent } from './lancamentos-grid/lancamentos-grid.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
@@ -72,9 +73,13 @@ export const customCurrencyMaskConfig = {
     // 17.2. Criando o serviço de consulta de lançamentos:
     //   Importando o mód http p/ poder se usar os comps HttpClient e HttpHeaders.
     HttpClientModule,
-    // 18.3. Navegando com Router Link:
-    //   É preciso importar o mód de roteamento p/ a dir routerLink funcionar.
-    RouterModule,
+/*  18.3. Navegando com Router Link:
+      É preciso importar o mód de roteamento p/ a dir routerLink funcionar.
+
+    18.14. Criando um Routing Module para o módulo de funcionalidade:
+      Em vez de importarmos diretamento o RouterModule aqui, agora importaremos o mód de rotas associado a
+      este mód aqui (LancamentosRoutingModule), q p/ sua vez exportará o RouterModule. */
+    // RouterModule,
 
     InputTextModule,
     ButtonModule,
@@ -94,7 +99,11 @@ export const customCurrencyMaskConfig = {
     // NgxCurrencyModule
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
 
-    SharedModule
+    SharedModule,
+/*  18.14. Criando um Routing Module para o módulo de funcionalidade:
+      Em vez de importarmos diretamento o RouterModule aqui, agora importaremos o mód de rotas associado a
+      este mód aqui (LancamentosRoutingModule), q p/ sua vez exportará o RouterModule. */
+    LancamentosRoutingModule
   ],
   exports: [
 /*  18.11. Tratando rota não encontrada:
