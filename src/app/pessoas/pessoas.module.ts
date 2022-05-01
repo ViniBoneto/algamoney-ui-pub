@@ -10,6 +10,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 import { SharedModule } from '../shared/shared.module';
+import { PessoasRoutingModule } from './pessoas-routing.module';
 import { PessoasCadastroComponent } from './pessoas-cadastro/pessoas-cadastro.component';
 import { PessoasPesquisaComponent } from './pessoas-pesquisa/pessoas-pesquisa.component';
 import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
@@ -42,7 +43,10 @@ import { PessoasGridComponent } from './pessoas-grid/pessoas-grid.component';
     InputMaskModule,
     InputNumberModule,
 
-    SharedModule
+    SharedModule,
+    // 18.15. Desafio: roteamento e edição de pessoas:
+    //   Repetindo c/ pessoas a criação dum routing module, como feito p/ lançs na aula 18.14.
+    PessoasRoutingModule
   ],
   exports: [
 /*  18.11. Tratando rota não encontrada:

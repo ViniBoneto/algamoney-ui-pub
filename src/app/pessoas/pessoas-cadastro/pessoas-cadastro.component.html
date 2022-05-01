@@ -14,7 +14,11 @@
   <form #form="ngForm" (ngSubmit)="salvar(form);">
     <div class="grid">
       <div class="col-12">
-        <h1>Nova Pessoa</h1>
+        <!-- <h1>Nova Pessoa</h1> -->
+
+        <!-- 18.15. Desafio: roteamento e edição de pessoas:
+          Repetindo c/ pessoas o preenchimento dos campos na edt, como feito p/ lançs na aula 18.7. -->
+        <h1>{{ editando ? "Edição de" : "Nova" }} Pessoa</h1>
       </div>
 
       <div class="col-12 p-fluid">
@@ -97,8 +101,15 @@
         <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
           de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
           no back. -->
-        <p-inputNumber mode="decimal" name="numero" ngModel value="pessoa.endereco?.numero" #num="ngModel"
-          [required]="true"></p-inputNumber>
+        <!-- <p-inputNumber mode="decimal" name="numero" ngModel value="pessoa.endereco?.numero" #num="ngModel"
+          [required]="true"></p-inputNumber> -->
+
+        <!-- 18.15. Desafio: roteamento e edição de pessoas:
+          Devido ao fato do elem PNG p-inputNumber ñ estar reconhecendo a prop value e o único modo de inserir um val
+          programaticamente nele seja usando 2-way-databind, q recai no probl apontado na aula 17.21 (erros TS2531 e NG5002),
+          optei p/ mudar p/ um elem HTML input[type="number"], estilizado c/ dir pInputText. -->
+        <input type="number" pInputText name="numero" ngModel [value]="pessoa.endereco?.numero" #num="ngModel"
+          [required]="true">
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -185,8 +196,18 @@
         <!-- Como usar o oper ? ao campo endereco ñ funcionou p/ driblar os erros TS2531 e NG5002, mudei a estratégia
           de 2-way-databind p/ property-bind no front c/ atribs de campos às vars do modelo, na func de sumissão,
           no back. -->
-        <p-inputMask mask="99.999-999" name="cep" ngModel value="pessoa.endereco?.cep" #cep="ngModel"
-          [required]="true"></p-inputMask>
+        <!-- <p-inputMask mask="99.999-999" name="cep" ngModel value="pessoa.endereco?.cep" #cep="ngModel"
+          [required]="true" [unmask]="true" ></p-inputMask> -->
+
+        <!-- 18.15. Desafio: roteamento e edição de pessoas:
+          Devido ao fato do elem PNG p-inputMask ñ estar reconhecendo a prop value e o único modo de inserir um val
+          programaticamente nele seja usando 2-way-databind, q recai no probl apontado na aula 17.21 (erros TS2531 e
+          NG5002), optei p/ mudar p/ um elem HTML input[type="text"], usando a prop pattern, p/ restringir a um formato
+          válido de CEP, estilizado c/ dir pInputText. Também criei método p/ remover val do elem, caso seja um formato
+          de cep inválido e acrescer os chars '.' e '-' nas pos corretas, caso o usr ñ faça, de forma a deixar o CEP na
+          format padrão "99.999-999". Este método será invocado no onChange e visa copiar comportamento padrão do p-inputMask. -->
+        <input type="text" name="cep" ngModel [value]="pessoa.endereco?.cep" #cep="ngModel" pInputText
+          [required]="true" pattern="^\d{2}\.?\d{3}-?\d{3}$" (change)="validarFormatCep(cep)">
 
         <!-- 14.7. Desafio: criando o feature module de pessoas:
           Comenta-se o comp <app-mensagens-erro> p/ enquanto, pois tb vamos relocá-lo p/ fora do mód
@@ -264,12 +285,49 @@
       <div class="col-12">
         <!-- <button pButton type="submit" label="Salvar"></button> -->
 
+        <!-- 18.15. Desafio: roteamento e edição de pessoas:
+          Precisei mudar o 2-way-databind (banana in the box) pelo simples prop bind, na view, e pela atrib
+          de props da view p/ o model na submit, devido aos erros TS2531 e NG5002 (probl reportado na aula 17.21).
+          Porém, devido a um bug, ou no NG ou no PNG, na edt de pessoas os vals dos campos do form (view) estão
+          vindo vazios ou indef qdo ñ alterados (c/ status pristine) e, p/ contornar isso, estou levando em conta
+          apenas campos "sujos" (dirty) e inválidos p/ rejeitar a submit do form e estou atualizando no model apenas
+          as props "sujas" (dirty) e válidas.
+
+        Devido ao probl relatado acima, qdo estivermos no modo de edt (editando == true), retirei a desabilitação
+          do btn de submit (prop disabled) caso o form esteja inválido. O btn estará agora sempre habilitado e a
+          validação do form será feita no comp, no método validarForm(). Caso este rejeite o form, ele não será
+          submetido. Qdo estivermos no modo add nova pessoa (editando == false), mantem-se como estava antes (btn
+          automaticamente desabilitado enquanto algum dos campos, e consequentemente o form, estiver inválido). -->
+        <div *ngIf="editando; else blocoSalvando" style="display: inline-block;">
+          <!-- <button pButton type="submit" label="Salvar"></button> -->
+
+          <!-- Para atingir objetivo de ñ desejo ficar reenviando o form, em modo de edt, qdo nenhuma prop tiver sido
+            alterada, de maneira + simples, o btn de submit será desabilitado se o form estiver pristino (isto é ñ
+            "sujo", c/ nenhum campo alterado). -->
+          <button pButton type="submit" label="Salvar" [disabled]="form.pristine"></button>
+        </div>
+
         <!-- 13.10. Desafio: controles, validações e mensagens de erro:
           Apenas habilita o btn "Salvar" se o form estiver válido. Isto é, se tds os seus cntrls internos
           estiverem com estado de validação positivo. -->
-        <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button>
-        <button pButton type="button" label="Novo" class="p-button-info"></button>
-        <a href="javascript:;">Voltar para a pesquisa</a>
+        <!-- <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button> -->
+
+        <ng-template #blocoSalvando>
+          <button pButton type="submit" label="Salvar" [disabled]="form.invalid"></button>
+        </ng-template>
+
+        <!-- <button pButton type="button" label="Novo" class="p-button-info"></button> -->
+
+        <!-- 18.15. Desafio: roteamento e edição de pessoas:
+          Repetindo c/ pessoas a implementação de navegação imperativa, como feito p/ lançs na aula 18.9. -->
+        <button pButton type="button" label="Novo" class="p-button-info"
+          (click)="novo(form);"></button>
+
+        <!-- <a href="javascript:;">Voltar para a pesquisa</a> -->
+
+        <!-- 18.15. Desafio: roteamento e edição de pessoas:
+          Repetindo c/ pessoas a criação de links de nav, como feito p/ lançs na aula 18.3. -->
+        <a routerLink="/pessoas">Voltar para a pesquisa</a>
       </div>
     </div>
   </form>

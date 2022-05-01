@@ -72,7 +72,13 @@
             </ng-template>
           </td>
           <td class="col-acoes-content">
-            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a>
+            <!-- <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a> -->
+
+            <!-- 18.15. Desafio: roteamento e edição de pessoas:
+              Repetindo c/ pessoas o recebimento de parâms da rota, como feito p/ lançs na aula 18.5. -->
+            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+              [routerLink]="['/pessoas', pessoa.codigo]"></a>
+
             <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
             <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button> -->
 

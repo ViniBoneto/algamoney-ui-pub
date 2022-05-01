@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -50,7 +51,10 @@ export class PessoasPesquisaComponent implements OnInit {
     private pessoaServ: PessoaService,
     private errServ: ErrorHandlerService,
     private msgServ: MessageService,
-    private confirmServ: ConfirmationService
+    private confirmServ: ConfirmationService,
+    // 18.15. Desafio: roteamento e edição de pessoas:
+    //   Repetindo c/ pessoas a def de título pág din, como feito p/ lançs na aula 18.12.
+    private title: Title
   ) {}
 
   // Invoca a consulta de pessoas, no serviço, logo após a inicialização do comp, p/ carregar o comp
@@ -64,6 +68,10 @@ export class PessoasPesquisaComponent implements OnInit {
       (resp) => {
         console.log(resp);
     }); */
+
+    // 18.15. Desafio: roteamento e edição de pessoas:
+    //   Repetindo c/ pessoas a def de título pág din, como feito p/ lançs na aula 18.12.
+    this.title.setTitle("Pesquisa pessoas");
   }
 
 /* 17.7. Desafio: criando a consulta e listagem de pessoas:

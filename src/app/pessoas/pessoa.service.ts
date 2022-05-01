@@ -149,23 +149,65 @@ export class PessoaService {
 
     return this.configAuthReq(headers).then(headers => {
       return this.http.post<Pessoa>(this.pessoasURL, pessoa, { headers }).toPromise();
+
+/*  18.15. Desafio: roteamento e edição de pessoas:
+      Invoca o método de conversão de tp Pessoa (como tá no frontend) p/ JSON (como tá no backend), devido
+      às props nº e cep serem do tp nº na cls de modelo e do tp txt no backend e base dados. */
+/*     return this.configAuthReq(headers).then(headers => {
+      return this.http.post(this.pessoasURL, Pessoa.toJson(pessoa), { headers })
+        .toPromise().then( (pessoa) => Pessoa.fromJson(pessoa) ); */
+    });
+  }
+
+  // 18.15. Desafio: roteamento e edição de pessoas:
+  //   Repetindo c/ pessoas a impl de atualização e busca p/ cód, como feito p/ lançs na aula 18.6.
+  atualizar(pessoa: Pessoa): Promise<Pessoa> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.put<Pessoa>(`${this.pessoasURL}/${pessoa.codigo}`, pessoa,
+        { headers }).toPromise();
+     });
+
+/*  18.15. Desafio: roteamento e edição de pessoas:
+      Invoca o método de conversão de tp Pessoa (como tá no frontend) p/ JSON (como tá no backend), devido
+      às props nº e cep serem do tp nº na cls de modelo e do tp txt no backend e base dados. */
+ /*    return this.configAuthReq(headers).then(headers => {
+      return this.http.put<Pessoa>(`${this.pessoasURL}/${pessoa.codigo}`, Pessoa.toJson(pessoa),
+          { headers }).toPromise().then( (pessoa) => Pessoa.fromJson(pessoa) );
+        }); */
+  }
+
+  // 18.15. Desafio: roteamento e edição de pessoas:
+  //   Repetindo c/ pessoas a impl de atualização e busca p/ cód, como feito p/ lançs na aula 18.6.
+  buscar(codigo: number): Promise<Pessoa> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    return this.configAuthReq(headers).then(headers => {
+      return this.http.get<Pessoa>(`${this.pessoasURL}/${codigo}`, { headers: headers } )
+        .toPromise();
+
+/*    18.15. Desafio: roteamento e edição de pessoas:
+        Invoca o método de conversão de JSON (como vem do backend) p/ tp Pessoa, devido às props nº e cep
+        serem do tp nº na cls de modelo e do tp txt no backend e base dados. */
+/*       return this.http.get(`${this.pessoasURL}/${codigo}`, { headers: headers } )
+        .toPromise().then( (pessoa) => Pessoa.fromJson(pessoa) ); */
     });
   }
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Move cód de config de header de auth da req p/ uma func específica, p/ poder ser reutilizado nos d+ métodos
     q farão reqs HTTP. */
-  private async configAuthReq(headers: HttpHeaders): Promise<HttpHeaders> {
-    // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ1ODUxNDc5LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI4ODMyZGUxYS04YzdmLTRhMWYtYWMxMi0xMTIxMzc4NGUxZjgiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.HuQuN6CNZh3BKqozOP0WjcuJYFNafoyahcSZRV54P1E");
+    private async configAuthReq(headers: HttpHeaders): Promise<HttpHeaders> {
+      // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQ1ODUxNDc5LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI4ODMyZGUxYS04YzdmLTRhMWYtYWMxMi0xMTIxMzc4NGUxZjgiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.HuQuN6CNZh3BKqozOP0WjcuJYFNafoyahcSZRV54P1E");
 
-    /* 17.20. Implementando o serviço de cadastro de lançamentos:
-    Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
-    programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-    HttpHeaders p/ Promise<HttpHeaders>. */
-    let oauth2Token = await obterAccessToken(this.authServ, true);
-    headers = headers.append("Authorization", `Bearer ${oauth2Token}`);
+      /* 17.20. Implementando o serviço de cadastro de lançamentos:
+      Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
+      programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
+      HttpHeaders p/ Promise<HttpHeaders>. */
+      let oauth2Token = await obterAccessToken(this.authServ, true);
+      headers = headers.append("Authorization", `Bearer ${oauth2Token}`);
 
-    return headers;
-  }
-
+      return headers;
+    }
 }

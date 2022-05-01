@@ -14,6 +14,37 @@ export class Pessoa {
   nome!: string;
   ativo!: boolean;
   endereco!: Endereco | null;
+/* 18.15. Desafio: roteamento e edição de pessoas:
+    Os campos nº e cep, na view, ñ são input[type="text"], mas p-inputNumber e p-inputMask, respectivamente,
+    q requerem um val do tp numérico e ñ um txt. P/ isto, alteraremos as props correspondentes a estes campos
+    de str p/ nº. Tb criaremos uma func estática toJson(), similar ao de lanç, q irá converter as props correspondentes
+    a estes campos de nº p/ str, antes de pessoa ser enviada ao backend. */
+/*   static toJson(pessoa: Pessoa): any {
+    return {
+      ...pessoa,
+      endereco: {
+        ...pessoa.endereco,
+        numero: pessoa.endereco?.numero.toString() ?? undefined,
+        cep: pessoa.endereco?.cep.toString() ?? undefined
+      }
+    };
+  } */
+/* 18.15. Desafio: roteamento e edição de pessoas:
+    Os campos nº e cep, na view, ñ são input[type="text"], mas p-inputNumber e p-inputMask, respectivamente,
+    q requerem um val do tp numérico e ñ um txt. P/ isto, alteraremos as props correspondentes a estes campos
+    de str p/ nº. Tb adicionaremos uma func estática fromJson(), q irá converter as props correspondentes a estes
+    campos de str p/ nº, qdo pessoa for trazida do backend, eliminando de cep chars ñ numéricos (.-), caso existam. */
+/*   static fromJson(pessoa: any): Pessoa {
+    return {
+      ...pessoa,
+      endereco: {
+        ...pessoa.endereco,
+        numero: (pessoa.endereco?.numero) ? Number.parseInt( pessoa.endereco.numero.toString() ) : undefined,
+        cep:  (pessoa.endereco?.cep) ? Number.parseInt( pessoa.endereco.cep.toString().replace(/\.|-/g, "" ) )
+          : undefined
+      }
+    };
+  } */
 }
 
 /* 17.21. Desafio: implementando o cadastro de pessoas:
@@ -27,6 +58,12 @@ export class Endereco {
   cep!: string;
   cidade!: string;
   estado!: string;
+/* 18.15. Desafio: roteamento e edição de pessoas:
+    O campos nº e cep, na view, ñ são input[type="text"], mas p-inputNumber e p-inputMask, respectivamente,
+    q requerem um val do tp numérico e ñ um txt. P/ isto, alteraremos as props correspondentes a estes campos
+    de str p/ nº. */
+  // numero!: number;
+  // cep!: number;
 }
 
 export class Categoria {
