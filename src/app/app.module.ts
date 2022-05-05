@@ -50,6 +50,7 @@ import { PessoasModule } from './pessoas/pessoas.module';
 // import { PessoasPesquisaComponent } from './pessoas/pessoas-pesquisa/pessoas-pesquisa.component';
 // import { PessoasCadastroComponent } from './pessoas/pessoas-cadastro/pessoas-cadastro.component';
 import { CoreModule } from './core/core.module';
+import { SegurancaModule } from './seguranca/seguranca.module';
 import { AppComponent } from './app.component';
 // import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
 // import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
@@ -255,6 +256,9 @@ import { AppComponent } from './app.component';
     LancamentosModule,
     PessoasModule,
     CoreModule,
+    // 19.3. Desafio: módulo de segurança e protótipo da tela de login:
+    //   Add mód de seg ao mód raiz.
+    SegurancaModule,
 /*  18.13. Refatorando as rotas para usar Routing Module:
       Como já explicado, cria um mód próprio p/ configs de rotas e move as configs p/ lá. Devemos tb importar este
       mód aqui no mód raiz. */

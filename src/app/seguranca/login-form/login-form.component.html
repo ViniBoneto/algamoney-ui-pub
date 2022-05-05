@@ -1,0 +1,20 @@
+<!-- 19.3. Desafio: módulo de segurança e protótipo da tela de login:
+  Criando mód de seg c/ mód aux de roteamento (ambos seguindo padrão de como já feito na app) e protótipo
+  de tela de login.
+
+  Container do form de login será de tam médio. P/ + detalhes, ver cls css .container-md no arq styles.css. -->
+<div class="container container-md">
+  <form>
+    <h2>Login</h2>
+    <div class="col-12 p-fluid">
+      <input pInputText type="text" name="login" ngModel #login="ngModel">
+    </div>
+    <div class="col-12 p-fluid">
+      <input pInputText type="password" name="senha" ngModel #senha="ngModel">
+    </div>
+    <div class="col-12 p-fluid">
+      <button pButton type="button" label="Login" class="p-button-info p-button-lg"
+        (click)="doLogin(login.value, senha.value);"></button>
+    </div>
+  </form>
+</div>

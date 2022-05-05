@@ -306,9 +306,14 @@ export class LancamentoService {
     /* 17.20. Implementando o serviço de cadastro de lançamentos:
         Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
         programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-        HttpHeaders p/ Promise<HttpHeaders>. */
-    let oauth2Token = await obterAccessToken(this.authServ, true);
-    headers = headers.append("Authorization", `Bearer ${oauth2Token}`);
+        HttpHeaders p/ Promise<HttpHeaders>.
+
+    19.3. Desafio: módulo de segurança e protótipo da tela de login:
+      Remov conn automáticas de auth p/ servidor, feita na aula 17.8. Provisoriamente, a app ñ se conectará ao
+      backend e ficará ñ funcional. Ao longo deste mód (19 Segurança do front-end), a forma de conn correta/oficial
+      do curso será impl. */
+    // let oauth2Token = await obterAccessToken(this.authServ, true);
+    // headers = headers.append("Authorization", `Bearer ${oauth2Token}`);
 
     return headers;
   }

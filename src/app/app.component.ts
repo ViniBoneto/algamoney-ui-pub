@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -29,7 +30,7 @@ export var oauth2Token = "RecebeAlgumoauth2TokenValido";
 export class AppComponent implements OnInit {
 
   title = 'algamoney-ui';
-  primChamada = true;
+  // primChamada = true;
   // oauth2Token: string | undefined;
 
   // Criando props p/ preencher comboboxes (selects) na view, c/ pessoas e categs, p/ testar servs de listagem de pessoas (aula 17.7)
@@ -50,7 +51,12 @@ export class AppComponent implements OnInit {
 /*  17.20. Implementando o serviço de cadastro de lançamentos:
       Injetando serv c/ funcs q retornam o access token oauth2 p/ os servs da app q o requerem. Isto poupará o trab
       de ter q copiar e colar o token do Postman p/ os servs. */
-    private authServ: AuthService
+    private authServ: AuthService,
+
+/*  19.3. Desafio: módulo de segurança e protótipo da tela de login:
+      Inserindo cond p/ só exibir barra de nav se ñ estiver na tela de login. P/ isto, é preciso injetar no comp raiz
+      o serv de roteamento p/ verificar qual a URL ativa. */
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -102,4 +108,11 @@ export class AppComponent implements OnInit {
 
   //   return this.oauth2Token /* obterOauth2AccessToken() */;
   // }
+
+/* 19.3. Desafio: módulo de segurança e protótipo da tela de login:
+    Inserindo cond p/ só exibir barra de nav se ñ estiver na tela de login. P/ isto, é preciso injetar no comp raiz
+    o serv de roteamento p/ verificar qual a URL ativa. */
+  exibirBarraNav(): boolean {
+    return this.router.url !== "/login";
+  }
 }

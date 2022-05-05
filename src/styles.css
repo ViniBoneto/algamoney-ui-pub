@@ -15,8 +15,27 @@ label {
   a 1170px em monitores muito grandes */
 @media (min-width: 1200px) {
   .container {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     width: 1170px;
+  }
+}
+
+/* 19.3. Desafio: módulo de segurança e protótipo da tela de login:
+  Tira centralização do container (prop margin) da media query, pois este sempre deverá ser centralizado,
+  independentemente do tam da tela. */
+.container {
+  margin: 0 auto;
+}
+
+/* 19.3. Desafio: módulo de segurança e protótipo da tela de login:
+  Criando uma cls css p/ containters de tam médio, na app. Estes containers serão centralizados e terão larg
+  de 40% do container ancestral posicionado, caso haja, ou do viewport.
+
+  Obs: O qualificador p/ containers de tam médio só valerá p/ telas com larg >= 768px. P/ telas menores,
+    ele não será aplicado. */
+@media (min-width: 768px) {
+  .container.container-md {
+    width: 40%;
   }
 }
 
