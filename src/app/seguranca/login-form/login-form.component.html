@@ -4,17 +4,17 @@
 
   Container do form de login será de tam médio. P/ + detalhes, ver cls css .container-md no arq styles.css. -->
 <div class="container container-md">
-  <form>
+  <form #form="ngForm">
     <h1 style="padding-left: 1%;">Login</h1>
     <div class="col-12 p-fluid">
-      <input pInputText type="text" name="login" ngModel #login="ngModel">
+      <input pInputText type="text" name="login" ngModel #login="ngModel" required>
     </div>
     <div class="col-12 p-fluid">
-      <input pInputText type="password" name="senha" ngModel #senha="ngModel">
+      <input pInputText type="password" name="senha" ngModel #senha="ngModel" required>
     </div>
     <div class="col-12 p-fluid">
       <button pButton type="button" label="Login" class="p-button-info p-button-lg"
-        (click)="doLogin(login.value, senha.value);"></button>
+        (click)="doLogin(login.value, senha.value);" [disabled]="form.invalid"></button>
     </div>
   </form>
 </div>
