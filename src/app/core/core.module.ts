@@ -12,6 +12,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { ErrorHandlerService } from './error-handler.service';
+import { AuthService } from '../shared/auth.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 
@@ -84,7 +85,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ConfirmationService,
     TranslateService,
 
-    ErrorHandlerService
+    ErrorHandlerService,
+    // 19.4. Implementando o serviço de autenticação com OAuth 2
+    //   Registra cls de serv p/ auth usando OAuth 2 na lst de providers do mód core.
+    AuthService
   ]
 })
 export class CoreModule { }
