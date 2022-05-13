@@ -5,6 +5,9 @@
   Container do form de login será de tam médio. P/ + detalhes, ver cls css .container-md no arq styles.css. -->
 <div class="container container-md">
   <form #form="ngForm">
+    <!-- 19.5. Decodificando o JWT e armazenando no Local Storage:
+      Exibe a prop jwtPayload do serv auth, c/ o conteúdo do payload do JWT, p/ efeito de depuração. -->
+    {{ auth.jwtPayload | json }}
     <h1 style="padding-left: 1%;">Login</h1>
     <div class="col-12 p-fluid">
       <input pInputText type="text" name="login" ngModel #login="ngModel" required>
