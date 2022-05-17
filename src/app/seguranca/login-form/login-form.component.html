@@ -7,7 +7,7 @@
   <form #form="ngForm">
     <!-- 19.5. Decodificando o JWT e armazenando no Local Storage:
       Exibe a prop jwtPayload do serv auth, c/ o conteúdo do payload do JWT, p/ efeito de depuração. -->
-    {{ auth.jwtPayload | json }}
+    <!-- {{ auth.jwtPayload | json }} -->
     <h1 style="padding-left: 1%;">Login</h1>
     <div class="col-12 p-fluid">
       <input pInputText type="text" name="login" ngModel #login="ngModel" required>
@@ -16,8 +16,20 @@
       <input pInputText type="password" name="senha" ngModel #senha="ngModel" required>
     </div>
     <div class="col-12 p-fluid">
+      <!-- <button pButton type="button" label="Login" class="p-button-info p-button-lg"
+        (click)="doLogin(login.value, senha.value);" [disabled]="form.invalid"></button> -->
+
+      <!-- 19.6. Tratando casos de erros e sucesso de autenticação:
+        Após clicar no btn e acionar o login, limpa o campo senha (atribuindo seu val à str vazia). Se o login
+          for c/ sucesso, o usr será redir p/ outra tela. Se o login falhar, o campo senha aparecerá novamente
+          em branco, p/ o usr preencher.
+
+        Obs: Atrib diretamente senha.value = '' ñ é permitido, pq a prop é somente leitura. Atualizar-se o val
+          do comp via senha.viewToModelUpdate('') tb ñ surtiu efeito desejado. Então foi utilizado senha.reset(''),
+          c/ sucesso.  -->
       <button pButton type="button" label="Login" class="p-button-info p-button-lg"
-        (click)="doLogin(login.value, senha.value);" [disabled]="form.invalid"></button>
+        (click)="doLogin(login.value, senha.value); senha.reset('');" [disabled]="form.invalid">
+      </button>
     </div>
   </form>
 </div>

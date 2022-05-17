@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -50,13 +50,27 @@ export class AuthService {
     //  virá num cookie, sendo manipulado e automaticamente enviado apenas pelo browser.
     return this.http.post(this.oauth2TokenUrl, body, { headers }).toPromise<any>()
       .then(resp => {
-        console.log(resp);
+        // console.log(resp);
+
         // 19.5. Decodificando o JWT e armazenando no Local Storage:
         //   Decodifica e armazena o JWT (access token), obtido a partir do corpo da resp, no local storage.
         this.armazenarToken(resp.access_token);
       })
       .catch(err => {
-        console.error(err);
+        // console.error(err);
+
+/*      19.6. Tratando casos de erros e sucesso de autenticação:
+          Se o status da resp for 400 e o erro for "invalid grant" é pq o usr o senha foram rejeitados. Neste caso,
+            ret uma promessa rejeitada c/ str informando o erro de login. Se for qq outra situação de erro, ret uma
+            promessa rejeitada repassando o obj da resp de erro. */
+        if( err.status === HttpStatusCode.BadRequest) {
+          const respJson = err.error;
+
+          if(respJson.error === "invalid_grant")
+            return Promise.reject("Usuário ou senha inválido!");
+        }
+
+        return Promise.reject(err);
       });
   }
 
