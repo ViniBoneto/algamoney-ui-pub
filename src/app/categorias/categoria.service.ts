@@ -22,21 +22,27 @@ export class CategoriaService {
   constructor(private http: HttpClient, private authServ: AuthService) { }
 
   listar(): Promise<any> {
-    let headers: HttpHeaders = new HttpHeaders();
+    // let headers: HttpHeaders = new HttpHeaders();
     // headers = this.configAuthReq(headers);
 
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
     programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-    HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.get(`${this.categsURL}`, { headers }).toPromise()
+    HttpHeaders p/ Promise<HttpHeaders>.
+
+    19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req
+        uma instância local de HttpHeaders onde só o header de auth for passado.  */
+    // return this.configAuthReq(headers).then(headers => {
+
+      return this.http.get(`${this.categsURL}`/* , { headers } */).toPromise()
       // Como retorno o corpo de resp inalterado, ñ preciso invocar o then() abaixo. Basta retornar a Promise
       //  retornada pelo método toPromise().
 /*       .then(
         (resp: any) => resp
       ) */;
-    });
+    // });
   }
 
   private async configAuthReq(headers: HttpHeaders): Promise<HttpHeaders> {

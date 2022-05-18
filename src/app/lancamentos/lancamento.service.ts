@@ -88,8 +88,15 @@ export class LancamentoService {
   pesquisar(filtro: LancamentoFiltro): Promise<any> {
 /* Acresce o param resumo à URL p/ obter a versão resumida dos lançamentos (listar resumos). Tb acresce um
     header de autorização do tipo basic, p/ conseguir acessar o recurso no backend. Em dev estamos usando
-    autenticação básica. Em prod será usado oauth2. */
-    let headers: HttpHeaders = new HttpHeaders();
+    autenticação básica. Em prod será usado oauth2.
+
+    19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq
+        esta será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/
+        a req uma instância local de HttpHeaders onde só o header de auth for passado.
+    */
+    // let headers: HttpHeaders = new HttpHeaders();
+
     // É necessário fazer a atribuição abaixo pq os métodos q modificam os headers na vdd criam um clone do
     //   obj original, sendo q este fica inalterado.
     // headers = headers.append("Authorization", "Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==");
@@ -106,8 +113,14 @@ export class LancamentoService {
     /* 17.20. Implementando o serviço de cadastro de lançamentos:
         Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
         programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-        HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
+        HttpHeaders p/ Promise<HttpHeaders>.
+
+      19.7. Adicionando o Access Token nas chamadas HTTP:
+        Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq
+        esta será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/
+        a req uma instância local de HttpHeaders onde só o header de auth for passado. */
+    // return this.configAuthReq(headers).then(headers => {
+
       /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
             Cria um obj de params http, p/ adiconar os params de filtro de busca (caso constem). Adiciona os params
             ao obj da prop options do método HttpClient.get().  */
@@ -153,7 +166,12 @@ export class LancamentoService {
           params = params.set("size", filtro.itensPagina);
 
           // return this.http.get(`${this.lancamentosURL}?resumo`, { headers } /* Equivale a { headers: headers } */)
-          return this.http.get(`${this.lancamentosURL}?resumo`, { headers, params } /* Equivale a { headers: headers, params: params } */)
+
+/*        19.7. Adicionando o Access Token nas chamadas HTTP:
+            Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor,
+            pq esta será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar
+            p/ a req uma instância local de HttpHeaders onde só o header de auth for passado. */
+          return this.http.get(`${this.lancamentosURL}?resumo`, { /* headers, */ params } /* Equivale a { headers: headers, params: params } */)
             .toPromise().then(
               // Loga todo o corp de resp (um obj Pageable, pq o backend Spring usa recurso de paginação)
               // (resp) => console.log(resp)
@@ -185,7 +203,7 @@ export class LancamentoService {
                   return objRet;
                 }
           );
-    });
+    // });
   }
 
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:
@@ -195,21 +213,27 @@ export class LancamentoService {
   O retorno será uma Promise<void> pq a req DELETE ñ retornará um corpo. Apenas o header, incluso aí o status
       da operação. */
   excluir(codigo: number): Promise<void> {
-    let headers: HttpHeaders = new HttpHeaders();
+    // let headers: HttpHeaders = new HttpHeaders();
     // headers = this.configAuthReq(headers);
+
     /* 17.20. Implementando o serviço de cadastro de lançamentos:
         Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
         programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-        HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.delete(`${this.lancamentosURL}/${codigo}`, { headers })
+        HttpHeaders p/ Promise<HttpHeaders>.
+
+      19.7. Adicionando o Access Token nas chamadas HTTP:
+        Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+          será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req uma
+          instância local de HttpHeaders onde só o header de auth for passado.  */
+    // return this.configAuthReq(headers).then(headers => {
+      return this.http.delete(`${this.lancamentosURL}/${codigo}`/* , { headers } */)
   /*  17.12. Criando um serviço de tratamento de erros:
         Vamos mudar a URL de exclução de lançamentos p/ uma inválida (primeiro ${codigo}xxx e dps ${codigo}234),
         p/ se gerar erro e se testar o tratamento de erros da app.
       Obs: No primeiro caso o erro ret foi 400 e no segundo foi 404. */
       // return this.http.delete(/* `${this.lancamentosURL}/${codigo}xxx` */ `${this.lancamentosURL}/${codigo}234`, { headers })
         .toPromise().then( () => {} );
-    });
+    // });
   }
 
   /* 17.20. Implementando o serviço de cadastro de lançamentos:
@@ -224,8 +248,13 @@ export class LancamentoService {
     /* 17.20. Implementando o serviço de cadastro de lançamentos:
         Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
         programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-        HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
+        HttpHeaders p/ Promise<HttpHeaders>.
+
+      19.7. Adicionando o Access Token nas chamadas HTTP:
+        Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+          será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req
+          uma instância local de HttpHeaders onde só o header de auth for passado.  */
+    // return this.configAuthReq(headers).then(headers => {
     // headers = this.configAuthReqSync(headers);
       // Datas de venc e paggo/receb estão no formato "YYYY-MM-DDTHH:mm:ss.sssZ" mas os tps aceitos no servidor são
       //   LocalDate, q ñ aceitam nem hr e nem TZ. Logo, dts precisam ser convert ao formato "YYYY-MM-DD".
@@ -253,36 +282,21 @@ export class LancamentoService {
       Seguindo dicas neste post aqui https://app.algaworks.com/forum/topicos/82129/tipo-date , p/ tentar superar o
       erro gerando no p-calendar indicado aqui https://stackoverflow.com/questions/70017960/p-calendar-ngmodel-data-error-error-uncaught-in-promise-unexpected-l */
       return this.http.post<Lancamento>(this.lancamentosURL, Lancamento.toJson(lanc), { headers }).toPromise();
-    });
+    // });
   }
 
 /* 18.6. Desafio: implementando os serviços de atualização e busca por código:
   Criando método de atualização dum lanç existente. Este será muito semelhante ao método de adição. Porém, ele
   usará o método HTTP PUT em vez do POST. Ele retornará uma Promise q resolverá retornando o lanç atualizado. */
   atualizar(lanc: Lancamento): Promise<Lancamento> {
-    let headers: HttpHeaders = new HttpHeaders();
+/*  19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req uma
+        instância local de HttpHeaders onde só o header de auth for passado. */
+    // let headers: HttpHeaders = new HttpHeaders();
 
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.put<Lancamento>(`${this.lancamentosURL}/${lanc.codigo}`, Lancamento.toJson(lanc),
-        { headers }).toPromise().then( (lanc) => {
-/*        Quando lanç é desserializado, lanc.dataVencimento e lanc.dataPagamento (se ñ nulo) vêm como str.
-            Como no tp Lancamento, estas props estão previstas como sendo do tp dt, farei aqui a conversão
-            delas de str p/ dt. */
-          this.converterStringsParaDatas([lanc]);
-
-          return lanc;
-        } );
-     });
-  }
-
-/* 18.6. Desafio: implementando os serviços de atualização e busca por código:
-    Criando método de obtenção dum lanç existente, dado seu cód. Ele retornará uma Promise q resolverá retornando
-    o lanç, caso exista, ou rejeitará, caso contrário. */
-  buscar(codigo: number): Promise<Lancamento> {
-    let headers: HttpHeaders = new HttpHeaders();
-
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.get<Lancamento>(`${this.lancamentosURL}/${codigo}`, { headers: headers } )
+    // return this.configAuthReq(headers).then(headers => {
+      return this.http.put<Lancamento>(`${this.lancamentosURL}/${lanc.codigo}`, Lancamento.toJson(lanc)/* , { headers } */)
         .toPromise().then( (lanc) => {
 /*        Quando lanç é desserializado, lanc.dataVencimento e lanc.dataPagamento (se ñ nulo) vêm como str.
             Como no tp Lancamento, estas props estão previstas como sendo do tp dt, farei aqui a conversão
@@ -291,7 +305,30 @@ export class LancamentoService {
 
           return lanc;
         } );
-    });
+    //  });
+  }
+
+/* 18.6. Desafio: implementando os serviços de atualização e busca por código:
+    Criando método de obtenção dum lanç existente, dado seu cód. Ele retornará uma Promise q resolverá retornando
+    o lanç, caso exista, ou rejeitará, caso contrário. */
+  buscar(codigo: number): Promise<Lancamento> {
+/*  19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req uma
+        instância local de HttpHeaders onde só o header de auth for passado. */
+    // let headers: HttpHeaders = new HttpHeaders();
+
+    // return this.configAuthReq(headers).then(headers => {
+      return this.http.get<Lancamento>(`${this.lancamentosURL}/${codigo}`/* , { headers: headers } */ )
+        .toPromise().then( (lanc) => {
+/*        Quando lanç é desserializado, lanc.dataVencimento e lanc.dataPagamento (se ñ nulo) vêm como str.
+            Como no tp Lancamento, estas props estão previstas como sendo do tp dt, farei aqui a conversão
+            delas de str p/ dt. */
+          this.converterStringsParaDatas([lanc]);
+
+          return lanc;
+        } );
+    // });
   }
 
 /* 17.8. Excluindo lançamentos e o decorador @ViewChild:

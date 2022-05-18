@@ -1,4 +1,4 @@
-import { Pessoa } from './../core/model';
+  import { Pessoa } from './../core/model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -35,7 +35,8 @@ export class PessoaService {
   // Faz pesquisa de pessoas usando filtro e/ou paginação opcional
   pesquisar(filtro: PessoaFiltro): Promise<any> {
     // Headers HTTP req
-    let headers: HttpHeaders = new HttpHeaders();
+    // let headers: HttpHeaders = new HttpHeaders();
+
     // Autenticação OAuth2
     // headers = headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbkBhbGdhbW9uZXkuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sIm5vbWUiOiJBZG1pbnNpdHJhZG9yIiwiZXhwIjoxNjQyNjMxNjY0LCJhdXRob3JpdGllcyI6WyJST0xFX0NBREFTVFJBUl9DQVRFR09SSUEiLCJST0xFX1BFU1FVSVNBUl9QRVNTT0EiLCJST0xFX1JFTU9WRVJfUEVTU09BIiwiUk9MRV9DQURBU1RSQVJfTEFOQ0FNRU5UTyIsIlJPTEVfUEVTUVVJU0FSX0xBTkNBTUVOVE8iLCJST0xFX1JFTU9WRVJfTEFOQ0FNRU5UTyIsIlJPTEVfQ0FEQVNUUkFSX1BFU1NPQSIsIlJPTEVfUEVTUVVJU0FSX0NBVEVHT1JJQSJdLCJqdGkiOiI3Y2YwNWE2ZC03MDI3LTRkNGYtYWY5ZC0xYmRkOTVmYTEyMzIiLCJjbGllbnRfaWQiOiJhbmd1bGFyIn0.jxX6HjzJ9RtgFQ6d9jGl0XNK-4p3cL2yZo5GfQISOoU");
 
@@ -47,8 +48,13 @@ export class PessoaService {
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
     programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-    HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
+    HttpHeaders p/ Promise<HttpHeaders>.
+
+  19.7. Adicionando o Access Token nas chamadas HTTP:
+    Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+      será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req
+      uma instância local de HttpHeaders onde só o header de auth for passado.  */
+    // return this.configAuthReq(headers).then(headers => {
       // Params HTTP
       let params = new HttpParams();
 
@@ -64,7 +70,7 @@ export class PessoaService {
 
   /*  Faz a req HTTP GET q retorna uma Promise q, em caso de sucesso, resolve p/ a resp À consulta de pessoas
         q é um obj de ret de paginação, contendo, além do array de pessoas, outras props relativos à paginação. */
-        return this.http.get(`${this.pessoasURL}`, { headers, params } /* Equivale a { headers: headers, params: params } */)
+        return this.http.get(`${this.pessoasURL}`, { /* headers, */ params } /* Equivale a { headers: headers, params: params } */)
           .toPromise().then(
             (resp: any) => {
               const pessoas = resp["content"];
@@ -78,7 +84,7 @@ export class PessoaService {
 
             return objRet;
           });
-    });
+    // });
   }
 
   // Busca todas as pessoas, s/ filtrar ou paginar
@@ -106,22 +112,28 @@ export class PessoaService {
 // 17.13. Desafio: implementando a exclusão de pessoas:
 //  Cria um método p/ exclusão de pessoas, de modo análogo ao q foi feito c/ lançamentos (aulas 17.8-17.10).
   excluir(codigo: number): Promise<void> {
-    let headers: HttpHeaders = new HttpHeaders();
+    // let headers: HttpHeaders = new HttpHeaders();
     // headers = this.configAuthReq(headers);
 
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
     programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-    HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
+    HttpHeaders p/ Promise<HttpHeaders>.
+
+    19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req
+        uma instância local de HttpHeaders onde só o header de auth for passado.  */
+    // return this.configAuthReq(headers).then(headers => {
+
       /*  17.14. Desafio: mensagem de erro de usuário na exclusão de pessoa:
             Vamos adicionar um sufixo 123 ao cód de pessoa, p/ c/ isso, forçar um cód inválido de pessoa, obter um
             retorno 404 e testar se a msg de erro p/ o usr, vinda no corpo de resp, será exibida no comp de msg Toast. */
           // return this.http.delete(`${this.pessoasURL}/${codigo}123`, { headers })
 
-          return this.http.delete(`${this.pessoasURL}/${codigo}`, { headers })
+          return this.http.delete(`${this.pessoasURL}/${codigo}`/* , { headers } */)
             .toPromise().then( () => {} );
-    });
+    // });
   }
 
 /* 17.15. Desafio: implementando a mudança de status de pessoas:
@@ -135,20 +147,29 @@ export class PessoaService {
   /* 17.20. Implementando o serviço de cadastro de lançamentos:
       Transformando obtenção de auth num acesso din ao serv de auth, p/ obter o token de acesso no backend
       programaticamente. Isso faz com o o cód tenha q ser restrut e o ret do métdodo configAuthReq() mude de
-      HttpHeaders p/ Promise<HttpHeaders>. */
-    return this.configAuthReq(headers).then(headers => {
+      HttpHeaders p/ Promise<HttpHeaders>.
+
+    19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req
+        uma instância local de HttpHeaders onde só o header de auth for passado.  */
+    // return this.configAuthReq(headers).then(headers => {
       return this.http.put(`${this.pessoasURL}/${codigo}/ativo`, status, { headers })
         .toPromise().then( () => {} );
-    });
+    // });
   }
 
 /* 17.21. Desafio: implementando o cadastro de pessoas:
       Repetindo p/ pessoas o msm q foi feito p/ lanç na aula anteiror (17.20). Isto é, implementando seu cadastro. */
   adicionar(pessoa: Pessoa): Promise<Pessoa> {
-    let headers: HttpHeaders = new HttpHeaders();
+/*  19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req uma
+        instância local de HttpHeaders onde só o header de auth for passado. */
+    // let headers: HttpHeaders = new HttpHeaders();
 
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.post<Pessoa>(this.pessoasURL, pessoa, { headers }).toPromise();
+    // return this.configAuthReq(headers).then(headers => {
+      return this.http.post<Pessoa>(this.pessoasURL, pessoa/* , { headers } */).toPromise();
 
 /*  18.15. Desafio: roteamento e edição de pessoas:
       Invoca o método de conversão de tp Pessoa (como tá no frontend) p/ JSON (como tá no backend), devido
@@ -156,18 +177,22 @@ export class PessoaService {
 /*     return this.configAuthReq(headers).then(headers => {
       return this.http.post(this.pessoasURL, Pessoa.toJson(pessoa), { headers })
         .toPromise().then( (pessoa) => Pessoa.fromJson(pessoa) ); */
-    });
+    // });
   }
 
   // 18.15. Desafio: roteamento e edição de pessoas:
   //   Repetindo c/ pessoas a impl de atualização e busca p/ cód, como feito p/ lançs na aula 18.6.
   atualizar(pessoa: Pessoa): Promise<Pessoa> {
-    let headers: HttpHeaders = new HttpHeaders();
+/*  19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req uma
+        instância local de HttpHeaders onde só o header de auth for passado. */
+    // let headers: HttpHeaders = new HttpHeaders();
 
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.put<Pessoa>(`${this.pessoasURL}/${pessoa.codigo}`, pessoa,
-        { headers }).toPromise();
-     });
+    // return this.configAuthReq(headers).then(headers => {
+      return this.http.put<Pessoa>(`${this.pessoasURL}/${pessoa.codigo}`, pessoa/* , { headers } */)
+        .toPromise();
+    //  });
 
 /*  18.15. Desafio: roteamento e edição de pessoas:
       Invoca o método de conversão de tp Pessoa (como tá no frontend) p/ JSON (como tá no backend), devido
@@ -181,10 +206,14 @@ export class PessoaService {
   // 18.15. Desafio: roteamento e edição de pessoas:
   //   Repetindo c/ pessoas a impl de atualização e busca p/ cód, como feito p/ lançs na aula 18.6.
   buscar(codigo: number): Promise<Pessoa> {
-    let headers: HttpHeaders = new HttpHeaders();
+/*  19.7. Adicionando o Access Token nas chamadas HTTP:
+      Agora ñ há + necessidade de se fzr a auth explicitamente antes de se fzr alguma req ao servidor, pq esta
+        será feita de modo transparente pela biblio angular-jwt. Tb ñ há + necessidade de se passar p/ a req uma
+        instância local de HttpHeaders onde só o header de auth for passado. */
+    // let headers: HttpHeaders = new HttpHeaders();
 
-    return this.configAuthReq(headers).then(headers => {
-      return this.http.get<Pessoa>(`${this.pessoasURL}/${codigo}`, { headers: headers } )
+    // return this.configAuthReq(headers).then(headers => {
+      return this.http.get<Pessoa>(`${this.pessoasURL}/${codigo}`/* , { headers: headers } */ )
         .toPromise();
 
 /*    18.15. Desafio: roteamento e edição de pessoas:
@@ -192,7 +221,7 @@ export class PessoaService {
         serem do tp nº na cls de modelo e do tp txt no backend e base dados. */
 /*       return this.http.get(`${this.pessoasURL}/${codigo}`, { headers: headers } )
         .toPromise().then( (pessoa) => Pessoa.fromJson(pessoa) ); */
-    });
+    // });
   }
 
 /* 17.13. Desafio: implementando a exclusão de pessoas:

@@ -9,6 +9,25 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { LoginFormComponent } from './login-form/login-form.component';
 
+/* 19.7. Adicionando o Access Token nas chamadas HTTP:
+
+  Configurações @auth0/angular-jwt
+
+    Nessa versão da biblioteca de JWT, a integração com o componente HttpClient se dá de forma muito transparente,
+      não sendo necessário utilizarmos mais o Wrapper citado na aula.
+
+    Porém, precisamos especificar de onde será obtido o valor do nosso token, mesmo que estivermos seguindo o padrão
+      de salvá-lo no localStorage como "token".
+
+    Para isso, precisaremos, no seguranca.module.ts, adicionar algumas configurações (das que já iniciamos em aulas
+      anteriores).
+
+    Declarar uma função para obter o token:
+      Definimos, no início do nosso arquivo de módulo, uma função que irá retornar o token, ela não recebe argumentos
+        e retorna uma string. */
+export function tokenGetter(): string | null {
+  return localStorage.getItem('token');
+}
 
 /* 19.3. Desafio: módulo de segurança e protótipo da tela de login:
   Criando mód de seg c/ mód aux de roteamento (ambos seguindo padrão de como já feito na app) e protótipo
@@ -45,9 +64,24 @@ import { LoginFormComponent } from './login-form/login-form.component';
 
         Como, em nosso caso, o token será obtido direto do corpo de resp da req, ñ é necessário retornar token
           p/ aqui. Logo, retornarei str vazia. */
-        tokenGetter: () => {
-          return '';
-        }
+        // tokenGetter: () => {
+        //   return '';
+        // }
+
+/*     19.7. Adicionando o Access Token nas chamadas HTTP:
+
+          Declarar uma função para obter o token:
+            Agora declaramos a função que irá retornar o token nas propriedades de configuração do JwtModule.
+
+          Quais URLs interceptar?
+            Para que funcione a interceptação das requisições, e para que seja adicionado o token nos Headers,
+              precisamos informar quais URLs devemos interceptar, e quais devemos ignorar. Com isso, indicamos
+              que no domínio "localhost:8080", todas as requisições serão interceptadas e o token será adicionado.
+              Já para "http://localhost:8080/oauth/token" não ocorrerá nenhuma interceptação, pois neste endpoint,
+              não utilizamos o token armazenado, e sim a autenticação básica, como vimos em aulas anteriores. */
+        tokenGetter,
+        allowedDomains: ['localhost:8080'],
+        disallowedRoutes: ['http://localhost:8080/oauth/token']
       }
     }),
 
