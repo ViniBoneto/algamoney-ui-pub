@@ -20,7 +20,19 @@
 
   <!-- 10.12. Adicionando menu intercambiável -->
   <ul class="navbar-menu" [hidden]="!exibeMenu">
-    <li class="navbar-usuario">José da Silva</li>
+    <!-- <li class="navbar-usuario">José da Silva</li> -->
+
+    <!-- 19.8. Exibindo o nome do usuário logado:
+      Interpolação do nome de usuário logado:
+        Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação
+          no template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+          criaremos uma variável usuárioLogado e inicializaremos esta variável no arquivo Typescript, c/ o
+          val retornado p/ AuthService.jwtPayload.nome.
+
+        No template será feita a interpolação com a variável usuarioLogado. Desta forma, o objeto auth fica
+        restrito ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
+    <li class="navbar-usuario">{{ usuarioLogado }}</li>
+
     <!-- <li class="navbar-menuitem"><a href="javascript:;">Lançamentos</a></li>
     <li class="navbar-menuitem"><a href="javascript:;">Pessoas</a></li>
     <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li> -->
