@@ -74,6 +74,18 @@ export class AuthService {
       });
   }
 
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    A prop jwtPayload do serv AuthService contém o payload do JWT, em formato JSON. No payload há a prop
+      authorities q contém um array c/ as perms do usr logado. Vamos usá-la p/ ver as perms do usr e ocultar
+      os links p/ as ações q ele ñ tenha auth. A API do backend já bloquearia as ações ñ permitidas pelo usr,
+      dando erro no frontend. A omissão dos links é apenas p/ melhorar a usabilidade e evitar q isto ocorra.
+
+    Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela maneira
+      já prev descr. */
+  temPermissao(permissao: string) {
+    return this.jwtPayload.authorities.includes(permissao);
+  }
+
   // 19.5. Decodificando o JWT e armazenando no Local Storage:
   //   Método q decodificará o token e o armazenará na prop do comp, em formato JSON.
   private decodificarToken(token: string) {

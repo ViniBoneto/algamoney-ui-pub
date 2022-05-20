@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 
 import { LazyLoadEvent } from 'primeng/api';
 
+import { AuthService } from 'src/app/seguranca/auth.service';
+import { PERMISSOES } from 'src/app/seguranca/permissoes';
+
 @Component({
   selector: 'app-pessoas-grid',
   templateUrl: './pessoas-grid.component.html',
@@ -35,10 +38,29 @@ export class PessoasGridComponent {
     notificar e repassar o elem a ser ativado/inativado ao comp pai. */
   @Output() altStatPessoaEvt = new EventEmitter<Object>();
 
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    Cria-se uma prop c/ subprops q mapeiam p/ os membros do enum PERMISSOES. Isto deve ser feito p/ driblar
+      a restrição de não se poder referenciar diretamente o enum no templ e se poder passar, indiretamente,
+      o val dum membro deste enum no método temPermissao(), tb chamado no templ. */
+  permissoes = {
+    ROLE_CADASTRAR_CATEGORIA: PERMISSOES.ROLE_CADASTRAR_CATEGORIA,
+    ROLE_PESQUISAR_CATEGORIA: PERMISSOES.ROLE_PESQUISAR_CATEGORIA,
+    ROLE_CADASTRAR_PESSOA: PERMISSOES.ROLE_CADASTRAR_PESSOA,
+    ROLE_REMOVER_PESSOA: PERMISSOES.ROLE_REMOVER_PESSOA,
+    ROLE_PESQUISAR_PESSOA: PERMISSOES.ROLE_PESQUISAR_PESSOA,
+    ROLE_CADASTRAR_LANCAMENTO: PERMISSOES.ROLE_CADASTRAR_LANCAMENTO,
+    ROLE_REMOVER_LANCAMENTO: PERMISSOES.ROLE_REMOVER_LANCAMENTO,
+    ROLE_PESQUISAR_LANCAMENTO: PERMISSOES.ROLE_PESQUISAR_LANCAMENTO
+  };
+
 /* 17.13. Desafio: implementando a exclusão de pessoas:
     Vamos usar o decorador @ViewChild p/ ligar a prop grid ao elem PNG p-table da view, de modo análogo ao
     q foi feito c/ grid de lançamentos (LancamentosGridComponent). */
   @ViewChild("tabPessoa") grid: any;
+
+  // 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+  //   P/ se verificar as perms do usr e ocultar os menus ñ autorizados é preciso injetar no comp o serv de auth.
+  constructor(private auth: AuthService) { }
 
   aoMudarPag(evt: LazyLoadEvent) {
 /*  Tp LazyLoadEvent indica um evto de mudança de pág. Campo LazyLoadEvent.first indica deslocamento da 1ª lin da pág.
@@ -71,5 +93,22 @@ export class PessoasGridComponent {
     e o elem cujo status será alterado ao comp pai. */
   aoMudarStatPessoa(pessoa: any) {
     this.altStatPessoaEvt.emit(pessoa);
+  }
+
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão.
+
+    Interpolação da função de verificação de permissões:
+      Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação
+        no template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+        criaremos um método temPermissao() no comp de grid que fará referência ao método de mesmo nome
+        presente em AuthService.
+
+    Obs: Abaixo é aplicado uma oper de map reverso c/ enum numérico, como explicado no link
+      https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings */
+  temPermissao(permissao: PERMISSOES) {
+    let permStr = PERMISSOES[permissao];
+
+    return this.auth.temPermissao(permStr);
   }
 }

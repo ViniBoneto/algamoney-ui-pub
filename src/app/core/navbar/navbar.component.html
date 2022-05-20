@@ -57,7 +57,21 @@
     <!-- Vamos utilizar a dir NG routerLinkActive. C/ ela, podemos adicionar dinamicamente uma cls css (no caso .ativo) ao link q
       estiver selecionado (ativo). A dir poderia estar diretamente no link (elem <a>), mas como o elem <li> envolve o link,
       podemos colocar a dir nela, q o roteador "entende" e funciona do msm jeito. -->
-    <li class="navbar-menuitem" routerLinkActive="ativo" ><a routerLink="/lancamentos">Lançamentos</a></li>
+    <!-- <li class="navbar-menuitem" routerLinkActive="ativo" ><a routerLink="/lancamentos">Lançamentos</a></li> -->
+
+<!-- 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+      Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela
+        maneira já prev descr.
+
+      Interpolação da função de verificação de permissões:
+        Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação no
+          template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+          criaremos um método temPermissao() em NavbarComponent que fará referência ao método de mesmo nome
+          presente em AuthService.
+
+        No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
+          ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
+    <li *ngIf="temPermissao(permissoes.ROLE_PESQUISAR_LANCAMENTO)" class="navbar-menuitem" routerLinkActive="ativo" ><a routerLink="/lancamentos">Lançamentos</a></li>
 
     <!-- <li class="navbar-menuitem"><a routerLink="/pessoas">Pessoas</a></li> -->
 
@@ -65,7 +79,21 @@
       Vamos utilizar a dir NG routerLinkActive. C/ ela, podemos adicionar dinamicamente uma cls css (no caso .ativo) ao link q
       estiver selecionado (ativo). A dir poderia estar diretamente no link (elem <a>), mas como o elem <li> envolve o link,
       podemos colocar a dir nela, q o roteador "entende" e funciona do msm jeito. -->
-    <li class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
+    <!-- <li class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li> -->
+
+<!-- 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+      Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela
+        maneira já prev descr.
+
+      Interpolação da função de verificação de permissões:
+        Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação no
+          template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+          criaremos um método temPermissao() em NavbarComponent que fará referência ao método de mesmo nome
+          presente em AuthService.
+
+        No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
+          ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
+    <li *ngIf="temPermissao(permissoes.ROLE_PESQUISAR_PESSOA)" class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
 
     <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li>
   </ul>
