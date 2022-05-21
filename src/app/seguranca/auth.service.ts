@@ -48,7 +48,12 @@ export class AuthService {
     const body = `client=angular&username=${usr}&password=${senha}&grant_type=password`;
     // O access token virá no corpo da resp, sendo acessível ao app NG. O refresh token (p/ renovar o acess token)
     //  virá num cookie, sendo manipulado e automaticamente enviado apenas pelo browser.
-    return this.http.post(this.oauth2TokenUrl, body, { headers }).toPromise<any>()
+    // return this.http.post(this.oauth2TokenUrl, body, { headers }).toPromise<any>()
+
+    // 19.10. Obtendo um novo access token:
+    //   P/ pode receber e enviar cookies ao servidor, o q configura uma situação de CORS (https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS)
+    //     é preciso passar o param withCredentials como true.
+    return this.http.post(this.oauth2TokenUrl, body, { headers, withCredentials: true }).toPromise<any>()
       .then(resp => {
         // console.log(resp);
 
@@ -84,6 +89,36 @@ export class AuthService {
       já prev descr. */
   temPermissao(permissao: string) {
     return this.jwtPayload.authorities.includes(permissao);
+  }
+
+/* 19.10. Obtendo um novo access token:
+    A req p/ um novo access token (refresh token) será direcionada ao msm endpoint da p/ um access token normal
+      (pós-login), c/ a diff q entre os params de req será passado apenas o grant_type, q será refresh_token em vez
+      de password. O cookie c/ o resfresh token, obtido na resp ao chamado original ao access token será reenviado ao
+      servidor e este enviará um novo access token, caso o refresh token ñ esteja expirado tb (neste caso, será
+      necesário um novo login). P/ pode receber e enviar cookies ao servidor, o q configura uma situação de CORS
+      (https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS) é preciso passar o param withCredentials como true. */
+  obterNovoAccessToken(): Promise<null> {
+    let headers = new HttpHeaders();
+    headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
+    headers = headers.append("Authorization", "Basic YW5ndWxhcjpAbmd1bEByMA==");
+
+    const body = "grant_type=refresh_token";
+
+    return this.http.post(this.oauth2TokenUrl, body, { headers, withCredentials: true }).toPromise<any>()
+      .then( (resp) => {
+          // Se obteve novo token c/ sucesso, aramzena-o no lugar do expirado
+          this.armazenarToken(resp.access_token);
+          console.log("Novo access token obtido: ", resp.access_token);
+          // Ret uma promessa resolvendo c/ null
+          return Promise.resolve(null);
+        }
+      )
+      .catch( (err) => {
+        console.error("Erro ao se tentar obter novo access token!", err);
+        // Ret uma promessa resolvendo c/ null. Erro de refresh token será tratado posteriormente.
+        return Promise.resolve(null);
+      } );
   }
 
   // 19.5. Decodificando o JWT e armazenando no Local Storage:

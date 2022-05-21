@@ -65,4 +65,11 @@ export class NavbarComponent implements OnInit {
 
     return this.auth.temPermissao(permStr);
   }
+
+  // 19.10. Obtendo um novo access token:
+  //   P/ enquanto inseriremos um btn no menu p/ o usr pressionar e obter um novo access token, via req de
+  //     refresh token. Este processo será automatizado posteriormente.
+  obterNovoAccessToken() {
+    this.auth.obterNovoAccessToken();
+  }
 }
