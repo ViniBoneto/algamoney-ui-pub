@@ -16,8 +16,11 @@
 
         <!-- 19.10. Obtendo um novo access token:
           P/ enquanto inseriremos um btn no menu p/ o usr pressionar e obter um novo access token, via req
-            de refresh token. Este processo será automatizado posteriormente. -->
-        <button type="button" (click)="obterNovoAccessToken();" style="margin-left: 10px;">Novo Access Token</button>
+            de refresh token. Este processo será automatizado posteriormente.
+
+        19.11. Interceptando chamadas HTTP para tratar a expiração do access token:
+          Removendo o btn, pois a partir de agora a renovação do token será automática. -->
+        <!-- <button type="button" (click)="obterNovoAccessToken();" style="margin-left: 10px;">Novo Access Token</button> -->
       </div>
     </div>
 

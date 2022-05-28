@@ -16,6 +16,12 @@ export class AuthService {
   //   prop q vai armazenar o payload do JWT em formato JSON.
   jwtPayload: any;
 
+  // 19.11. Interceptando chamadas HTTP para tratar a expiração do access token:
+  //   Criando método p/ se retornar o token p/ quem precisar, ocultando destes seu modo de armazenamento interno.
+  public get accessToken() : string | null {
+    return localStorage.getItem("token");
+  }
+
   // Injetando serv de http p/ fzr conn ao servidor, requisitando token oauth 2
   // constructor(private http: HttpClient) { }
 
@@ -119,6 +125,15 @@ export class AuthService {
         // Ret uma promessa resolvendo c/ null. Erro de refresh token será tratado posteriormente.
         return Promise.resolve(null);
       } );
+  }
+
+/* 19.11. Interceptando chamadas HTTP para tratar a expiração do access token:
+    Criando método p/ averiguar se o access token é inválido (inexistente ou já expirou) e se será necessário
+      obter outro válido. */
+  isAccessTokenInvalido(): boolean {
+    const token = this.accessToken;
+
+    return !token || this.jwtHelper.isTokenExpired(token);
   }
 
   // 19.5. Decodificando o JWT e armazenando no Local Storage:

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,6 +9,7 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { LoginFormComponent } from './login-form/login-form.component';
+import { MoneyHttpInterceptor } from './money-http.interceptor';
 
 /* 19.7. Adicionando o Access Token nas chamadas HTTP:
 
@@ -92,6 +94,18 @@ export function tokenGetter(): string | null {
     JwtModule e JwtHelperService:
       Precisamos também, no arquivo seguranca.module.ts, importar o JwtModule e adicionar nos providers o
         JwtHelperService. O JwtModule requer uma configuração adicional. */
-  providers: [JwtHelperService]
+  providers: [
+    JwtHelperService,
+
+/*  19.11. Interceptando chamadas HTTP para tratar a expiração do access token:
+      Declarando o interceptador:
+        Para que o interceptador seja reconhecido por nossa aplicação, precisamos declará-lo na seção de
+          Providers. Vamos adicioná-lo no módulo segurança: */
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MoneyHttpInterceptor,
+      multi: true
+    }
+  ]
 })
 export class SegurancaModule { }
