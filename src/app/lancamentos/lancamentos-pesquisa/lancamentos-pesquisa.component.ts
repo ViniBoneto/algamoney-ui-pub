@@ -3,6 +3,8 @@ import { Title } from '@angular/platform-browser';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+import { AuthService } from 'src/app/seguranca/auth.service';
+import { PERMISSOES } from 'src/app/seguranca/permissoes';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 import { LancamentosGridComponent } from '../lancamentos-grid/lancamentos-grid.component';
@@ -68,6 +70,21 @@ export class LancamentosPesquisaComponent implements OnInit {
     usada p/ fazer a ligação, sendo atribuída à prop @ViewChild.selector). */
   @ViewChild("gridLanc") grid: LancamentosGridComponent | undefined;
 
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    Cria-se uma prop c/ subprops q mapeiam p/ os membros do enum PERMISSOES. Isto deve ser feito p/ driblar
+      a restrição de não se poder referenciar diretamente o enum no templ e se poder passar, indiretamente,
+      o val dum membro deste enum no método temPermissao(), tb chamado no templ. */
+  permissoes = {
+    ROLE_CADASTRAR_CATEGORIA: PERMISSOES.ROLE_CADASTRAR_CATEGORIA,
+    ROLE_PESQUISAR_CATEGORIA: PERMISSOES.ROLE_PESQUISAR_CATEGORIA,
+    ROLE_CADASTRAR_PESSOA: PERMISSOES.ROLE_CADASTRAR_PESSOA,
+    ROLE_REMOVER_PESSOA: PERMISSOES.ROLE_REMOVER_PESSOA,
+    ROLE_PESQUISAR_PESSOA: PERMISSOES.ROLE_PESQUISAR_PESSOA,
+    ROLE_CADASTRAR_LANCAMENTO: PERMISSOES.ROLE_CADASTRAR_LANCAMENTO,
+    ROLE_REMOVER_LANCAMENTO: PERMISSOES.ROLE_REMOVER_LANCAMENTO,
+    ROLE_PESQUISAR_LANCAMENTO: PERMISSOES.ROLE_PESQUISAR_LANCAMENTO
+  };
+
 /* 17.2. Criando o serviço de consulta de lançamentos:
     Comp de pesquisa de lançamentos receberá um serv de lançamentos por inj de depend (D.I.), em seu construtor.
     Este serv será usado p/ acessar os lançamentos no backend. */
@@ -105,7 +122,11 @@ export class LancamentosPesquisaComponent implements OnInit {
       índice da app (index.html). P/ conta disto, o título da app, q está na tag <title> da msg pág índice, ñ pode
       ser manipulado diretamente pelo cód das views e comps do NG. Então, p/ se obter e/ou alterar o título da app,
       usa-se o serv Title, fonecido pelo NG. */
-    private title: Title
+    private title: Title,
+
+  // 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+  //   P/ se verificar as perms do usr e ocultar os menus ñ autorizados é preciso injetar no comp o serv de auth.
+    private auth: AuthService
   ) {}
 
 /* 17.2. Criando o serviço de consulta de lançamentos:
@@ -254,5 +275,22 @@ export class LancamentosPesquisaComponent implements OnInit {
        basta se fechar a jan de confirm. */
       accept: () => this.excluir(lancamento)
     });
+  }
+
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão.
+
+    Interpolação da função de verificação de permissões:
+      Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação
+        no template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+        criaremos um método temPermissao() no comp de grid que fará referência ao método de mesmo nome
+        presente em AuthService.
+
+    Obs: Abaixo é aplicado uma oper de map reverso c/ enum numérico, como explicado no link
+      https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings */
+  temPermissao(permissao: PERMISSOES) {
+    let permStr = PERMISSOES[permissao];
+
+    return this.auth.temPermissao(permStr);
   }
 }

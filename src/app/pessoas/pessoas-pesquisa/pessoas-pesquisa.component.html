@@ -113,6 +113,27 @@
 
     <!-- 18.15. Desafio: roteamento e edição de pessoas:
       Repetindo c/ pessoas a nav c/ Router Link, como feito p/ lançs na aula 18.3.     -->
-    <a pButton label="Nova Pessoa" routerLink="/pessoas/nova"></a>
+    <!-- <a pButton label="Nova Pessoa" routerLink="/pessoas/nova"></a> -->
+
+    <!-- 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+          Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela
+            maneira já prev descr.
+
+          Interpolação da função de verificação de permissões:
+            Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação no
+              template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+              criaremos um método temPermissao() no comp de grid que fará referência ao método de mesmo nome
+              presente em AuthService.
+
+            No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
+              ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
+    <a pButton *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_PESSOA); else templSemPermIns" label="Nova Pessoa"
+      routerLink="/pessoas/nova"></a>
+
+    <ng-template #templSemPermIns>
+      <span _ngcontent-osh-c108="" pbutton="" class="p-button p-component" style="margin-bottom: 20px; cursor: not-allowed;">
+        <span class="p-button-label">Nova Pessoa</span>
+      </span>
+    </ng-template>
   </div>
 </div>

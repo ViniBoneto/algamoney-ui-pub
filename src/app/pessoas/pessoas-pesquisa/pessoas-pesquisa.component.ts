@@ -3,6 +3,8 @@ import { Title } from '@angular/platform-browser';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+import { AuthService } from 'src/app/seguranca/auth.service';
+import { PERMISSOES } from 'src/app/seguranca/permissoes';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { PessoaFiltro, PessoaService } from '../pessoa.service';
 import { PessoasGridComponent } from '../pessoas-grid/pessoas-grid.component';
@@ -39,6 +41,21 @@ export class PessoasPesquisaComponent implements OnInit {
   q foi feito c/ lançamentos (aulas 17.8-17.10). */
   @ViewChild("gridPessoa") grid: PessoasGridComponent | undefined;
 
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    Cria-se uma prop c/ subprops q mapeiam p/ os membros do enum PERMISSOES. Isto deve ser feito p/ driblar
+      a restrição de não se poder referenciar diretamente o enum no templ e se poder passar, indiretamente,
+      o val dum membro deste enum no método temPermissao(), tb chamado no templ. */
+  permissoes = {
+    ROLE_CADASTRAR_CATEGORIA: PERMISSOES.ROLE_CADASTRAR_CATEGORIA,
+    ROLE_PESQUISAR_CATEGORIA: PERMISSOES.ROLE_PESQUISAR_CATEGORIA,
+    ROLE_CADASTRAR_PESSOA: PERMISSOES.ROLE_CADASTRAR_PESSOA,
+    ROLE_REMOVER_PESSOA: PERMISSOES.ROLE_REMOVER_PESSOA,
+    ROLE_PESQUISAR_PESSOA: PERMISSOES.ROLE_PESQUISAR_PESSOA,
+    ROLE_CADASTRAR_LANCAMENTO: PERMISSOES.ROLE_CADASTRAR_LANCAMENTO,
+    ROLE_REMOVER_LANCAMENTO: PERMISSOES.ROLE_REMOVER_LANCAMENTO,
+    ROLE_PESQUISAR_LANCAMENTO: PERMISSOES.ROLE_PESQUISAR_LANCAMENTO
+  };
+
 /* 17.7. Desafio: criando a consulta e listagem de pessoas:
   Comp de pesquisa de pessoas receberá um serv de pessoas por inj de depend (D.I.), em seu construtor.
   Este serv será usado p/ acessar as pessoas no backend. */
@@ -54,7 +71,11 @@ export class PessoasPesquisaComponent implements OnInit {
     private confirmServ: ConfirmationService,
     // 18.15. Desafio: roteamento e edição de pessoas:
     //   Repetindo c/ pessoas a def de título pág din, como feito p/ lançs na aula 18.12.
-    private title: Title
+    private title: Title,
+
+  // 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+  //   P/ se verificar as perms do usr e ocultar os menus ñ autorizados é preciso injetar no comp o serv de auth.
+    private auth: AuthService
   ) {}
 
   // Invoca a consulta de pessoas, no serviço, logo após a inicialização do comp, p/ carregar o comp
@@ -153,5 +174,22 @@ export class PessoasPesquisaComponent implements OnInit {
         })
         // Tratar possíveis erros
         .catch(erro => this.errServ.handle(erro));
+  }
+
+/* 19.9. Exibindo o menu do sistema conforme permissões do usuário:
+    Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão.
+
+    Interpolação da função de verificação de permissões:
+      Conforme mencionado no material de apoio da aula 19.5, não é mais possível fazer a interpolação
+        no template utilizando uma variável com modificador de acesso private. Para resolver o problema,
+        criaremos um método temPermissao() no comp de grid que fará referência ao método de mesmo nome
+        presente em AuthService.
+
+    Obs: Abaixo é aplicado uma oper de map reverso c/ enum numérico, como explicado no link
+      https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings */
+  temPermissao(permissao: PERMISSOES) {
+    let permStr = PERMISSOES[permissao];
+
+    return this.auth.temPermissao(permStr);
   }
 }
