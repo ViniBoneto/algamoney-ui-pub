@@ -43,12 +43,28 @@ export class ErrorHandlerService {
     else {
       let errors;
 
-      if(errorResp instanceof Response && (errorResp.status > 399 && errorResp.status < 500) )
-        errors = errorResp.json();
-      else if(errorResp instanceof HttpErrorResponse && (errorResp.status > 399 && errorResp.status < 500))
-        errors = errorResp.error;
+      // if(errorResp instanceof Response && (errorResp.status > 399 && errorResp.status < 500) )
+      //   errors = errorResp.json();
+      // else if(errorResp instanceof HttpErrorResponse && (errorResp.status > 399 && errorResp.status < 500))
+      //   errors = errorResp.error;
 
-      errors && errors[0] && (msg = errors[0].mensagemUsuario);
+      // errors && errors[0] && (msg = errors[0].mensagemUsuario);
+
+/*    19.12. Protegendo componentes:
+        Mudaremos a forma de proteger o acesso e opers sobre comps os quais o usr ñ tiver perm. O btn de exc, na pág
+          de pesq, será desabilidado (prop disabled), enquanto os btns de edt e ins permanecerão habilitados. Porém,
+          ao serem feitas estas opers p/ um usr s/ perm, o erro retornado pela API (HTTP status 403) será mapeado p/
+          uma msg amigável informativa ao usr. P/ isto, precisaremos discriminar o status 403 no tratamento de erros. */
+      if( errorResp.status > 399 && errorResp.status < 500 ) {
+        if( errorResp.status === 403 )
+          msg = "Você não tem permissão para executar esta ação.";
+        else if( errorResp instanceof Response )
+            errors = errorResp.json();
+        else if( errorResp instanceof HttpErrorResponse )
+            errors = errorResp.error;
+
+          errors && errors[0] && (msg = errors[0].mensagemUsuario);
+      }
 
 /*    Obs: Sugestão presente no cód fornecido como solução pela Algaworks:
         if (typeof errorResponse === 'string') {

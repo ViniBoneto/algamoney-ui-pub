@@ -89,9 +89,15 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
             <!-- 18.5. Recebendo parâmetros da rota:
               Vamos criar links dinâmicos no btn de edt, q levará à pág de edição do lanç correspondente àquela lin. P/ facilitar,
               vamos usar o recurso de fazer prop bind na dir routerLink, quebrando a URL alvo em partes num array. P/ ex:
-              [routerLink]="['/lancamentos', 'novo']" equivale a routerLink="/lancamentos/novo". -->
-            <!-- <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
-              [routerLink]="['/lancamentos', lancamento.codigo]"></a> -->
+              [routerLink]="['/lancamentos', 'novo']" equivale a routerLink="/lancamentos/novo".
+
+            19.12. Protegendo componentes:
+              Mudaremos a forma de proteger o acesso e opers sobre comps os quais o usr ñ tiver perm. O btn de exc, na pág de pesq,
+                será desabilidado (prop disabled), enquanto os btns de edt e ins permanecerão habilitados. Porém, ao serem feitas
+                estas opers p/ um usr s/ perm, o erro retornado pela API (HTTP status 403) será mapeado p/ uma msg amigável informativa
+                ao usr. -->
+            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+              [routerLink]="['/lancamentos', lancamento.codigo]"></a>
 
       <!-- 19.9. Exibindo o menu do sistema conforme permissões do usuário:
             Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela
@@ -105,7 +111,7 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
 
               No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
                 ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
-            <a pButton *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_LANCAMENTO); else templSemPermEdt" icon="pi pi-pencil" pTooltip="Editar"
+            <!-- <a pButton *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_LANCAMENTO); else templSemPermEdt" icon="pi pi-pencil" pTooltip="Editar"
               tooltipPosition="top" [routerLink]="['/lancamentos', lancamento.codigo]"></a>
 
             <ng-template #templSemPermEdt>
@@ -114,7 +120,7 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
                   <span class="p-button-icon pi pi-pencil" aria-hidden="true"></span>
                   <span aria-hidden="true" class="p-button-label"></span>
               </span>
-            </ng-template>
+            </ng-template> -->
 
             <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
             <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button> -->
@@ -138,7 +144,7 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
 
               No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
                 ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
-            <button *ngIf="temPermissao(permissoes.ROLE_REMOVER_LANCAMENTO); else templSemPermDel" pButton icon="pi pi-trash" pTooltip="Excluir"
+            <!-- <button *ngIf="temPermissao(permissoes.ROLE_REMOVER_LANCAMENTO); else templSemPermDel" pButton icon="pi pi-trash" pTooltip="Excluir"
               tooltipPosition="top" (click)="aoExcluirLanc(lancamento);"></button>
 
             <ng-template #templSemPermDel>
@@ -146,7 +152,15 @@ Obs:  Tive q realizar algumas oper a + neste comp pq, diferentemente do curso, o
                 ng-reflect-text="Excluir" ng-reflect-tooltip-position="top" class="p-button p-component p-button-icon-only ng-star-inserted" style="cursor: not-allowed;">
                   <span class="p-button-icon pi pi-trash" aria-hidden="true"></span><span aria-hidden="true" class="p-button-label">&nbsp;</span>
               </span>
-            </ng-template>
+            </ng-template> -->
+
+            <!-- 19.12. Protegendo componentes:
+            Mudaremos a forma de proteger o acesso e opers sobre comps os quais o usr ñ tiver perm. O btn de exc, na pág de pesq,
+              será desabilidado (prop disabled), enquanto os btns de edt e ins permanecerão habilitados. Porém, ao serem feitas
+              estas opers p/ um usr s/ perm, o erro retornado pela API (HTTP status 403) será mapeado p/ uma msg amigável informativa
+              ao usr. -->
+              <button pButton [disabled]="!temPermissao(permissoes.ROLE_REMOVER_LANCAMENTO)" icon="pi pi-trash" pTooltip="Excluir"
+                tooltipPosition="top" (click)="aoExcluirLanc(lancamento);"></button>
           </td>
       </tr>
   </ng-template>

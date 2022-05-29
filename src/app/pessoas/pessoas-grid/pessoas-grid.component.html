@@ -84,9 +84,15 @@
             <!-- <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"></a> -->
 
             <!-- 18.15. Desafio: roteamento e edição de pessoas:
-              Repetindo c/ pessoas o recebimento de parâms da rota, como feito p/ lançs na aula 18.5. -->
-            <!-- <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
-              [routerLink]="['/pessoas', pessoa.codigo]"></a> -->
+              Repetindo c/ pessoas o recebimento de parâms da rota, como feito p/ lançs na aula 18.5.
+
+            19.12. Protegendo componentes:
+              Mudaremos a forma de proteger o acesso e opers sobre comps os quais o usr ñ tiver perm. O btn de exc, na pág de pesq,
+                será desabilidado (prop disabled), enquanto os btns de edt e ins permanecerão habilitados. Porém, ao serem feitas
+                estas opers p/ um usr s/ perm, o erro retornado pela API (HTTP status 403) será mapeado p/ uma msg amigável informativa
+                ao usr. -->
+            <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
+              [routerLink]="['/pessoas', pessoa.codigo]"></a>
 
       <!-- 19.9. Exibindo o menu do sistema conforme permissões do usuário:
             Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela
@@ -100,7 +106,7 @@
 
               No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
                 ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
-            <a *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_PESSOA); else templSemPermEdt" pButton icon="pi pi-pencil" pTooltip="Editar"
+            <!-- <a *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_PESSOA); else templSemPermEdt" pButton icon="pi pi-pencil" pTooltip="Editar"
               tooltipPosition="top" [routerLink]="['/pessoas', pessoa.codigo]"></a>
 
             <ng-template #templSemPermEdt>
@@ -109,7 +115,7 @@
                   <span class="p-button-icon pi pi-pencil" aria-hidden="true"></span>
                   <span aria-hidden="true" class="p-button-label"></span>
               </span>
-            </ng-template>
+            </ng-template> -->
 
             <span>&nbsp;&nbsp;</span> <!-- Espaço entre os ícones -->
             <!-- <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"></button> -->
@@ -132,7 +138,7 @@
 
               No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
                 ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
-            <button *ngIf="temPermissao(permissoes.ROLE_REMOVER_PESSOA); else templSemPermDel" pButton icon="pi pi-trash" pTooltip="Excluir"
+            <!-- <button *ngIf="temPermissao(permissoes.ROLE_REMOVER_PESSOA); else templSemPermDel" pButton icon="pi pi-trash" pTooltip="Excluir"
               tooltipPosition="top" (click)="aoExcluirPessoa(pessoa);"></button>
 
             <ng-template #templSemPermDel>
@@ -140,7 +146,15 @@
                 ng-reflect-text="Excluir" ng-reflect-tooltip-position="top" class="p-button p-component p-button-icon-only ng-star-inserted" style="cursor: not-allowed;">
                   <span class="p-button-icon pi pi-trash" aria-hidden="true"></span><span aria-hidden="true" class="p-button-label">&nbsp;</span>
               </span>
-            </ng-template>
+            </ng-template> -->
+
+            <!-- 19.12. Protegendo componentes:
+            Mudaremos a forma de proteger o acesso e opers sobre comps os quais o usr ñ tiver perm. O btn de exc, na pág de pesq,
+              será desabilidado (prop disabled), enquanto os btns de edt e ins permanecerão habilitados. Porém, ao serem feitas
+              estas opers p/ um usr s/ perm, o erro retornado pela API (HTTP status 403) será mapeado p/ uma msg amigável informativa
+              ao usr. -->
+            <button [disabled]="!temPermissao(permissoes.ROLE_REMOVER_PESSOA)" pButton icon="pi pi-trash" pTooltip="Excluir"
+              tooltipPosition="top" (click)="aoExcluirPessoa(pessoa);"></button>
           </td>
       </tr>
   </ng-template>
