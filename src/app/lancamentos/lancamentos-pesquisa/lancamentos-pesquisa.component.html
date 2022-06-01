@@ -190,8 +190,12 @@
     <!-- 18.3. Navegando com Router Link:
       Implementando links c/ dir NG routerLink. C/ ela, a app é carregada uma única vez (s/ perda de infos e
       recarregamento de arqs a cada clique). Não há refresh na app, há apenas uma alteração entre as views dos
-      comps. -->
-    <!-- <a pButton label="Novo lançamento" routerLink="/lancamentos/novo"></a> -->
+      comps.
+
+    19.12. Protegendo componentes:
+      Repetindo c/ btn de novo, na pág de pesquisa, o msm q foi feito c/ os btns de edt e del (particularmente
+        o 1º) no grid, pelo msm motivo.-->
+    <a pButton label="Novo lançamento" routerLink="/lancamentos/novo"></a>
 
     <!-- 19.9. Exibindo o menu do sistema conforme permissões do usuário:
           Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela
@@ -205,13 +209,13 @@
 
             No template será feita a interpolação utilizando este método . Desta forma, o objeto auth fica restrito
               ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
-    <a pButton *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_LANCAMENTO); else templSemPermIns" label="Novo lançamento"
+    <!-- <a pButton *ngIf="temPermissao(permissoes.ROLE_CADASTRAR_LANCAMENTO); else templSemPermIns" label="Novo lançamento"
       routerLink="/lancamentos/novo"></a>
 
     <ng-template #templSemPermIns>
       <span _ngcontent-osh-c108="" pbutton="" class="p-button p-component" style="margin-bottom: 20px; cursor: not-allowed;">
         <span class="p-button-label">Novo lançamento</span>
       </span>
-    </ng-template>
+    </ng-template> -->
   </div>
 </div>
