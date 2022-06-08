@@ -93,8 +93,20 @@ export class AuthService {
 
     Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela maneira
       já prev descr. */
-  temPermissao(permissao: string) {
+  temPermissao(permissao: string): boolean {
     return this.jwtPayload.authorities.includes(permissao);
+  }
+
+/* 19.13. Protegendo rotas com guarda de rotas (CanActivate):
+    Vamos criar no AuthService um método p/ verificar se o usr logado tem ao menos alguma entre as determinadas
+      perms. Este método invocará método pré-existente q já verifica perm do usr, p/ cada perm. */
+  temQQPermissao(permissoes: string[]): boolean {
+    for (const perm of permissoes) {
+      if( this.temPermissao(perm) )
+        return true;
+    }
+
+    return false;
   }
 
 /* 19.10. Obtendo um novo access token:

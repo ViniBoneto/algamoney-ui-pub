@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { NaoAutorizadoComponent } from './core/nao-autorizado.component';
 import { PaginaNaoEncontradaComponent } from './core/pagina-nao-encontrada.component';
 // import { LancamentosCadastroComponent } from './lancamentos/lancamentos-cadastro/lancamentos-cadastro.component';
 // import { LancamentosPesquisaComponent } from './lancamentos/lancamentos-pesquisa/lancamentos-pesquisa.component';
@@ -23,6 +24,9 @@ const routes: Routes = [
   // { path: "pessoas", component: PessoasPesquisaComponent },
   // { path: "pessoas/nova", component: PessoasCadastroComponent },
   { path: "pagina-nao-encontrada", component: PaginaNaoEncontradaComponent },
+  // 19.13. Protegendo rotas com guarda de rotas (CanActivate):
+  //   Criando mapeamento de rota p/ pág indicando acesso negado (s/ perm p/ acessar recurso).
+  { path: "nao-autorizado", component: NaoAutorizadoComponent },
   { path: "**", redirectTo: "pagina-nao-encontrada" }
 ];
 

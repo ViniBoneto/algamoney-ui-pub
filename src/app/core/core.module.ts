@@ -15,6 +15,7 @@ import { ErrorHandlerService } from './error-handler.service';
 import { AuthService } from '../shared/auth.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
+import { NaoAutorizadoComponent } from './nao-autorizado.component';
 
 /* 17.4. Adicionando filtro por datas na pesquisa de lançamentos:
   Adição do DatePipe: Usando o  pipe DatePipe, nativo do Angular, p/ format dts no serv DateService.
@@ -37,7 +38,14 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   Nesta app criaremos um core module chamado CoreModule, q conterá o comp de barra de menu (NavbarComponent),
   q será retirado do mód raiz. */
 @NgModule({
-  declarations: [NavbarComponent, PaginaNaoEncontradaComponent],
+  declarations: [
+    NavbarComponent,
+    PaginaNaoEncontradaComponent,
+/*  19.13. Protegendo rotas com guarda de rotas (CanActivate):
+      Criando uma pág p/ se redirecionar e notificar ao usr q ele ñ tem perm p/ acessar um recurso. Isto é,
+        qdo o usr ñ passar pela guarda de rotas (CanActivate). */
+    NaoAutorizadoComponent
+  ],
   imports: [
     CommonModule,
     // 18.3. Navegando com Router Link:

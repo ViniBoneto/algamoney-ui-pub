@@ -10,6 +10,7 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { MoneyHttpInterceptor } from './money-http.interceptor';
+import { AuthGuard } from './auth.guard';
 
 /* 19.7. Adicionando o Access Token nas chamadas HTTP:
 
@@ -105,7 +106,11 @@ export function tokenGetter(): string | null {
       provide: HTTP_INTERCEPTORS,
       useClass: MoneyHttpInterceptor,
       multi: true
-    }
+    },
+
+    // 19.13. Protegendo rotas com guarda de rotas (CanActivate):
+    //   Inserindo a guarda de rotas como um dos servs injetáveis providos pelo mód de segurança.
+    AuthGuard
   ]
 })
 export class SegurancaModule { }

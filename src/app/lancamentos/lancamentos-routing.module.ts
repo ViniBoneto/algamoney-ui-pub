@@ -9,13 +9,45 @@ lancamentos-routing.module.ts. */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { PERMISSOES } from 'src/app/seguranca/permissoes';
+import { AuthGuard } from '../seguranca/auth.guard';
 import { LancamentosCadastroComponent } from './lancamentos-cadastro/lancamentos-cadastro.component';
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 
 const routes: Routes = [
-  { path: "lancamentos", component: LancamentosPesquisaComponent },
-  { path: "lancamentos/novo", component: LancamentosCadastroComponent },
-  { path: "lancamentos/:codigo", component: LancamentosCadastroComponent },
+  {
+    path: "lancamentos",
+    component: LancamentosPesquisaComponent,
+    // 19.13. Protegendo rotas com guarda de rotas (CanActivate):
+    //   Adicionando as guardas de rota (do tp CanActivate) às configs de rotas dos móds de roteamento.
+    canActivate: [AuthGuard],
+/*  19.13. Protegendo rotas com guarda de rotas (CanActivate):
+      Fornecendo, entre os dados de usr a ser passado p/ a rota, as perms q o usr logado deve ter p/ poder
+        acessar esta rota. */
+    data: { roles: [ PERMISSOES[PERMISSOES.ROLE_PESQUISAR_LANCAMENTO] ] }
+  },
+  {
+    path: "lancamentos/novo",
+    component: LancamentosCadastroComponent,
+    // 19.13. Protegendo rotas com guarda de rotas (CanActivate):
+    //   Adicionando as guardas de rota (do tp CanActivate) às configs de rotas dos móds de roteamento.
+    canActivate: [AuthGuard],
+/*  19.13. Protegendo rotas com guarda de rotas (CanActivate):
+      Fornecendo, entre os dados de usr a ser passado p/ a rota, as perms q o usr logado deve ter p/ poder
+        acessar esta rota. */
+    data: { roles: [ PERMISSOES[PERMISSOES.ROLE_CADASTRAR_LANCAMENTO] ] }
+  },
+  {
+    path: "lancamentos/:codigo",
+    component: LancamentosCadastroComponent,
+    // 19.13. Protegendo rotas com guarda de rotas (CanActivate):
+    //   Adicionando as guardas de rota (do tp CanActivate) às configs de rotas dos móds de roteamento.
+    canActivate: [AuthGuard],
+/*  19.13. Protegendo rotas com guarda de rotas (CanActivate):
+      Fornecendo, entre os dados de usr a ser passado p/ a rota, as perms q o usr logado deve ter p/ poder
+        acessar esta rota. */
+    data: { roles: [ PERMISSOES[PERMISSOES.ROLE_CADASTRAR_LANCAMENTO] ] }
+  },
 ];
 
 @NgModule({
