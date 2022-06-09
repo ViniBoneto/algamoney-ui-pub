@@ -11,6 +11,21 @@ import { mergeMap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 
+/* 19.14. E se o Refresh Token expirar?
+  Criando uma cls de erro espec p/ lançar na expiração do refresh token. C/ isto, este erro poderá ser discriminado
+    no hndl de erro e ser tratado de acordo (redir o usr p/ pág de login).
+
+  Pelo probl ocorrendo c/ extensão/herança de tps internos, a partir do TS 2.1 ( erro TS13965: https://github.com/Microsoft/TypeScript/issues/13965 ),
+    é preciso ajustar manualmente o protótipo imediatamente após qualquer chamada super(...). */
+export class AuthHttpError extends Error {
+  constructor(msg?: string | undefined) {
+    super(msg);
+
+    // Define o protótipo explicitamente
+    Object.setPrototypeOf(this, AuthHttpError.prototype);
+  }
+}
+
 /* 19.11. Interceptando chamadas HTTP para tratar a expiração do access token:
 
   Interceptando requisições HTTP
@@ -61,6 +76,13 @@ export class MoneyHttpInterceptor implements HttpInterceptor {
       return from(this.auth.obterNovoAccessToken())
         .pipe(
           mergeMap(() => {
+/*          19.14. E se o Refresh Token expirar?
+              Lançando uma cls de erro espec na expiração do refresh token. C/ isto, este erro poderá ser
+                discriminado no hndl de erro e ser tratado de acordo (redir o usr p/ pág de login). */
+            if (this.auth.isAccessTokenInvalido()) {
+              throw new AuthHttpError("Erro ao tentar renovar o access token.");
+            }
+
             req = req.clone({
               setHeaders: {
                 Authorization: `Bearer ${this.auth.accessToken}`

@@ -1,7 +1,10 @@
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
+
+import { AuthHttpError } from '../seguranca/money-http.interceptor';
 
 /* 17.12. Criando um serviço de tratamento de erros:
   Criamos um serv de tratamento de erros, p/ concentrar e padronizar o tratamento de erros da app. Este
@@ -12,8 +15,13 @@ import { MessageService } from 'primeng/api';
 })
 export class ErrorHandlerService {
 
-  // Injeta um serv de msg (toast) p/ exibir a msg de erro na tela.
-  constructor(private msgServ: MessageService) { }
+  constructor(
+    // Injeta um serv de msg (toast) p/ exibir a msg de erro na tela.
+    private msgServ: MessageService,
+    // 19.14. E se o Refresh Token expirar?
+    //   Injeta serv de roteamento na cls, p/ poder fazer o redir p/ outras págs (ex: pág de login).
+    private router: Router
+  ) { }
 
   // Método q irá tratar os erros
   handle(errorResp: any) {
@@ -64,6 +72,13 @@ export class ErrorHandlerService {
             errors = errorResp.error;
 
           errors && errors[0] && (msg = errors[0].mensagemUsuario);
+      }
+/*    19.14. E se o Refresh Token expirar?
+        Usando uma cls de erro espec customizada, p/ discriminar expiração do refresh token e tratar de acordo
+          (redir o usr p/ pág de login). */
+      else if(errorResp instanceof AuthHttpError) {
+        msg = "Seu login expirou. Favor, faça novo login!"
+        this.router.navigate(["/login"]);
       }
 
 /*    Obs: Sugestão presente no cód fornecido como solução pela Algaworks:
