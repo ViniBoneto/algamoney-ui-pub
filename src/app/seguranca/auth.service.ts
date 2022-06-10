@@ -94,7 +94,7 @@ export class AuthService {
     Vamos criar no AuthService um método p/ verificar se o usr logado tem uma determinada permissão, pela maneira
       já prev descr. */
   temPermissao(permissao: string): boolean {
-    return this.jwtPayload.authorities.includes(permissao);
+    return this.jwtPayload?.authorities?.includes(permissao);
   }
 
 /* 19.13. Protegendo rotas com guarda de rotas (CanActivate):
