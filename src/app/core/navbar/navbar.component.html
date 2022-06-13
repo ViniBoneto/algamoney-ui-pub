@@ -103,7 +103,11 @@
           ao arquivo Typescript, deixando a aplicação menos vulnerável. -->
     <li *ngIf="temPermissao(permissoes.ROLE_PESQUISAR_PESSOA)" class="navbar-menuitem" routerLinkActive="ativo"><a routerLink="/pessoas">Pessoas</a></li>
 
-    <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li>
+    <!-- <li class="navbar-menuitem"><a href="javascript:;">Logout</a></li> -->
+
+    <!-- 19.16. Implementando o logout:
+      Adiciona invocação de método handler, qdo o btn de logout for clicado, p/ q este se torne funcional.  -->
+    <li class="navbar-menuitem"><a href="javascript:;" (click)="logout();">Logout</a></li>
   </ul>
 
 </nav>

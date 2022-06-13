@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
+import { ErrorHandlerService } from './../error-handler.service';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import { PERMISSOES } from 'src/app/seguranca/permissoes';
 
@@ -41,7 +43,14 @@ export class NavbarComponent implements OnInit {
     ROLE_PESQUISAR_LANCAMENTO: PERMISSOES.ROLE_PESQUISAR_LANCAMENTO
   };
 
-  constructor(private auth: AuthService) { }
+  constructor(
+    private auth: AuthService,
+    // 19.16. Implementando o logout:
+    //   Injeta servs de roteamento, p/ redir o usr p/ pág de login, e de tratamento de erro, p/ tratar
+    //     erro de logout.
+    private router: Router,
+    private errorHndlr: ErrorHandlerService
+    ) { }
 
   ngOnInit(): void {
     // 19.8. Exibindo o nome do usuário logado:
@@ -71,5 +80,16 @@ export class NavbarComponent implements OnInit {
   //     refresh token. Este processo será automatizado posteriormente.
   obterNovoAccessToken() {
     this.auth.obterNovoAccessToken();
+  }
+
+  // 19.16. Implementando o logout:
+  //   Cria método logout() no navbar, a ser acionado ao se clicar o btn de logout, q invoca método de logout()
+  //     do serv de auth e redir usr p/ pág de login.
+  logout() {
+    this.auth.logout()
+      .then(() => {
+        this.router.navigate(["/login"]);
+      })
+      .catch( err => this.errorHndlr.handle(err) );
   }
 }

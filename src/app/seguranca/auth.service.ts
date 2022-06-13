@@ -12,6 +12,9 @@ export class AuthService {
 
   // URL p/ req de acesso oauth 2
   oauth2TokenUrl = "http://localhost:8080/oauth/token";
+  // 19.16. Implementando o logout:
+  //  URL p/ rem do refresh token do oauth 2
+  tokensRevokeUrl = "http://localhost:8080/tokens/revoke";
   // 19.5. Decodificando o JWT e armazenando no Local Storage:
   //   prop q vai armazenar o payload do JWT em formato JSON.
   jwtPayload: any;
@@ -148,6 +151,32 @@ export class AuthService {
     return !token || this.jwtHelper.isTokenExpired(token);
   }
 
+  // 19.16. Implementando o logout:
+  //   Implementando um método p/ limpar o access token do local storage do nav, como parte do logout.
+  limparToken() {
+    localStorage.removeItem("token");
+    // Tb limpa prop local c/ access token decod
+    this.jwtPayload = null;
+  }
+
+/* 19.16. Implementando o logout:
+    Implementando um método p/ limpar o refresh token do cookie, como parte do logout. Isto é feito invocando
+      a URL /token/revoke no backend, q retornará uma resp c/ um cookie vazio, fazendo c/ o refresh token seja
+      remov.
+
+    Criação do método logout
+      Por termos criado um interceptador genérico para nossas requisições, podemos fazer a implementação do
+        método logout no nosso componente auth.service, sem a necessidade de criar um novo componente para
+        isso. A razão para que possamos realizar esse procedimento dessa forma é que a única URL que não será
+        interceptada pelo nosso método é /oauth/token, logo qualquer outra URL terá um token válido. */
+  logout(): Promise<void> {
+    return this.http.delete(this.tokensRevokeUrl, { withCredentials: true }).toPromise()
+      .then(() => {
+        // Se remover o refresh token c/ sucesso, limpa tb o access token
+        this.limparToken();
+      });
+  }
+
   // 19.5. Decodificando o JWT e armazenando no Local Storage:
   //   Método q decodificará o token e o armazenará na prop do comp, em formato JSON.
   private decodificarToken(token: string) {
@@ -175,4 +204,5 @@ export class AuthService {
       this.decodificarToken(token);
     }
   }
+
 }
