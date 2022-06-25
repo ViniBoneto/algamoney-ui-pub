@@ -5,6 +5,7 @@ import { DataService } from './../shared/data.service';
 import { Lancamento } from './../core/model';
 import { AuthService } from '../shared/auth.service';
 import { obterAccessToken } from '../shared/shared.module';
+import { environment } from 'src/environments/environment';
 
 /* 17.3. Adicionando filtro por descrição na pesquisa de lançamentos:
   Tb cria uma interface do tp LancamentoFiltro, trocando o param filtro de any p/ este tp. Isto serve p/
@@ -44,7 +45,13 @@ export class LancamentoFiltro {
 export class LancamentoService {
 
   //  URL base dos servs de lançamentos
-  private lancamentosURL = "http://localhost:8080/lancamentos";
+  // private lancamentosURL = "http://localhost:8080/lancamentos";
+
+/* 20.1. Configurando a aplicação com environment do Angular CLI:
+    Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+      obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+      e src/environments/environment.prod.ts). */
+  private lancamentosURL: string;
 
 /* 17.12. Criando um serviço de tratamento de erros:
     Vamos mudar a porta do serv de lançamentos p/ uma inválida (3080), p/ se gerar erro e se testar o
@@ -63,7 +70,13 @@ export class LancamentoService {
 
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Injetando serv de auth, p/ obter o token de acesso no backend programaticamente. */
-  constructor(private http: HttpClient, private dtServ: DataService, private authServ: AuthService) { }
+  constructor(private http: HttpClient, private dtServ: DataService, private authServ: AuthService) {
+/*  20.1. Configurando a aplicação com environment do Angular CLI:
+      Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+        obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+        e src/environments/environment.prod.ts). */
+    this.lancamentosURL = `${environment.apiUrl}/lancamentos`;
+  }
 
 /* Consulta a app background e retorna uma Promise q resolve c/ os lançamentos retornados.
   Aqui estou ainda usando o método Observable.toPromise(), da biblio RXJS, pois na versão

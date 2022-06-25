@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
+import { environment } from './../../environments/environment';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { MoneyHttpInterceptor } from './money-http.interceptor';
@@ -83,8 +84,15 @@ export function tokenGetter(): string | null {
               Já para "http://localhost:8080/oauth/token" não ocorrerá nenhuma interceptação, pois neste endpoint,
               não utilizamos o token armazenado, e sim a autenticação básica, como vimos em aulas anteriores. */
         tokenGetter,
-        allowedDomains: ['localhost:8080'],
-        disallowedRoutes: ['http://localhost:8080/oauth/token']
+        // allowedDomains: ['localhost:8080'],
+        // disallowedRoutes: ['http://localhost:8080/oauth/token']
+
+/*      20.1. Configurando a aplicação com environment do Angular CLI:
+          Substituindo props, como domínios permitidos e rotas proibidas p/ tokens JWT, de vals fixos "hard coded"
+            p/ vals dinâmicos, obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs
+            src/environments/environment.ts e src/environments/environment.prod.ts). */
+        allowedDomains: environment.tokenAllowedDomains,
+        disallowedRoutes: environment.tokenDisallowedRoutes
       }
     }),
 

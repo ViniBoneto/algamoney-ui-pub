@@ -1,9 +1,10 @@
-  import { Pessoa } from './../core/model';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { Pessoa } from './../core/model';
 import { AuthService } from '../shared/auth.service';
 import { obterAccessToken } from '../shared/shared.module';
+import { environment } from 'src/environments/environment';
 
 /* 17.7. Desafio: criando a consulta e listagem de pessoas:
   Replicando p/ pessoas o q foi feito p/ lançamentos em aulas anteriores (17.2-17.6): Criando um serv p/
@@ -23,14 +24,26 @@ export class PessoaFiltro {
 export class PessoaService {
 
   //  URL base dos servs de pessoas
-  private pessoasURL = "http://localhost:8080/pessoas";
+  // private pessoasURL = "http://localhost:8080/pessoas";
+
+/* 20.1. Configurando a aplicação com environment do Angular CLI:
+    Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+      obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+      e src/environments/environment.prod.ts). */
+  private pessoasURL: string;
 
   // Injetando o serv HttpClient p/ depend, p/ fazer as reqs http
   // constructor(private http: HttpClient) { }
 
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Injetando serv de auth, p/ obter o token de acesso no backend programaticamente. */
-  constructor(private http: HttpClient, private authServ: AuthService) { }
+  constructor(private http: HttpClient, private authServ: AuthService) {
+/*  20.1. Configurando a aplicação com environment do Angular CLI:
+      Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+        obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+        e src/environments/environment.prod.ts). */
+    this.pessoasURL = `${environment.apiUrl}/pessoas`;
+   }
 
   // Faz pesquisa de pessoas usando filtro e/ou paginação opcional
   pesquisar(filtro: PessoaFiltro): Promise<any> {

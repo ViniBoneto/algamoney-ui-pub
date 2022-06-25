@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { environment } from 'src/environments/environment';
 import { AuthService } from '../shared/auth.service';
 import { obterAccessToken } from '../shared/shared.module';
 
@@ -13,13 +14,25 @@ import { obterAccessToken } from '../shared/shared.module';
 })
 export class CategoriaService {
 
-  private categsURL = "http://localhost:8080/categorias";
+  // private categsURL = "http://localhost:8080/categorias";
+
+/* 20.1. Configurando a aplicação com environment do Angular CLI:
+    Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+      obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+      e src/environments/environment.prod.ts). */
+  private categsURL: string;
 
   // constructor(private http: HttpClient) { }
 
 /* 17.20. Implementando o serviço de cadastro de lançamentos:
     Injetando serv de auth, p/ obter o token de acesso no backend programaticamente. */
-  constructor(private http: HttpClient, private authServ: AuthService) { }
+  constructor(private http: HttpClient, private authServ: AuthService) {
+/*  20.1. Configurando a aplicação com environment do Angular CLI:
+      Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+        obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+        e src/environments/environment.prod.ts). */
+    this.categsURL = `${environment.apiUrl}/categorias`;
+  }
 
   listar(): Promise<any> {
     // let headers: HttpHeaders = new HttpHeaders();

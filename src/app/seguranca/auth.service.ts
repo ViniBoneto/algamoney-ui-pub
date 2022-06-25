@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+import { environment } from './../../environments/environment';
+
 // 19.4. Implementando o serviço de autenticação com OAuth 2
 //   Criando cls de serv p/ auth usando protocolo OAuth 2. Registra-o na lst de providers do mód core.
 @Injectable({
@@ -11,10 +13,22 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthService {
 
   // URL p/ req de acesso oauth 2
-  oauth2TokenUrl = "http://localhost:8080/oauth/token";
+  // oauth2TokenUrl = "http://localhost:8080/oauth/token";
+
+/* 20.1. Configurando a aplicação com environment do Angular CLI:
+    Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+      obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+      e src/environments/environment.prod.ts). */
+  oauth2TokenUrl: string;
   // 19.16. Implementando o logout:
   //  URL p/ rem do refresh token do oauth 2
-  tokensRevokeUrl = "http://localhost:8080/tokens/revoke";
+  // tokensRevokeUrl = "http://localhost:8080/tokens/revoke";
+
+/* 20.1. Configurando a aplicação com environment do Angular CLI:
+    Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+      obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+      e src/environments/environment.prod.ts). */
+  tokensRevokeUrl: string;
   // 19.5. Decodificando o JWT e armazenando no Local Storage:
   //   prop q vai armazenar o payload do JWT em formato JSON.
   jwtPayload: any;
@@ -42,6 +56,12 @@ export class AuthService {
     // O token está sendo mantido no local storage do nav. A cada recarregamento de pág ou reinicio de app, qdo o
     //   comp é reinst, é preciso buscá-lo, decodificá-lo e atribuí-lo à prop corresp.
     this.carregarToken();
+/*  20.1. Configurando a aplicação com environment do Angular CLI:
+      Substituindo props, como as URLS dos endpoints do backend, de vals fixos "hard coded" p/ vals dinâmicos,
+        obtidos nos arqs de config de ambiente p/ cada ambiente de exec (vide arqs src/environments/environment.ts
+        e src/environments/environment.prod.ts). */
+    this.oauth2TokenUrl = `${environment.apiUrl}/oauth/token`;
+    this.tokensRevokeUrl = `${environment.apiUrl}/tokens/revoke`;
   }
 
   login(usr: string, senha: string): Promise<void> {
