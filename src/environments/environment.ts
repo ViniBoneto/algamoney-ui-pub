@@ -20,7 +20,28 @@ export const environment = {
       Para isso adicione as variáveis tokenAllowedDomains e tokenDisallowedRoutes nos arquivos de Enviroment.
 
     Obs: P/ padrão o amb de dev é usado (props deste arq). P/ usar o amb de prod (props do arq de prod), deve-se
-      usar o cmd: `ng build --env=prod`. */
+      usar o cmd: `ng build --env=prod`.
+
+  20.2. Fazendo build para o ambiente de produção:
+    1. Utilizando environment de produção
+      Se tentarmos utilizar o comando mostrado na aula iremos nos deparar com um erro:
+        $ ng build --environment=prod
+        Unknown option: '--environment'
+      Isso se dá pelo fato dessa opção ter sido alterada em versões mais recentes.Para resolvermos este problema
+        devemos ajustar o comando, utilizando da seguinte forma:
+        ng build --configuration=production
+
+    P/ servirmos a app ng e testá-la, usamos o cmd "ng serve". Já p/ fazermos o build da app, gerando um pacote c/
+      tds os assets dela, na past dist/, usamos o cmd "ng build". P/ padrão o cmd usa o amb de dev (environment.ts)
+      p/ gerar a app. P/ usarmos o amb de prod (environment.prod.ts), devemos usar o cmd "ng build --configuration=production".
+
+    Podemos otimizar o build da app, tornando-a menor e mais rápida. P/ isto, usamos a metaflag --prod (Ex: "ng build --prod")
+      q, além de já imbutir a opt --configuration=production, tb utiliza o compilador AOT p/ otimizar a app. A compilação AOT
+      já empacota o cód compilado p/ JS, em vez de empacotar o cód em TS e o compilador em si (e biblios associadas), p/ fazer
+      a compilação no cliente em tempo de exec. O compilador AOT tb verifica biblios desnecessárias/ñ usadas, evitando q elas
+      sejam empacotadas.
+
+    Obs: Após gerada e empacotada, a app está pronta p/ ser provida em qq servidor HTTP (Apache, Tomcat, IIS, Nodejs, etc...).  */
   apiUrl: "http://localhost:8080",
   tokenAllowedDomains: [  /localhost:8080/ ],
   tokenDisallowedRoutes: [/\/oauth\/token/]
