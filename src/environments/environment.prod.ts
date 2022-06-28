@@ -38,7 +38,17 @@ export const environment = {
       sejam empacotadas.
 
     Obs: Após gerada e empacotada, a app está pronta p/ ser provida em qq servidor HTTP (Apache, Tomcat, IIS, Nodejs, etc...).  */
-  apiUrl: "https://vineto-algamoney-api.herokuapp.com",
-  tokenAllowedDomains: [  /vineto-algamoney-api\.herokuapp\.com/ ],
-  tokenDisallowedRoutes: [/\/oauth\/token/]
+  // apiUrl: "https://vineto-algamoney-api.herokuapp.com",
+  // tokenAllowedDomains: [  /vineto-algamoney-api\.herokuapp\.com/ ],
+  tokenDisallowedRoutes: [/\/oauth\/token/],
+
+/* 20.3. Respondendo requisições com Node.js e Express:
+    Vamos servir a app gerada c/ o cmd "ng build", no dir /dist, num servidor HTTP, usando Node e o framework de webapp Express
+      (https://expressjs.com/), q já vem com o NG CLI.
+
+    P/ poder testar a app c/ configs de prod, em nossa máquina local, antes de subí-la p/ amb de prod propriamente dito, alteramos
+      temporariamente a prop apiURL p/ o end local (http://localhost:8080). Qdo formos realmente subir a app p/ prod, voltaremo-la
+      ao val anterior (https://vineto-algamoney-api.herokuapp.com). */
+  apiUrl: "http://localhost:8080",
+  tokenAllowedDomains: [  /localhost:8080/ ]
 };
