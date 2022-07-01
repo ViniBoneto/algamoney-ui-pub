@@ -46,4 +46,7 @@ app.listen(process.env.PORT || 4200);
 
     Obs:
       A única diferença que teremos nessa aula, é o nome da propriedade que o heroku utilizará para fazer o build. Na aula
-        utilizamos a propriedade "postinstall", dessa vez precisamos apenas renomear para "heroku-postbuild". */
+        utilizamos a propriedade "postinstall", dessa vez precisamos apenas renomear para "heroku-postbuild".
+
+      Inserindo entrada p/ express entre depends do proj, p/ q este seja instalado no amb de prod (Heroku), pois cmg deu erro
+        de MODULE_NOT_FOUND, q ñ ocorreu na aula. */
