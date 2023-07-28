@@ -23,7 +23,8 @@ chrome-profiler-events*.json
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+.vscode/
+# .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -50,8 +51,8 @@ Thumbs.db
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # Node artifact files
-node_modules/
-dist/
+# node_modules/
+# dist/
 
 # Compiled Java class files
 *.class
@@ -96,3 +97,14 @@ TEST*.xml
 *.flv
 *.mov
 *.wmv
+
+# Compressed files
+*.zip
+*.tar
+*.rar
+*.gz
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

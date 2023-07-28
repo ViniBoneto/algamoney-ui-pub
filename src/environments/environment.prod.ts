@@ -41,8 +41,13 @@ export const environment = {
 
   20.4. Fazendo deploy em produção no Heroku:
     Voltando à URL a ser usada no amb de prod no Heroku, após o tst na máquina local. */
-  apiUrl: "https://vineto-algamoney-api.herokuapp.com",
-  tokenAllowedDomains: [  /vineto-algamoney-api\.herokuapp\.com/ ],
+  // apiUrl: "https://vineto-algamoney-api.herokuapp.com",
+  // tokenAllowedDomains: [  /vineto-algamoney-api\.herokuapp\.com/ ],
+  // tokenDisallowedRoutes: [/\/oauth\/token/]
+
+  // Alterando as URLs da api (backend) p/ migrar o amb de prod do Heroku p/ AWS
+  apiUrl: "https://vineto-algamoney-api.us-east-2.elasticbeanstalk.com/",
+  tokenAllowedDomains: [  /vineto-algamoney-api\.us-east-2\.elasticbeanstalk\.com/ ],
   tokenDisallowedRoutes: [/\/oauth\/token/]
 
 /* 20.3. Respondendo requisições com Node.js e Express:
