@@ -46,7 +46,7 @@ export const environment = {
   // tokenDisallowedRoutes: [/\/oauth\/token/]
 
   // Alterando as URLs da api (backend) p/ migrar o amb de prod do Heroku p/ AWS
-  apiUrl: "https://vineto-algamoney-api.us-east-2.elasticbeanstalk.com/",
+  apiUrl: "https://vineto-algamoney-api.us-east-2.elasticbeanstalk.com",
   tokenAllowedDomains: [  /vineto-algamoney-api\.us-east-2\.elasticbeanstalk\.com/ ],
   tokenDisallowedRoutes: [/\/oauth\/token/]
 
